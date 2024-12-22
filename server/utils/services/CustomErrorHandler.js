@@ -13,6 +13,9 @@ class CustomErrorHandler extends Error {
     static AlreadyExists(message = "User already exists!") {
         return new CustomErrorHandler(401, message);
     }
+    static notFound(message = "Not Found!") {
+        return new CustomErrorHandler(401, message);
+    }
     static RequireField(message = "User already exists!") {
         return new CustomErrorHandler(401, message);
     }

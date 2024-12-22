@@ -7,6 +7,8 @@ import authRouter from './routers/authRouter.js';
 import connectDb from './utils/db/db.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors'
+import departmentRouter from './routers/departmentRouter.js';
+import subjectRouter from './routers/SubjectRouter.js';
 const app = express();
 
 const corsOptions = {
@@ -23,6 +25,8 @@ app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use('/api/user', userRouter)
 app.use('/api/auth', authRouter)
+app.use('/api', departmentRouter)
+app.use('/api/subject', subjectRouter)
 
 
 

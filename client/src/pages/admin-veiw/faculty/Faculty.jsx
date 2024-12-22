@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
 import style from './faculty.module.css';
 import { toast } from 'react-toastify';
-import { useMutation } from '@tanstack/react-query';
-import { addFaculty } from '../../../api/api';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { addFaculty, getDepartment } from '../../../api/api';
 import axios from 'axios';
 
 export default function Faculty() {
   const [file, setFile] = useState(null);
   const [imageUrl, setImageUrl] = useState('');
   const role = ['non', 'admin', 'teacher', 'hod'];
-  const department = ['non', 'bsc it', 'bcom', 'other'];
+
+  // Fetch department data using useQuery
+  const { data: departmentData, isLoading, error } = useQuery({
+    queryKey: ['department'],
+    queryFn: getDepartment,
+  });
 
   // Mutation for sending faculty data to backend
   const addFacultyMutation = useMutation({
@@ -30,12 +35,12 @@ export default function Faculty() {
 
       // Validate if the uploaded file is an image
       if (fileType.startsWith('image/')) {
-        setFile(URL.createObjectURL(uploadedFile));  // Show image preview
+        setFile(URL.createObjectURL(uploadedFile)); // Show image preview
 
         // Prepare data for Cloudinary upload
         const formData = new FormData();
         formData.append('file', uploadedFile);
-        formData.append('upload_preset', 'gtk4v3ju');  // Cloudinary preset name
+        formData.append('upload_preset', 'gtk4v3ju'); // Cloudinary preset name
 
         try {
           // Upload image to Cloudinary
@@ -43,7 +48,7 @@ export default function Faculty() {
             'https://api.cloudinary.com/v1_1/duvpop9lr/image/upload',
             formData
           );
-          setImageUrl(response.data.secure_url);  // Set Cloudinary image URL
+          setImageUrl(response.data.secure_url); // Set Cloudinary image URL
         } catch (error) {
           toast.error('Failed to upload image to Cloudinary');
         }
@@ -63,14 +68,11 @@ export default function Faculty() {
       email: e.target.email.value,
       role: e.target.role.value,
       department: e.target.department.value,
-      profile: imageUrl,  // Cloudinary image URL
+      profile: imageUrl, // Cloudinary image URL
     };
-
-    // console.log(facultyData)
 
     // Call your backend API to save faculty data
     addFacultyMutation.mutate(facultyData);
-    
   };
 
   return (
@@ -126,20 +128,76 @@ export default function Faculty() {
             </div>
 
             <div className={style.input_field}>
-              <label htmlFor="department">department:</label>
-              <select id="department">
-                {department.map((department) => (
-                  <option key={department} value={department}>
-                    {department}
-                  </option>
-                ))}
-              </select>
+              <label htmlFor="department">Department:</label>
+              {isLoading ? (
+                <p>Loading departments...</p>
+              ) : error ? (
+                <p>Failed to load departments</p>
+              ) : (
+                <select id="department">
+                  {/* Check if departmentData is available */}
+                  <option value="non">NON</option> // Show "NON" if no departments
+                  {departmentData && departmentData.department && departmentData.department.length > 0 ? (
+                    departmentData.department.map((dept) => (
+                      <option key={dept._id} value={dept.stream}>
+                        {dept.stream}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="non">NON</option> // Show "NON" if no departments
+                  )}
+                </select>
+              )}
             </div>
           </div>
 
-          <button type="submit" className={style.btn}>
-            Submit
-          </button>
+          <div className={style.inputConatiner}>
+            <div className={style.input_field}>
+              <label htmlFor="email">Sem1:</label>
+              <select name="sem1" id="sem1" multiple>
+                <option value="">1</option>
+                <option value="">2</option>
+                <option value="">3</option>
+              </select>
+            </div>
+            <div className={style.input_field}>
+              <label htmlFor="email">Sem2:</label>
+              <select name="sem1" id="sem1" multiple>
+                <option value="">1</option>
+                <option value="">2</option>
+                <option value="">3</option>
+              </select>
+            </div>
+            <div className={style.input_field}>
+              <label htmlFor="email">Sem3:</label>
+              <select name="sem1" id="sem1" multiple>
+                <option value="">1</option>
+                <option value="">2</option>
+                <option value="">3</option>
+              </select>
+            </div>
+
+          </div>
+          <div className={style.inputConatiner}>
+            <div className={style.input_field}>
+              <label htmlFor="email">Sem4:</label>
+              <select name="sem1" id="sem1" multiple>
+                <option value="">1</option>
+                <option value="">2</option>
+                <option value="">3</option>
+              </select>
+            </div>
+
+            <div className={style.input_field}>
+              <button type="submit" className={style.btn}>
+                Submit
+              </button>
+            </div>
+            <div className={style.input_field}></div>
+
+          </div>
+
+
         </div>
       </div>
     </form>

@@ -1,4 +1,4 @@
-// export const sendOtp = async ({ email }) => {
+/*// export const sendOtp = async ({ email }) => {
 //     // Make API call to send OTP
 //     const response = await fetch('/api/send-otp', {
 //       method: 'POST',
@@ -17,7 +17,7 @@
 //     });
 //     return response.json(); // Assuming the response contains user data and role
 //   };
-
+*/
 import axios from 'axios';
 
 // Set up Axios instance with base URL
@@ -59,4 +59,11 @@ export const addFaculty = async (data) => {
   }
 };
 
-
+export const getDepartment = async()=>{
+  try {
+    const response = await api.get('/api/getDepartment')
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'Depertment fatching error');
+  }
+}
