@@ -50,19 +50,30 @@ const subjectController = {
 
     // ========== get subject =======
     async getSubject(req, res, next) {
-        const { stream, sem} = req.query;
+        const { stream } = req.query;
 
-        if (!stream || !sem) {
+        if (!stream) {
             return next(CustomErrorHandler.RequireField("Stream and sem are required."))
         }
 
         try {
-            const result = await Subject.find({ stream, sem });
+            const result = await Subject.find({ stream });
             if (!result) {
                 return next(CustomErrorHandler.notFound('Not Found'))
-            } 
+            }
 
-            res.status(201).json({ success: true, result });
+            if (result.length > 0) {
+
+                const sem1 = result.filter(sem => sem.sem === "1")
+                const sem2 = result.filter(sem => sem.sem === "2")
+                const sem3 = result.filter(sem => sem.sem === "3")
+                const sem4 = result.filter(sem => sem.sem === "4")
+
+
+                res.status(201).json({ success: true, sem1, sem2, sem3, sem4 });
+                return
+            }
+            res.status(201).json({ success: false });
 
         } catch (err) {
             return next(err)

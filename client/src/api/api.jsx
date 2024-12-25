@@ -59,11 +59,25 @@ export const addFaculty = async (data) => {
   }
 };
 
-export const getDepartment = async()=>{
+
+// ============ Get Department Api =======
+export const getDepartment = async () => {
   try {
     const response = await api.get('/api/getDepartment')
     return response.data;
   } catch (error) {
     throw new Error(error.response ? error.response.data.message : 'Depertment fatching error');
   }
+}
+
+
+// =========== Get Subject ===============
+export const getSubject = async (stream) => {
+  try {
+    const response = await api.get(`/api/subject/getSubject?stream=${stream}`)
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'Subject fatching error');
+  }
+
 }
