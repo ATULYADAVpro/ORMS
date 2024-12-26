@@ -18,6 +18,7 @@
     --primary-color-light: #F6F5FF;
     --toggle-color: #DDD;
     --text-color: #707070;
+    --head-color: #000000;
 
     /* ====== Transition ====== */
     --tran-03: all 0.2s ease;
@@ -48,5 +49,6 @@
     --toggle-color: #fff;
     --text-color: #ccc;
     --shadow-1: none;
+    --head-color: #ffffff;
 }
 

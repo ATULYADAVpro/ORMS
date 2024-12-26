@@ -81,3 +81,14 @@ export const getSubject = async (stream) => {
   }
 
 }
+
+
+// ============== Get Users ==============
+export const getUsers = async () => {
+  try {
+    const response = await api.get(`/api/user/getUsers`)
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'Subject fatching error');
+  }
+}

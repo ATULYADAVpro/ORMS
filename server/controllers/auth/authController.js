@@ -32,6 +32,7 @@ const authController = {
             department: Joi.string().required(),
             userId: Joi.string(),
             codeId: Joi.string(),
+            subjects:Joi.optional()
         })
 
         const { error, value } = schema.validate(req.body)

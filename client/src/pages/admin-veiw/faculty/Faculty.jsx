@@ -4,12 +4,14 @@ import { toast } from 'react-toastify';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { addFaculty, getDepartment, getSubject } from '../../../api/api';
 import axios from 'axios';
+import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 export default function Faculty() {
   const [file, setFile] = useState(null);
   const [imageUrl, setImageUrl] = useState('');
   const role = ['non', 'admin', 'teacher', 'hod'];
   const [streamId, setStreamId] = useState(null);
+  const navigate = useNavigate()
 
   // Fetch department data using useQuery
   const { data: departmentData, isLoading, error } = useQuery({
@@ -32,6 +34,7 @@ export default function Faculty() {
     mutationFn: addFaculty,
     onSuccess: () => {
       toast.success('Successfully added faculty!');
+      navigate(0)
     },
     onError: (error) => {
       toast.error(error.message);
@@ -96,6 +99,7 @@ export default function Faculty() {
     };
 
     console.log(facultyData)
+
   
     // Send the data to the backend using the mutation
     addFacultyMutation.mutate(facultyData);
