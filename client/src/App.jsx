@@ -9,7 +9,8 @@ import Home from './pages/admin-veiw/Home';
 import Student from './pages/admin-veiw/Student';
 import NotFound from './common/NotFound';
 import UnAuth from './common/UnAuth';
-import Faculty from './pages/admin-veiw/Faculty/Faculty';
+import Faculty from './pages/admin-veiw/faculty/Faculty';
+
 
 // Custom hook to fetch auth data
 const useAuth = () => {

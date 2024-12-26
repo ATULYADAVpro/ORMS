@@ -25,7 +25,6 @@ export default function Faculty() {
 
   });
 
-  console.log(subjectData)
 
 
   // Mutation for sending faculty data to backend
