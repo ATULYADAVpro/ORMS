@@ -6,7 +6,7 @@ import style from './layout.module.css';
 
 // Map path to select options dynamically
 const getOptionsByPath = (path) => {
-  if (path === '/admin/faculty') {
+  if (path === '/admin/faculty/') {
     return [
       { label: 'More', value: '' },
       { label: 'Add Faculty', value: 'add-faculty' },
@@ -91,7 +91,7 @@ export default function AdminLayout() {
               ) : (
                 <span>Home</span>
               )}
-              {selectOptions && (
+              {/* {selectOptions && (
                 <>
                   {' / '}
                   <select
@@ -107,7 +107,7 @@ export default function AdminLayout() {
                     ))}
                   </select>
                 </>
-              )}
+              )} */}
             </p>
           </div>
 

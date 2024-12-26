@@ -10,6 +10,8 @@ import Student from './pages/admin-veiw/Student';
 import NotFound from './common/NotFound';
 import UnAuth from './common/UnAuth';
 import Faculty from './pages/admin-veiw/faculty/Faculty';
+import FacultyLayout from './pages/admin-veiw/faculty/FacultyLayout';
+import ViewFaculty from './pages/admin-veiw/faculty/ViewFaculty';
 
 
 // Custom hook to fetch auth data
@@ -62,8 +64,10 @@ export default function App() {
       <Route path="/admin" element={<CheckAuth isAuthenticated={authData?.isAuthenticated} user={authData?.user}><AdminLayout /></CheckAuth>} >
         <Route index element={<Home />} />
         <Route path="home" element={<Home />} />
-        <Route path="faculty" element={<Faculty />} />
-        <Route path="student" element={<Student />} />
+        <Route path="faculty" element={<FacultyLayout />} >
+          <Route index element={<Faculty />} />
+          <Route path="list" element={<ViewFaculty />} />
+        </Route>
       </Route>
 
       <Route path="*" element={<NotFound />} />
