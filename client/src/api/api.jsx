@@ -59,6 +59,30 @@ export const addFaculty = async (data) => {
   }
 };
 
+// Function to add faculty
+export const updateFaculty = async (data) => {
+  try {
+    const response = await api.put('/api/user/updateUser', data);
+    return response.data; // 
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'update');
+  }
+};
+
+// Function to delete faculty
+export const deleteFaculty = async (data) => {
+  // console.log(data.email)
+  const email = data.email;
+  try {
+    const response = await api.delete(`/api/user/deleteUser/:${email}`);
+    return response.data; // 
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'Delete error');
+  }
+};
+
+
+
 
 // ============ Get Department Api =======
 export const getDepartment = async () => {

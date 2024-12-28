@@ -1,6 +1,6 @@
 import User from "../../models/UserModels.js";
 import CustomErrorHandler from "../../utils/services/CustomErrorHandler.js";
-
+import Joi from "joi";
 const userController = {
     async demo(req, res) {
         res.send(`it's working!`);
@@ -48,6 +48,58 @@ const userController = {
             return next(error);
         }
     },
+
+    // ====== Update USer ===
+    async updateUser(req, res, next) {
+        try {
+            const { email, ...updateFields } = req.body;
+
+            // Check if the user exists
+            const userExists = await User.findOne({ email });
+            if (!userExists) {
+                return next(CustomErrorHandler.notFound('User does not exist'));
+            }
+
+            // Update the user
+            const updatedUser = await User.findOneAndUpdate(
+                { email },
+                { $set: updateFields },
+                { new: true } // Return the updated document
+            );
+
+            res.status(200).json({
+                success: true,
+                message: 'User updated successfully.',
+                user: updatedUser,
+            });
+        } catch (error) {
+            return next(error);
+        }
+    },
+    // ====== Delete USer ===
+    // ====== Delete User ===
+    async deleteUser(req, res, next) {
+        try {
+            const { email } = req.params; // Assuming email is passed as a URL parameter
+
+            // Check if the user exists
+            const userExists = await User.findOne({ email });
+            if (!userExists) {
+                return next(CustomErrorHandler.notFound('User not found.'));
+            }
+
+            // Delete the user from the database
+            await User.findOneAndDelete({ email });
+
+            res.status(200).json({
+                success: true,
+                message: 'User deleted successfully.',
+            });
+        } catch (error) {
+            return next(error);
+        }
+    },
+
 };
 
 export default userController;
