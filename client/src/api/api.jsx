@@ -115,6 +115,29 @@ export const getAllSubject = async () => {
   }
 
 }
+// =========== Update Subject ===============
+export const updateSubject = async (data) => {
+  console.log(data)
+  try {
+    const response = await api.put(`/api/subject/subjectUpdate`, data)
+    return response.data;
+  } catch (error) {
+    console.log(error)
+    throw new Error(error.response ? error.response.data.message : ' Subject  updating error');
+  }
+
+}
+// =========== Update Subject ===============
+export const deleteSubject = async (data) => {
+  const _id = data._id;
+  try {
+    const response = await api.delete(`/api/subject/deleteSubject/${_id}`)
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : ' Subject delete error');
+  }
+
+}
 
 
 // ============== Get Users ==============

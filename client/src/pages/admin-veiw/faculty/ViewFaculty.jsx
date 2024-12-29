@@ -207,7 +207,7 @@ export default function ViewFaculty() {
 
   function handleDelete(user, e) {
     e.preventDefault();
-    console.log(user); // This will log the selected user object
+    // console.log(user); // This will log the selected user object
     deleteFacultyMutation.mutate(user); // Pass the selectedUser directly, or pass user._id if needed
   }
   

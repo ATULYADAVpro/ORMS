@@ -1,7 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState, useEffect } from 'react';
 import style from './subjectList.module.css';
-import { getAllSubject, getDepartment } from '../../../api/api';
+import { deleteSubject, getAllSubject, getDepartment, updateSubject } from '../../../api/api';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 export default function SubjectsList() {
     const TABLE_ROW = ["Subject Code", "Subject Name", "Practical Code", "Practical Name", "Stream", "Action"];
@@ -10,6 +12,10 @@ export default function SubjectsList() {
     const [sem, setSem] = useState('All');
     const [search, setSearch] = useState('');
     const [filteredSubjects, setFilteredSubjects] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedUser, setSelectedUser] = useState(null);
+    const navigate = useNavigate()
+
 
     // react-query manage subjects API calling
     const { data: subjectData, isPending: subjectLoading, isError: subjectError } = useQuery({
@@ -23,10 +29,33 @@ export default function SubjectsList() {
         queryKey: ['department']
     });
 
+    // Mutation for update subject 
+    const updateSubjectMutation = useMutation({
+        mutationFn: updateSubject,
+        onSuccess: () => {
+            toast.success('Successfully Update faculty!');
+            navigate(0)
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        },
+    });
+    // Mutation for update subject 
+    const deleteSubjectMutation = useMutation({
+        mutationFn: deleteSubject,
+        onSuccess: () => {
+            toast.error('Successfully Delete faculty!');
+            navigate(0)
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        },
+    });
+
+
     useEffect(() => {
         if (subjectData) {
             let filtered = subjectData.result;
-            console.log(filtered)
 
             if (stream !== 'All') {
                 filtered = filtered.filter(subject => subject.stream._id === stream);
@@ -53,6 +82,35 @@ export default function SubjectsList() {
 
     if (subjectError || departmentError) {
         return <div>Error loading data</div>;
+    }
+
+    // Open Modal
+    const handleEdit = (user) => {
+        setSelectedUser(user);
+        setIsModalOpen(true);
+    };
+
+    // Close Modal
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedUser(null);
+    };
+
+    // Handle Modal Input Change
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setSelectedUser((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
+    function handleUpdate(data, e) {
+        updateSubjectMutation.mutate(data)
+    }
+
+    function handleDelete(data, e) {
+        deleteSubjectMutation.mutate(data)
     }
 
     return (
@@ -124,7 +182,7 @@ export default function SubjectsList() {
                                     <td>{data.practicalName}</td>
                                     <td>{data.stream.stream}</td>
                                     <td>
-                                        <button className={style.btnEdit}>Edit</button>
+                                        <button className={style.btnEdit} onClick={() => handleEdit(data)}>Edit</button>
                                     </td>
                                 </tr>
                             ))
@@ -136,6 +194,75 @@ export default function SubjectsList() {
                     </tbody>
                 </table>
             </div>
+
+            {/* Modal of subject */}
+            {isModalOpen && selectedUser && (
+                <div className={style.modal}>
+                    <div className={style.modalContainer}>
+                        <div className={style.inpContainer}>
+                            <div className={style.inpBox}>
+                                <label htmlFor="name">Subject Name: </label>
+                                <input type="text" name="name" value={selectedUser.name} onChange={handleInputChange} />
+                            </div>
+
+                            <div className={style.inpBox}>
+                                <label htmlFor="code">Subject Code: </label>
+                                <input type="text" name="code" value={selectedUser.code} onChange={handleInputChange} />
+                            </div>
+
+                            <div className={style.inpBox}>
+                                <label htmlFor="practicalName">Practical Name: </label>
+                                <input type="text" name="practicalName" value={selectedUser.practicalName} onChange={handleInputChange} />
+                            </div>
+
+                            <div className={style.inpBox}>
+                                <label htmlFor="practicalCode">Practical Code: </label>
+                                <input type="text" name="practicalCode" value={selectedUser.practicalCode} onChange={handleInputChange} />
+                            </div>
+
+                            <div className={style.inpBox}>
+                                <label htmlFor="sem">Sem no: </label>
+                                <select name="sem" id="semEdit" value={selectedUser.sem} onChange={handleInputChange}>
+                                    <option value="1">Sem 1</option>
+                                    <option value="2">Sem 2</option>
+                                    <option value="3">Sem 3</option>
+                                    <option value="4">Sem 4</option>
+                                    {/* Add more semesters as needed */}
+                                </select>
+                            </div>
+
+                            <div className={style.inpBox}>
+                                <label htmlFor="stream">Department: </label>
+                                <select name="stream" id="streamEdit" value={selectedUser.stream._id} onChange={handleInputChange}>
+                                    {departmentData && departmentData.department.length > 0 ? (
+                                        departmentData.department.map((data) => (
+                                            <option value={data._id} key={data._id}>
+                                                {data.stream}
+                                            </option>
+                                        ))
+                                    ) : (
+                                        <option disabled>No data available</option>
+                                    )}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div className={style.btnContainer}>
+                            <div className={style.inpBox}>
+                                <button className={style.updateBtn} disabled={updateSubjectMutation.isPending} type='submit' onClick={(e) => handleUpdate(selectedUser, e)}>{updateSubjectMutation.isPending ? "Updating.." : "Update"}</button>
+                            </div>
+
+                            <div className={style.inpBox}>
+                                <button className={style.deleteBtn} disabled={deleteSubjectMutation.isPending} onClick={(e) => handleDelete(selectedUser, e)}>{deleteSubjectMutation.isPending ? "Deleting.." : "Delete"}</button>
+                            </div>
+
+                            <div className={style.inpBox}>
+                                <button className={style.cancelBtn} onClick={closeModal}>Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

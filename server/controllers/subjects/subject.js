@@ -79,11 +79,11 @@ const subjectController = {
             return next(err)
         }
     },
-
+    // ========== get All subject =======
     async getAllSubject(req, res, next) {
         try {
             const result = await Subject.find({}).populate({
-                path:'stream'
+                path: 'stream'
             })
             if (!result) { return next(CustomErrorHandler.notFound("Subject is not available")) }
 
@@ -92,7 +92,57 @@ const subjectController = {
         } catch (error) {
             return next(error)
         }
-    }
+    },
+    // ========== update subject =======
+    async subjectUpdate(req, res, next) {
+        try {
+            const { _id, ...rest } = req.body;
+            const subjectExists = await Subject.findOne({ _id })
+            // Check if the subject exists
+            if (!subjectExists) {
+                return next(CustomErrorHandler.notFound('Subject does not exist'));
+            }
+
+            // Update the subject
+            const updatedSubject = await Subject.findOneAndUpdate(
+                { _id },
+                { $set: rest },
+                { new: true } // Return the updated document
+            );
+
+            res.status(200).json({
+                success: true,
+                message: 'Subjects updated successfully.',
+                user: updatedSubject,
+            });
+
+
+        } catch (error) {
+            return next(error)
+        }
+    },
+    // ====== Delete Subject ===
+    async deleteSubject(req, res, next) {
+        try {
+            const { _id } = req.params; // Assuming email is passed as a URL parameter
+            // console.log(_id)
+            // Check if the user exists
+            const subjectExists = await Subject.findOne({ _id });
+            if (!subjectExists) {
+                return next(CustomErrorHandler.notFound('Subject not found.'));
+            }
+
+            // Delete the user from the database
+            await Subject.findOneAndDelete({ _id });
+
+            res.status(200).json({
+                success: true,
+                message: 'Subjects deleted successfully.',
+            });
+        } catch (error) {
+            return next(error);
+        }
+    },
 };
 
 export default subjectController;

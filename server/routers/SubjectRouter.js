@@ -7,6 +7,8 @@ const subjectRouter = Router();
 subjectRouter.post('/addSubject',subjectController.addSubject)
 subjectRouter.get('/getSubject',subjectController.getSubject)
 subjectRouter.get('/getAllSubject',subjectController.getAllSubject)
+subjectRouter.put("/subjectUpdate",subjectController.subjectUpdate)
+subjectRouter.delete("/deleteSubject/:_id",subjectController.deleteSubject)
 
 
 

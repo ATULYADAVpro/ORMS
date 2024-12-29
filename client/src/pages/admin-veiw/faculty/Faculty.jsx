@@ -98,7 +98,7 @@ export default function Faculty() {
       },
     };
 
-    console.log(facultyData)
+    // console.log(facultyData)
 
   
     // Send the data to the backend using the mutation
