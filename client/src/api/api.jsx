@@ -105,6 +105,16 @@ export const getSubject = async (stream) => {
   }
 
 }
+// =========== Get Subject ===============
+export const getAllSubject = async () => {
+  try {
+    const response = await api.get(`/api/subject/getAllSubject`)
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'All Subject fatching error');
+  }
+
+}
 
 
 // ============== Get Users ==============

@@ -13,12 +13,12 @@ const getOptionsByPath = (path) => {
     ];
   } else if (path === '/admin/student') {
     return [
-      { label: 'Manage Students', value: 'student-manage' },
+      { label: 'list', value: 'list' },
       { label: 'Add Student', value: 'add-student' },
     ];
   } else if (path === '/admin/subject') {
     return [
-      { label: 'Manage Subjects', value: 'manage-subjects' },
+      { label: 'list', value: '' },
       { label: 'Add Subject', value: 'add-subject' },
     ];
   } else {

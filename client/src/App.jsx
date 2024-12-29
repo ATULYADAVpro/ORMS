@@ -12,6 +12,9 @@ import UnAuth from './common/UnAuth';
 import Faculty from './pages/admin-veiw/faculty/Faculty';
 import FacultyLayout from './pages/admin-veiw/faculty/FacultyLayout';
 import ViewFaculty from './pages/admin-veiw/faculty/ViewFaculty';
+import SubjectLayout from './pages/admin-veiw/subjects/SubjectLayout';
+import SubjectsList from './pages/admin-veiw/subjects/SubjectsList';
+import SubjectAdd from './pages/admin-veiw/subjects/SubjectAdd';
 
 
 // Custom hook to fetch auth data
@@ -67,6 +70,10 @@ export default function App() {
         <Route path="faculty" element={<FacultyLayout />} >
           <Route index element={<Faculty />} />
           <Route path="list" element={<ViewFaculty />} />
+        </Route>
+        <Route path='subject' element={<SubjectLayout />} >
+          <Route index element={<SubjectsList />} />
+          <Route path="add" element={<SubjectAdd />} />
         </Route>
       </Route>
 

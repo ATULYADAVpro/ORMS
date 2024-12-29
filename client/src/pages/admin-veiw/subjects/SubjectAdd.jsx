@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function Subject() {
+export default function SubjectAdd() {
   return (
     <div>
-      <h1>Subject</h1>
+      <h1>Add</h1>
     </div>
   )
 }

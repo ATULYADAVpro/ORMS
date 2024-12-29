@@ -1,0 +1,72 @@
+.container .navbar {
+    padding-left: 0.5rem;
+    background: var(--sidebar-color);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.container .navbar ul {
+    display: flex;
+}
+
+.container .navbar ul li {
+    margin-right: 0.5rem;
+}
+
+.container .navbar select {
+    width: 5rem;
+    list-style: none;
+    outline: none;
+    border: none;
+}
+
+
+.container .mainContainer {
+    /* border: red solid 2px; */
+    margin-top: 0.4rem;
+
+}
+
+.search_container {
+    display: flex;
+    align-items: center;
+    border: 2px solid #ccc;
+    border-radius: 25px;
+    overflow: hidden;
+    background-color: white;
+    height: 2rem;
+}
+
+.search_input {
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+    outline: none;
+    width: 200px;
+}
+
+.navbar nav {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    width: 98%;
+}
+
+.mainContainer {
+ height: 31rem;
+ padding: 0.5rem;
+ overflow-y: auto;
+ background: var(--sidebar-color);
+ border-radius: 10px;
+
+}
+
+.btnEdit{
+    width: 6rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center
+}

@@ -78,6 +78,20 @@ const subjectController = {
         } catch (err) {
             return next(err)
         }
+    },
+
+    async getAllSubject(req, res, next) {
+        try {
+            const result = await Subject.find({}).populate({
+                path:'stream'
+            })
+            if (!result) { return next(CustomErrorHandler.notFound("Subject is not available")) }
+
+            res.status(201).json({ success: true, result });
+
+        } catch (error) {
+            return next(error)
+        }
     }
 };
 
