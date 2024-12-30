@@ -7,6 +7,11 @@ const departmentSchema = new Schema({
     stream: { type: String, required: true, unique: true },
     code: { type: Number, required: true, unique: true },
     practical: { type: Boolean, required: true },
+    addmissionYearsCode: { 
+        FY:{ type: String, required: true, unique: true },
+        SY:{ type: String, required: true, unique: true },
+        TY:{ type: String, required: true, unique: true },
+    }
 })
 
 // -------------- Exporting Part -----------

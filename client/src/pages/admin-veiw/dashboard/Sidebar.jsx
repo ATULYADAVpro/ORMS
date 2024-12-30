@@ -2,6 +2,7 @@ import React from 'react';
 import style from './sidebar.module.css';
 import { IoHomeSharp } from "react-icons/io5";
 import { BsPersonFillAdd, BsToggleOn, BsToggleOff } from "react-icons/bs";
+import { FaPeopleGroup } from "react-icons/fa6";
 import { PiStudentFill } from "react-icons/pi";
 import { ImBooks } from "react-icons/im";
 import { NavLink } from 'react-router-dom';
@@ -54,6 +55,16 @@ export default function Sidebar({ mode, menu, setMode }) {
               end
             >
               <span><ImBooks /></span><span className={style.text}>Subject</span>
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink
+              to="/admin/department"
+              className={({ isActive }) => isActive ? `${style.icon} ${style.active}` : style.icon}
+              end
+            >
+              <span><FaPeopleGroup /></span><span className={style.text}>Department </span>
             </NavLink>
           </li>
 

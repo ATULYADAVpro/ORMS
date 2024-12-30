@@ -8,7 +8,8 @@ const department = {
         const departmentSchema = Joi.object({
             stream: Joi.string().required(),
             code: Joi.number().required(),
-            practical: Joi.boolean().required()
+            practical: Joi.boolean().required(),
+            addmissionYearsCode: Joi.required()
         })
 
         const { error, value } = departmentSchema.validate(req.body);
@@ -28,14 +29,35 @@ const department = {
     },
 
     // ============== get department ============
-
     async getDepartment(req, res, next) {
         const department = await Department.find({});
         if (!department) {
             return next(CustomErrorHandler.RequireField("Do not have any department.."))
         }
         res.status(200).json({ success: true, department })
+    },
+    // ============== Update department ============
+    async updateDepartment(req, res, next) {
+        try {
+            const { _id, ...rest } = req.body;
+            const departmentUpdated = await Department.findByIdAndUpdate(
+                { _id },
+                { $set: rest },
+                { new: true } // Return the updated document
+            )
+            if (!departmentUpdated) { return next(CustomErrorHandler.notFound("Department is Not found! ")) }
+
+            res.status(200).json({
+                success: true,
+                message: 'Department updated successfully.',
+                departmentUpdated,
+            });
+
+        } catch (error) {
+            return next(error)
+        }
     }
+
 }
 
 export default department;

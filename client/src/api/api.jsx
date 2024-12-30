@@ -1,23 +1,3 @@
-/*// export const sendOtp = async ({ email }) => {
-//     // Make API call to send OTP
-//     const response = await fetch('/api/send-otp', {
-//       method: 'POST',
-//       body: JSON.stringify({ email }),
-//       headers: { 'Content-Type': 'application/json' },
-//     });
-//     return response.json(); // Assuming the response contains OTP sending info
-//   };
-
-//   export const verifyOtp = async ({ email, otp }) => {
-//     // Make API call to verify OTP
-//     const response = await fetch('/api/verify-otp', {
-//       method: 'POST',
-//       body: JSON.stringify({ email, otp }),
-//       headers: { 'Content-Type': 'application/json' },
-//     });
-//     return response.json(); // Assuming the response contains user data and role
-//   };
-*/
 import axios from 'axios';
 
 // Set up Axios instance with base URL
@@ -47,7 +27,6 @@ export const verifyOtp = async ({ email, otp }) => {
     throw new Error(error.response ? error.response.data.message : 'Error verifying OTP');
   }
 };
-
 
 // Function to add faculty
 export const addFaculty = async (data) => {
@@ -81,9 +60,6 @@ export const deleteFaculty = async (data) => {
   }
 };
 
-
-
-
 // ============ Get Department Api =======
 export const getDepartment = async () => {
   try {
@@ -94,6 +70,26 @@ export const getDepartment = async () => {
   }
 }
 
+// ============ Update Department Api =======
+export const updateDepartment = async (data) => {
+  try {
+    const response = await api.put('/api/updateDepartment', data)
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'Depertment Updating error');
+  }
+}
+
+// ============ Delete Department Api =======
+export const deleteDepartment = async (data) => {
+  console.log(data)
+  // try {
+  //   const response = await api.get('/api/getDepartment')
+  //   return response.data;
+  // } catch (error) {
+  //   throw new Error(error.response ? error.response.data.message : 'Depertment fatching error');
+  // }
+}
 
 // =========== Get Subject ===============
 export const getSubject = async (stream) => {
@@ -105,6 +101,7 @@ export const getSubject = async (stream) => {
   }
 
 }
+
 // =========== Get Subject ===============
 export const getAllSubject = async () => {
   try {
@@ -115,6 +112,7 @@ export const getAllSubject = async () => {
   }
 
 }
+
 // =========== Update Subject ===============
 export const updateSubject = async (data) => {
   console.log(data)
@@ -127,7 +125,8 @@ export const updateSubject = async (data) => {
   }
 
 }
-// =========== Update Subject ===============
+
+// =========== Delete Subject ===============
 export const deleteSubject = async (data) => {
   const _id = data._id;
   try {
@@ -139,6 +138,16 @@ export const deleteSubject = async (data) => {
 
 }
 
+// =========== Add Subject ===============
+export const addSubject = async (data) => {
+  try {
+    const response = await api.post(`/api/subject/addSubject`, data)
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : ' Subject Adding error');
+  }
+
+}
 
 // ============== Get Users ==============
 export const getUsers = async () => {

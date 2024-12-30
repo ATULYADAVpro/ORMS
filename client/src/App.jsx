@@ -15,6 +15,9 @@ import ViewFaculty from './pages/admin-veiw/faculty/ViewFaculty';
 import SubjectLayout from './pages/admin-veiw/subjects/SubjectLayout';
 import SubjectsList from './pages/admin-veiw/subjects/SubjectsList';
 import SubjectAdd from './pages/admin-veiw/subjects/SubjectAdd';
+import DepartmentLayout from './pages/admin-veiw/department/DepartmentLayout';
+import DepartmentList from './pages/admin-veiw/department/DepartmentList';
+import DepartmentAdd from './pages/admin-veiw/department/DepartmentAdd';
 
 
 // Custom hook to fetch auth data
@@ -74,6 +77,10 @@ export default function App() {
         <Route path='subject' element={<SubjectLayout />} >
           <Route index element={<SubjectsList />} />
           <Route path="add" element={<SubjectAdd />} />
+        </Route>
+        <Route path='department' element={<DepartmentLayout />}>
+          <Route index element={<DepartmentList />} />
+          <Route path='add' element={<DepartmentAdd />} />
         </Route>
       </Route>
 

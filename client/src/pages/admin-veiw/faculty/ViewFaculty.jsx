@@ -446,7 +446,7 @@ export default function ViewFaculty() {
                         ...prev,
                         subjects: {
                           ...prev.subjects,
-                          sem1: selectedValues,
+                          sem2: selectedValues,
                         },
                       }));
                     }}
@@ -472,21 +472,21 @@ export default function ViewFaculty() {
                     name="sem3"
                     id="sem3"
                     multiple
-                    value={selectedUser?.subjects?.sem1 || []} // Bind the value to selectedUser.subjects.sem1
+                    value={selectedUser?.subjects?.sem3 || []} // Bind the value to selectedUser.subjects.sem1
                     onChange={(e) => {
                       const selectedValues = Array.from(e.target.selectedOptions, option => option.value);
                       setSelectedUser((prev) => ({
                         ...prev,
                         subjects: {
                           ...prev.subjects,
-                          sem1: selectedValues,
+                          sem3: selectedValues,
                         },
                       }));
                     }}
                   >
                     {
                       subjectData && subjectData?.sem3 && subjectData.sem3.length > 0 ? (
-                        subjectData.sem1.map((sub) => (
+                        subjectData.sem3.map((sub) => (
                           <option value={sub._id} key={sub._id}>
                             {sub.name}
                           </option>
@@ -505,14 +505,14 @@ export default function ViewFaculty() {
                     name="sem4"
                     id="sem4"
                     multiple
-                    value={selectedUser?.subjects?.sem1 || []} // Bind the value to selectedUser.subjects.sem1
+                    value={selectedUser?.subjects?.sem4 || []} // Bind the value to selectedUser.subjects.sem1
                     onChange={(e) => {
                       const selectedValues = Array.from(e.target.selectedOptions, option => option.value);
                       setSelectedUser((prev) => ({
                         ...prev,
                         subjects: {
                           ...prev.subjects,
-                          sem1: selectedValues,
+                          sem4: selectedValues,
                         },
                       }));
                     }}

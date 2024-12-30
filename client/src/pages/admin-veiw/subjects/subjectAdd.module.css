@@ -1,0 +1,32 @@
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.inputContainer {
+    background: var(--sidebar-color);
+    border-radius: 10px;
+    margin: 0.4rem;
+    padding: 0.4rem;
+    width: 30rem;
+}
+
+.inputContainer .inpBox {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.5rem;
+
+}
+.inputContainer .inpBox > input{
+    border-radius: 5px;
+    border: 1px gray solid;
+    outline: none;
+    padding: 0.4rem;
+}
+
+.inputContainer .inpBox > button{
+    height: 2rem;
+    margin-top: 1em;
+    background: var(--primary-color);
+    font-weight: bolder;
+}

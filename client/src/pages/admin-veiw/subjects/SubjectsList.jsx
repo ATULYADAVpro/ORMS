@@ -33,7 +33,7 @@ export default function SubjectsList() {
     const updateSubjectMutation = useMutation({
         mutationFn: updateSubject,
         onSuccess: () => {
-            toast.success('Successfully Update faculty!');
+            toast.success('Successfully Update Subject!');
             navigate(0)
         },
         onError: (error) => {
@@ -44,7 +44,7 @@ export default function SubjectsList() {
     const deleteSubjectMutation = useMutation({
         mutationFn: deleteSubject,
         onSuccess: () => {
-            toast.error('Successfully Delete faculty!');
+            toast.error('Successfully Delete Subject!');
             navigate(0)
         },
         onError: (error) => {
@@ -178,8 +178,8 @@ export default function SubjectsList() {
                                 <tr key={i}>
                                     <td>{data.code}</td>
                                     <td>{data.name}</td>
-                                    <td>{data.practicalCode}</td>
-                                    <td>{data.practicalName}</td>
+                                    <td>{data.practicalCode ? data.practicalCode : "N/N"}</td>
+                                    <td>{data.practicalName ? data.practicalName : "N/N"}</td>
                                     <td>{data.stream.stream}</td>
                                     <td>
                                         <button className={style.btnEdit} onClick={() => handleEdit(data)}>Edit</button>

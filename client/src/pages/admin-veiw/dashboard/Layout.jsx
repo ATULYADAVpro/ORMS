@@ -19,7 +19,12 @@ const getOptionsByPath = (path) => {
   } else if (path === '/admin/subject') {
     return [
       { label: 'list', value: '' },
-      { label: 'Add Subject', value: 'add-subject' },
+      { label: 'Add Subject', value: 'add' },
+    ];
+  } else if (path === '/admin/department') {
+    return [
+      { label: 'list', value: '' },
+      { label: 'Add Subject', value: 'add' },
     ];
   } else {
     return null; // No dropdown for other paths
