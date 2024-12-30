@@ -6,7 +6,42 @@ const subjectSchema = new Schema({
     sem: { type: String, required: true, lowercase: true },
     name: { type: String, required: true, unique: true, lowercase: true },
     code: { type: String, required: true, unique: true, lowercase: true },
+    creadit: { type: String, required: true, unique: true, lowercase: true },
+    internalMax: { type: String, required: true, unique: true, lowercase: true },
+    internalMin: { type: String, required: true, unique: true, lowercase: true },
+    externalMax: { type: String, required: true, unique: true, lowercase: true },
+    externalMin: { type: String, required: true, unique: true, lowercase: true },
     practicalName: {
+        type: String,
+        unique: true,
+        sparse: true, // Ensures uniqueness only for non-null values
+        lowercase: true,
+        validate: {
+            validator: async function (v) {
+                const department = await Department.findById(this.stream);
+                if (!department) return false; // Invalid if department doesn't exist
+                if (department.practical) return !!v; // If practical is true, value must exist
+                return true; // Optional if practical is false
+            },
+            message: 'Practical name is required for departments that require practicals.',
+        },
+    },
+    practicalMax: {
+        type: String,
+        unique: true,
+        sparse: true, // Ensures uniqueness only for non-null values
+        lowercase: true,
+        validate: {
+            validator: async function (v) {
+                const department = await Department.findById(this.stream);
+                if (!department) return false; // Invalid if department doesn't exist
+                if (department.practical) return !!v; // If practical is true, value must exist
+                return true; // Optional if practical is false
+            },
+            message: 'Practical name is required for departments that require practicals.',
+        },
+    },
+    practicalMin: {
         type: String,
         unique: true,
         sparse: true, // Ensures uniqueness only for non-null values

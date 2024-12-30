@@ -76,6 +76,7 @@
     position: fixed;
     top: 0;
     left: 0;
+    bottom: 0;
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.6);
@@ -83,6 +84,7 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    /* height: 60rem; */
 }
 
 .modalContainer {
@@ -97,6 +99,10 @@
     flex-direction: column;
     align-items: center;
     color: black;
+    /* max-height: 50rem; */
+    height: 40rem;
+    overflow-y: scroll;
+    
 }
 
 .modalContainer .inpContainer {
@@ -156,4 +162,10 @@ button {
     display: flex;
     align-items: center;
     margin: 0.4rem;
+}
+
+.flexBox {
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }

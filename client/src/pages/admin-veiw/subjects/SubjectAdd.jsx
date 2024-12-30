@@ -2,14 +2,19 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import style from './subjectAdd.module.css';
 import { addSubject, getDepartment } from '../../../api/api';
 import { useState } from 'react';
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 
 export default function SubjectAdd() {
   const [formData, setFormData] = useState({
     stream: '',
     sem: '',
     name: '',
-    code: ''
+    code: '',
+    creadit: '',
+    internalMax: '',
+    internalMin: '',
+    externalMax: '',
+    externalMin: ''
   });
 
   const { data: departmentData, isLoading: departmentLoading, isError: departmentError } = useQuery({
@@ -25,7 +30,12 @@ export default function SubjectAdd() {
         stream: '',
         sem: '',
         name: '',
-        code: ''
+        code: '',
+        creadit: '',
+        internalMax: '',
+        internalMin: '',
+        externalMax: '',
+        externalMin: ''
       });
     },
     onError: (error) => {
@@ -110,6 +120,33 @@ export default function SubjectAdd() {
               <label htmlFor="code">Subject Code:</label>
               <input type="text" name="code" value={formData.code} required onChange={handleInputChange} placeholder="Subject code" />
             </div>
+            <div className={style.inpBox}>
+              <label htmlFor="creadit">Creadit:</label>
+              <input type="number" name="creadit" value={formData.creadit} required onChange={handleInputChange} placeholder="Credit" />
+            </div>
+            <div className={style.flexBox}>
+              <div className={style.inpBox}>
+                <label htmlFor="internalMax">Internal Max: </label>
+                <input type="number" name="internalMax" value={formData.internalMax} required onChange={handleInputChange} placeholder="Internal Max" />
+              </div>
+
+              <div className={style.inpBox}>
+                <label htmlFor="internalMin">Internal Min:</label>
+                <input type="number" name="internalMin" value={formData.internalMin} required onChange={handleInputChange} placeholder="Internal Min" />
+              </div>
+            </div>
+
+            <div className={style.flexBox}>
+              <div className={style.inpBox}>
+                <label htmlFor="externalMax">External Max: </label>
+                <input type="number" name="externalMax" value={formData.externalMax} required onChange={handleInputChange} placeholder="External Max" />
+              </div>
+
+              <div className={style.inpBox}>
+                <label htmlFor="externalMin">External Min:</label>
+                <input type="number" name="externalMin" value={formData.externalMin} required onChange={handleInputChange} placeholder="External Min" />
+              </div>
+            </div>
 
             {showPracticals && (
               <>
@@ -121,6 +158,17 @@ export default function SubjectAdd() {
                 <div className={style.inpBox}>
                   <label htmlFor="practicalCode">Practical Code:</label>
                   <input type="text" name="practicalCode" value={formData.practicalCode || ''} required={showPracticals} onChange={handleInputChange} placeholder="Practical code" />
+                </div>
+
+                <div className={style.flexBox}>
+                  <div className={style.inpBox}>
+                    <label htmlFor="practicalMax">Practical Max:</label>
+                    <input type="number" name="practicalMax" value={formData.practicalMax || ''} required={showPracticals} onChange={handleInputChange} placeholder="Practical name" />
+                  </div>
+                  <div className={style.inpBox}>
+                    <label htmlFor="practicalMin">Practical Min:</label>
+                    <input type="number" name="practicalMin" value={formData.practicalMin || ''} required={showPracticals} onChange={handleInputChange} placeholder="Practical name" />
+                  </div>
                 </div>
               </>
             )}

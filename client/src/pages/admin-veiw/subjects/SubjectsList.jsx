@@ -211,14 +211,58 @@ export default function SubjectsList() {
                             </div>
 
                             <div className={style.inpBox}>
-                                <label htmlFor="practicalName">Practical Name: </label>
-                                <input type="text" name="practicalName" value={selectedUser.practicalName} onChange={handleInputChange} />
+                                <label htmlFor="creadit">Creadit:</label>
+                                <input type="number" name="creadit" value={selectedUser.creadit} required onChange={handleInputChange} placeholder="Credit" />
+                            </div>
+                            <div className={style.flexBox}>
+                                <div className={style.inpBox}>
+                                    <label htmlFor="internalMax">Internal Max: </label>
+                                    <input type="number" name="internalMax" value={selectedUser.internalMax} required onChange={handleInputChange} placeholder="Internal Max" />
+                                </div>
+
+                                <div className={style.inpBox}>
+                                    <label htmlFor="internalMin">Internal Min:</label>
+                                    <input type="number" name="internalMin" value={selectedUser.internalMin} required onChange={handleInputChange} placeholder="Internal Min" />
+                                </div>
                             </div>
 
-                            <div className={style.inpBox}>
-                                <label htmlFor="practicalCode">Practical Code: </label>
-                                <input type="text" name="practicalCode" value={selectedUser.practicalCode} onChange={handleInputChange} />
+                            <div className={style.flexBox}>
+                                <div className={style.inpBox}>
+                                    <label htmlFor="externalMax">External Max: </label>
+                                    <input type="number" name="externalMax" value={selectedUser.externalMax} required onChange={handleInputChange} placeholder="External Max" />
+                                </div>
+
+                                <div className={style.inpBox}>
+                                    <label htmlFor="externalMin">External Min:</label>
+                                    <input type="number" name="externalMin" value={selectedUser.externalMin} required onChange={handleInputChange} placeholder="External Min" />
+                                </div>
                             </div>
+
+                            {selectedUser.practicalName && selectedUser.practicalCode && (
+                                <>
+                                    <div className={style.inpBox}>
+                                        <label htmlFor="practicalName">Practical Name: </label>
+                                        <input type="text" name="practicalName" value={selectedUser.practicalName} onChange={handleInputChange} />
+                                    </div>
+
+                                    <div className={style.inpBox}>
+                                        <label htmlFor="practicalCode">Practical Code: </label>
+                                        <input type="text" name="practicalCode" value={selectedUser.practicalCode} onChange={handleInputChange} />
+                                    </div>
+
+                                    <div className={style.flexBox}>
+                                        <div className={style.inpBox}>
+                                            <label htmlFor="practicalMax">Practical Max:</label>
+                                            <input type="number" name="practicalMax" value={selectedUser.practicalMax || ''} onChange={handleInputChange} placeholder="Practical name" />
+                                        </div>
+                                        <div className={style.inpBox}>
+                                            <label htmlFor="practicalMin">Practical Min:</label>
+                                            <input type="number" name="practicalMin" value={selectedUser.practicalMin || ''} onChange={handleInputChange} placeholder="Practical name" />
+                                        </div>
+                                    </div>
+
+                                </>
+                            )}
 
                             <div className={style.inpBox}>
                                 <label htmlFor="sem">Sem no: </label>
