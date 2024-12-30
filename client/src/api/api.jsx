@@ -90,6 +90,15 @@ export const deleteDepartment = async (data) => {
     throw new Error(error.response ? error.response.data.message : 'Depertment Deleting error');
   }
 }
+// ============ Add Department Api =======
+export const addDepartment = async (data) => {
+  try {
+    const response = await api.post(`/api/addDepartment`,data)
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'Depertment Adding error');
+  }
+}
 
 // =========== Get Subject ===============
 export const getSubject = async (stream) => {

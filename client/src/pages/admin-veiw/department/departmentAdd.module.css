@@ -1,0 +1,47 @@
+.container {
+    display: flex;
+    justify-content: center;
+
+}
+
+.inputContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 0.4rem;
+    align-items: center;
+    border: 2px gray solid;
+    width: fit-content;
+    background: var(--sidebar-color);
+    border-radius: 10px;
+    box-shadow: var(--shadow-1);
+}
+
+.inputContainer .inputFlex {
+    display: flex;
+    margin: 0.4rem;
+    width: 100%;
+}
+
+.inputContainer .inputFlex .inputBox {
+    display: flex;
+    flex-direction: column;
+    margin: 0.4rem;
+    width: 100%;
+}
+
+.inputContainer .inputFlex .inputBox > input {
+    width: 100%;
+    padding: 0.4rem;
+    text-transform: uppercase;
+}
+
+.btn {
+    width: 100%;
+    background: var(--primary-color);
+    font-weight: bolder;
+    letter-spacing: 0.3rem;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
