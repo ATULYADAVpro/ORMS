@@ -36,6 +36,7 @@ const department = {
         }
         res.status(200).json({ success: true, department })
     },
+
     // ============== Update department ============
     async updateDepartment(req, res, next) {
         try {
@@ -56,8 +57,29 @@ const department = {
         } catch (error) {
             return next(error)
         }
-    }
+    },
 
+    // ============== Delete department ============
+    async deleteDepartment(req, res, next) {
+        try {
+            const { _id } = req.params;
+            const subjectExists = await Department.findOne({ _id });
+            if (!subjectExists) {
+                return next(CustomErrorHandler.notFound('Department not found.'));
+            }
+
+            // Delete the Deoartment from the database
+            await Department.findOneAndDelete({ _id });
+
+            res.status(200).json({
+                success: true,
+                message: 'Department deleted successfully.',
+            });
+
+        } catch (error) {
+            return next(error)
+        }
+    }
 }
 
 export default department;

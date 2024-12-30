@@ -82,13 +82,13 @@ export const updateDepartment = async (data) => {
 
 // ============ Delete Department Api =======
 export const deleteDepartment = async (data) => {
-  console.log(data)
-  // try {
-  //   const response = await api.get('/api/getDepartment')
-  //   return response.data;
-  // } catch (error) {
-  //   throw new Error(error.response ? error.response.data.message : 'Depertment fatching error');
-  // }
+  const { _id } = data;
+  try {
+    const response = await api.delete(`/api/deleteDepartment/${_id}`)
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'Depertment Deleting error');
+  }
 }
 
 // =========== Get Subject ===============
