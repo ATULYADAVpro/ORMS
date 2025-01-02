@@ -76,7 +76,6 @@ const userController = {
             return next(error);
         }
     },
-    // ====== Delete USer ===
     // ====== Delete User ===
     async deleteUser(req, res, next) {
         try {

@@ -9,6 +9,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors'
 import departmentRouter from './routers/departmentRouter.js';
 import subjectRouter from './routers/SubjectRouter.js';
+import studentRouter from './routers/StudentRouter.js';
 const app = express();
 
 const corsOptions = {
@@ -27,6 +28,8 @@ app.use('/api/user', userRouter)
 app.use('/api/auth', authRouter)
 app.use('/api', departmentRouter)
 app.use('/api/subject', subjectRouter)
+app.use('/api/student', studentRouter)
+
 
 
 

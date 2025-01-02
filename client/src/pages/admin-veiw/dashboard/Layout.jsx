@@ -13,7 +13,7 @@ const getOptionsByPath = (path) => {
     ];
   } else if (path === '/admin/student') {
     return [
-      { label: 'list', value: 'list' },
+      { label: 'list', value: '' },
       { label: 'Add Student', value: 'add-student' },
     ];
   } else if (path === '/admin/subject') {

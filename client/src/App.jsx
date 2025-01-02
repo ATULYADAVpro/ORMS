@@ -5,8 +5,8 @@ import AuthLayout from './pages/auth/AuthLayout';
 import Login from './pages/auth/Login';
 import CheckAuth from './common/CheckAuth';
 import AdminLayout from './pages/admin-veiw/dashboard/Layout';
-import Home from './pages/admin-veiw/Home';
-import Student from './pages/admin-veiw/Student';
+import Home from './pages/admin-veiw/home/Home';
+import StudentLayout from './pages/admin-veiw/student/StudentLayout';
 import NotFound from './common/NotFound';
 import UnAuth from './common/UnAuth';
 import Faculty from './pages/admin-veiw/faculty/Faculty';
@@ -18,6 +18,8 @@ import SubjectAdd from './pages/admin-veiw/subjects/SubjectAdd';
 import DepartmentLayout from './pages/admin-veiw/department/DepartmentLayout';
 import DepartmentList from './pages/admin-veiw/department/DepartmentList';
 import DepartmentAdd from './pages/admin-veiw/department/DepartmentAdd';
+import ListStudent from './pages/admin-veiw/student/ListStudent';
+import AddStudent from './pages/admin-veiw/student/AddStudent';
 
 
 // Custom hook to fetch auth data
@@ -63,24 +65,35 @@ export default function App() {
 
   return (
     <Routes>
+      {/* Authentication Routes Here  */}
       <Route path="/" element={<CheckAuth isAuthenticated={authData?.isAuthenticated} user={authData?.user}><AuthLayout /></CheckAuth>} >
         <Route path="login" element={<Login />} />
       </Route>
-
+      {/* Admin Routes Here  */}
       <Route path="/admin" element={<CheckAuth isAuthenticated={authData?.isAuthenticated} user={authData?.user}><AdminLayout /></CheckAuth>} >
+        {/* admin Home routes  */}
         <Route index element={<Home />} />
         <Route path="home" element={<Home />} />
+        {/* admin faculty routes  */}
         <Route path="faculty" element={<FacultyLayout />} >
           <Route index element={<Faculty />} />
           <Route path="list" element={<ViewFaculty />} />
         </Route>
+        {/* admin subject routes  */}
         <Route path='subject' element={<SubjectLayout />} >
           <Route index element={<SubjectsList />} />
           <Route path="add" element={<SubjectAdd />} />
         </Route>
+        {/* admin department routes  */}
         <Route path='department' element={<DepartmentLayout />}>
           <Route index element={<DepartmentList />} />
           <Route path='add' element={<DepartmentAdd />} />
+        </Route>
+
+        {/* admin student routes  */}
+        <Route path='student' element={<StudentLayout />}>
+          <Route index element={<ListStudent />} />
+          <Route path='add' element={<AddStudent />} />
         </Route>
       </Route>
 
