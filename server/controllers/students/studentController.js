@@ -2,6 +2,8 @@
 import Joi from "joi";
 import Student from "../../models/StudentModels.js";
 import CustomErrorHandler from "../../utils/services/CustomErrorHandler.js";
+import Semister from "../../models/SemisterModel.js";
+import Subject from "../../models/SubjectModels.js";
 
 // ------------------ Logics --------------
 const studentController = {
@@ -96,7 +98,7 @@ const studentController = {
                 dateYear: Joi.number().optional(),
                 codeId: Joi.string().optional(),
                 prn: Joi.number().optional(),
-                rollNo: Joi.number().optional(), // Added rollNo as an identifier
+                rollNo: Joi.string().optional(), // Added rollNo as an identifier
                 mobileNo: Joi.number().optional(), // Kept mobileNo as an identifier
                 date_Of_year: Joi.string().optional(),
                 stream: Joi.string().optional(),
@@ -105,7 +107,7 @@ const studentController = {
 
             const { error, value } = studentSchema.validate(req.body);
             if (error) { return next(error); }
-
+            // console.log(value)
             // Use rollNo or mobileNo to find the student
             const student = await Student.findOneAndUpdate(
                 {
@@ -119,7 +121,7 @@ const studentController = {
             );
 
             if (!student) {
-                return next(CustomErrorHandler.NotFound("Student not found."));
+                return next(CustomErrorHandler.notFound("Student not found."));
             }
 
             res.status(200).json({ success: true, message: 'Updated Successfully', student });
@@ -128,34 +130,42 @@ const studentController = {
             return next(error);
         }
     },
-    
+
     // --------------- Delete Student Logic ----------
     async deleteStudent(req, res, next) {
         try {
-            const studentSchema = Joi.object({
-                rollNo: Joi.number().optional(),
-                mobileNo: Joi.number().optional()
-            });
 
-            const { error, value } = studentSchema.validate(req.body);
-            if (error) { return next(error); }
-
+            const { rollNo, mobileNo } = req.body;
+            // console.log(req.body)
             // Ensure either rollNo or mobileNo is provided
-            if (!value.rollNo && !value.mobileNo) {
+            if (!rollNo && !mobileNo) {
                 return next(CustomErrorHandler.notFound("Either rollNo or mobileNo must be provided."));
             }
 
-            // Use rollNo or mobileNo to find and delete the student
-            const student = await Student.findOneAndDelete({
+            // Find the student
+            const student = await Student.findOne({
                 $or: [
-                    { rollNo: value.rollNo },
-                    { mobileNo: value.mobileNo }
+                    { rollNo },
+                    { mobileNo }
                 ]
             });
 
             if (!student) {
-                return next(CustomErrorHandler.NotFound("Student not found."));
+                return next(CustomErrorHandler.notFound("Student not found."));
             }
+
+            // Find and delete related semesters
+            const semesters = await Semister.find({ student: student._id });
+            for (const semester of semesters) {
+                // Find and delete related subjects
+                await Subject.deleteMany({ _id: { $in: semester.subjects } });
+
+                // Delete the semester
+                await Semister.deleteOne({ _id: semester._id });
+            }
+
+            // Delete the student
+            await Student.deleteOne({ _id: student._id });
 
             res.status(200).json({ success: true, message: 'Deleted Successfully', student });
 
@@ -171,7 +181,9 @@ const studentController = {
             const totalStudents = await Student.countDocuments({});
 
             // Fetch the student data
-            const getStudent = await Student.find({});
+            const getStudent = await Student.find({}).populate({
+                path: 'stream'
+            })
             if (!getStudent) {
                 return next(CustomErrorHandler.notFound("Students not found!"));
             }

@@ -8,6 +8,8 @@ const api = axios.create({
   },
 });
 
+// ------------------------------ User's Api --------------------
+
 // Function to send OTP
 export const sendOtp = async ({ email }) => {
   try {
@@ -60,6 +62,19 @@ export const deleteFaculty = async (data) => {
   }
 };
 
+// ============== Get Users ==============
+export const getUsers = async () => {
+  try {
+    const response = await api.get(`/api/user/getUsers`)
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'Subject fatching error');
+  }
+}
+
+
+// ------------------------ Department Api's -------------
+
 // ============ Get Department Api =======
 export const getDepartment = async () => {
   try {
@@ -93,7 +108,7 @@ export const deleteDepartment = async (data) => {
 // ============ Add Department Api =======
 export const addDepartment = async (data) => {
   try {
-    const response = await api.post(`/api/addDepartment`,data)
+    const response = await api.post(`/api/addDepartment`, data)
     return response.data;
   } catch (error) {
     throw new Error(error.response ? error.response.data.message : 'Depertment Adding error');
@@ -158,12 +173,55 @@ export const addSubject = async (data) => {
 
 }
 
-// ============== Get Users ==============
-export const getUsers = async () => {
+
+// ------------------------------ student Api --------------------
+// Function to add Student
+export const addStudent = async (data) => {
   try {
-    const response = await api.get(`/api/user/getUsers`)
+    const response = await api.post('/api/student/addStudent', data);
     return response.data;
   } catch (error) {
-    throw new Error(error.response ? error.response.data.message : 'Subject fatching error');
+    throw new Error(error.response ? error.response.data.message : 'Student not added something wrong');
   }
-}
+};
+
+// Function to add Student in Bulk
+export const addBulkStudents = async (data) => {
+  try {
+    const response = await api.post('/api/student/addBulkStudents', data);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'Student not added in bulk something wrong');
+  }
+};
+
+// Function to get Student
+export const getStudent = async () => {
+  try {
+    const response = await api.get('/api/student/getStudent');
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'Student not fatching something wrong');
+  }
+};
+
+// Function to update Student
+export const updateStudent = async (data) => {
+  try {
+    const response = await api.put('/api/student/updateStudent', data);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'Student not Updating something wrong');
+  }
+};
+
+// Function to delete Student
+export const deleteStudent = async (data) => {
+  console.log(data)
+  try {
+    const response = await api.post('/api/student/deleteStudent', data);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'Student not deleting something wrong');
+  }
+};

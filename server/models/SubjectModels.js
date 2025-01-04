@@ -73,5 +73,5 @@ const subjectSchema = new Schema({
     },
 }, { timestamps: true });
 
-const Subject = model('Subject', subjectSchema);
+const Subject = model('subject', subjectSchema);
 export default Subject;

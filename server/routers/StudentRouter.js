@@ -7,6 +7,8 @@ const studentRouter = Router();
 studentRouter.post("/addStudent",studentController.addStudent)
 studentRouter.post("/addBulkStudents",studentController.addBulkStudents)
 studentRouter.get("/getStudent",studentController.getStudent)
+studentRouter.put("/updateStudent",studentController.updateStudent)
+studentRouter.post("/deleteStudent",studentController.deleteStudent)
 
 // ============= Routes of Department exports ==============
 export default studentRouter;

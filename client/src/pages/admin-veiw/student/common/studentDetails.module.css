@@ -1,0 +1,112 @@
+.studentDetails {
+    background-color: var(--sidebar-color);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    /* max-width: 600px; */
+    position: relative;
+    width: 60rem;
+
+}
+
+
+
+.studentDetails .btnBack {
+    position: absolute;
+    margin: 20px auto;
+    padding: 0.5rem 1rem;
+    background-color: #007acc;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    top: -70px;
+    right: 17px;
+}
+
+.studentDetails .btnBack:hover {
+    background-color: #005ea2;
+}
+
+.mainDetailsContainer {
+    display: flex;
+    justify-content: center;
+}
+
+
+.imgContainer {
+    width: 8rem;
+    border: 2px gray dashed;
+    object-fit: cover;
+    /* border-radius: 10px; */
+    margin-right: 1rem;
+    cursor: pointer;
+    height: 10rem;
+}
+
+.imgContainer>img {
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    height: 100%;
+
+}
+
+.detailsContainer {
+    border: 1px gray solid;
+    /* margin: 0.3rem; */
+    margin-left: 0.2rem;
+    padding: 0.2rem;
+    /* width: 100%; */
+    border-radius: 10px;
+
+}
+
+.inpContainer {
+    display: flex;
+}
+
+.inpBox {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    margin-right: 0.5rem;
+}
+
+
+.inpBox>input,
+select {
+    padding: 0.1rem;
+    border: 1px gray solid;
+    border-radius: 5px;
+    width: 12rem;
+    /* color: var(--text-color); */
+    color: black;
+
+}
+
+.btnContainer {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px gray solid;
+    border-radius: 5px;
+    text-align: center;
+    padding: 0.3rem;
+}
+
+.btnContainer>button {
+    width: 5rem;
+}
+
+
+.btnUpdate {
+    background: rgb(123, 226, 171);
+}
+
+.btnDelete {
+    background: rgb(232, 109, 109);
+}

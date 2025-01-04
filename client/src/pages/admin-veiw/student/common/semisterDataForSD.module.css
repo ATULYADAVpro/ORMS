@@ -1,0 +1,25 @@
+
+
+.header{
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.header .btnPrint{
+    margin: 20px auto;
+    padding: 0.5rem 1rem;
+    background-color: #007acc;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.header .btnPrint:hover{
+    background-color: #005ea2;
+
+}
+
+button:hover{
+    opacity: 0.7;
+}

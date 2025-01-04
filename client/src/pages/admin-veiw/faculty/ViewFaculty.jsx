@@ -19,7 +19,7 @@ export default function ViewFaculty() {
   const [imageUrl, setImageUrl] = useState('');
   const navigate = useNavigate()
 
-  console.log(selectedUser?.profile)
+  // console.log(selectedUser?.profile)
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["users"],
