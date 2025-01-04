@@ -2,7 +2,7 @@
 import Joi from "joi";
 import Student from "../../models/StudentModels.js";
 import CustomErrorHandler from "../../utils/services/CustomErrorHandler.js";
-import Semister from "../../models/SemisterModel.js";
+import Semester from "../../models/SemesterModel.js";
 import Subject from "../../models/SubjectModels.js";
 
 // ------------------ Logics --------------
@@ -22,7 +22,7 @@ const studentController = {
                 mobileNo: Joi.number().required(),
                 date_Of_year: Joi.string().required(),
                 stream: Joi.string().required(),
-                semisters: Joi.optional()
+                semester: Joi.optional()
             });
             const { error, value } = studentSchema.validate(req.body);
             if (error) { return next(error); }
@@ -56,7 +56,7 @@ const studentController = {
                 mobileNo: Joi.number().required(),
                 date_Of_year: Joi.string().required(),
                 stream: Joi.string().required(),
-                semisters: Joi.optional()
+                semesters: Joi.optional()
             });
 
             const students = req.body.students; //  request body contains an array of students
@@ -102,7 +102,7 @@ const studentController = {
                 mobileNo: Joi.number().optional(), // Kept mobileNo as an identifier
                 date_Of_year: Joi.string().optional(),
                 stream: Joi.string().optional(),
-                semisters: Joi.optional()
+                semesters: Joi.optional()
             });
 
             const { error, value } = studentSchema.validate(req.body);
@@ -155,13 +155,13 @@ const studentController = {
             }
 
             // Find and delete related semesters
-            const semesters = await Semister.find({ student: student._id });
+            const semesters = await Semester.find({ student: student._id });
             for (const semester of semesters) {
                 // Find and delete related subjects
                 await Subject.deleteMany({ _id: { $in: semester.subjects } });
 
                 // Delete the semester
-                await Semister.deleteOne({ _id: semester._id });
+                await Semester.deleteOne({ _id: semester._id });
             }
 
             // Delete the student

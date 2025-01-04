@@ -10,16 +10,17 @@ import cors from 'cors'
 import departmentRouter from './routers/departmentRouter.js';
 import subjectRouter from './routers/SubjectRouter.js';
 import studentRouter from './routers/StudentRouter.js';
+import semesterRouter from './routers/semesterRouter.js';
 const app = express();
 
 const corsOptions = {
     origin: 'http://localhost:5173',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true, // Include cookies if needed
-  };
-  
+};
 
-  
+
+
 // ------- Middlewares useing -------
 app.use(cors(corsOptions));
 app.use(express.json()); //->  parse json body middleware 
@@ -29,6 +30,7 @@ app.use('/api/auth', authRouter)
 app.use('/api', departmentRouter)
 app.use('/api/subject', subjectRouter)
 app.use('/api/student', studentRouter)
+app.use('/api/semester', semesterRouter)
 
 
 

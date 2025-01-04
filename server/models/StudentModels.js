@@ -23,7 +23,7 @@ const studentSchema = new Schema({
     mobileNo: { type: Number, required: true, unique: true },
     date_Of_year: { type: String, required: true },
     stream: { type: Schema.Types.ObjectId, ref: 'department' },
-    semisters: [{ type: Schema.Types.ObjectId, ref: 'semister' }],
+    semesters: [{ type: Schema.Types.ObjectId, ref: 'semester' }],
 }, { timestamps: true });
 
 // pre-save middleware to generate rollNo
@@ -32,21 +32,26 @@ studentSchema.pre('save', async function (next) {
 
     if (!student.rollNo) {
         try {
-            const lastStudent = await mongoose.model('Student').findOne({ codeId: student.codeId, dateYear: student.dateYear }).sort({ rollNo: -1 });
+            // console.log('Generating new rollNo for student:', student._id);
+            const lastStudent = await mongoose.model('student').findOne({ codeId: student.codeId, dateYear: student.dateYear }).sort({ rollNo: -1 });
             let newSequence = 1;
             if (lastStudent && lastStudent.rollNo) {
                 const lastSequence = parseInt(lastStudent.rollNo.slice(-3), 10);
                 newSequence = lastSequence + 1;
             }
             student.rollNo = `${student.codeId}${student.dateYear}${String(newSequence).padStart(3, '0')}`;
+            // console.log('Assigned new rollNo:', student.rollNo);
             next();
         } catch (error) {
+            // console.error('Error generating rollNo:', error);
             next(error);
         }
     } else {
+        // console.log('Existing rollNo, not modified:', student.rollNo);
         next();
     }
 });
+
 
 // Export the Student model
 const Student = mongoose.model('student', studentSchema);

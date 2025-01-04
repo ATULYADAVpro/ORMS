@@ -198,7 +198,7 @@ export default function Faculty() {
 
           </div>
 
-          {/* ============ Semister Logic ans style ============ */}
+          {/* ============ Semester Logic ans style ============ */}
 
           <div className={style.inputConatiner}>
             {/* Sem 1 */}
