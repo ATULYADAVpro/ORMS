@@ -5,7 +5,7 @@ import { Schema, model } from 'mongoose';
 const semesterSchema = new Schema({
     student: { type: Schema.Types.ObjectId, ref: 'student', required: true },
     stream: { type: Schema.Types.ObjectId, ref: 'department', required: true },
-    subjects: [{ type: Schema.Types.ObjectId, ref: 'subject', required: true }],
+    subjects: [{ type: Schema.Types.ObjectId, ref: 'marks', required: true }],
 
     sem: { type: String, required: true },
     date_of_issue: { type: String, required: true },

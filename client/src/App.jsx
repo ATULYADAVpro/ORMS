@@ -38,6 +38,7 @@ export default function App() {
   const navigate = useNavigate();
   const { data: authData, isLoading, isError } = useAuth();  // Retrieve auth data
 
+  console.log(authData)
   useEffect(() => {
     if (!isLoading && authData) {
       const { isAuthenticated, user } = authData;

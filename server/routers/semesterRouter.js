@@ -4,7 +4,10 @@ import semesterController from '../controllers/semester/semesterController.js';
 const semesterRouter = Router();
 
 // ============= Routes of Semester  ==============
-semesterRouter.post("/addSemester",semesterController.addSemester)
+semesterRouter.post("/addSemester", semesterController.addSemester)
+semesterRouter.get("/getSemester", semesterController.getSemester)
+semesterRouter.post("/semesterActive", semesterController.semesterActive)
+semesterRouter.post("/addSubjectInSemester", semesterController.addSubjectInSemester)
 
 
 // ============= Routes of Semester exports ==============

@@ -11,6 +11,8 @@ const subjectSchema = new Schema({
     internalMin: { type: String, required: true, unique: true, lowercase: true },
     externalMax: { type: String, required: true, unique: true, lowercase: true },
     externalMin: { type: String, required: true, unique: true, lowercase: true },
+    totalMin: { type: String, required: true, unique: true, lowercase: true },
+    totallMax: { type: String, required: true, unique: true, lowercase: true },
     practicalName: {
         type: String,
         unique: true,
