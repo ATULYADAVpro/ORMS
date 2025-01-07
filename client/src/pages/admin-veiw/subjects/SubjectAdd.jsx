@@ -10,11 +10,13 @@ export default function SubjectAdd() {
     sem: '',
     name: '',
     code: '',
-    creadit: '',
+    credit: '',
     internalMax: '',
     internalMin: '',
     externalMax: '',
-    externalMin: ''
+    externalMin: '',
+    totalMax: "",
+    totalMin: ""
   });
 
   const { data: departmentData, isLoading: departmentLoading, isError: departmentError } = useQuery({
@@ -31,11 +33,13 @@ export default function SubjectAdd() {
         sem: '',
         name: '',
         code: '',
-        creadit: '',
+        credit: '',
         internalMax: '',
         internalMin: '',
         externalMax: '',
-        externalMin: ''
+        externalMin: '',
+        totalMax: "",
+        totalMin: ""
       });
     },
     onError: (error) => {
@@ -121,8 +125,8 @@ export default function SubjectAdd() {
               <input type="text" name="code" value={formData.code} required onChange={handleInputChange} placeholder="Subject code" />
             </div>
             <div className={style.inpBox}>
-              <label htmlFor="creadit">Creadit:</label>
-              <input type="number" name="creadit" value={formData.creadit} required onChange={handleInputChange} placeholder="Credit" />
+              <label htmlFor="credit">Credit:</label>
+              <input type="number" name="credit" value={formData.credit} required onChange={handleInputChange} placeholder="Credit" />
             </div>
             <div className={style.flexBox}>
               <div className={style.inpBox}>
@@ -147,6 +151,17 @@ export default function SubjectAdd() {
                 <input type="number" name="externalMin" value={formData.externalMin} required onChange={handleInputChange} placeholder="External Min" />
               </div>
             </div>
+            <div className={style.flexBox}>
+              <div className={style.inpBox}>
+                <label htmlFor="totalMax">Total Max: </label>
+                <input type="number" name="totalMax" value={formData.totalMax} required onChange={handleInputChange} placeholder="total Max" />
+              </div>
+
+              <div className={style.inpBox}>
+                <label htmlFor="totalMin">Total Min:</label>
+                <input type="number" name="totalMin" value={formData.totalMin} required onChange={handleInputChange} placeholder="Total Min" />
+              </div>
+            </div>
 
             {showPracticals && (
               <>
@@ -155,9 +170,15 @@ export default function SubjectAdd() {
                   <input type="text" name="practicalName" value={formData.practicalName || ''} required={showPracticals} onChange={handleInputChange} placeholder="Practical name" />
                 </div>
 
-                <div className={style.inpBox}>
-                  <label htmlFor="practicalCode">Practical Code:</label>
-                  <input type="text" name="practicalCode" value={formData.practicalCode || ''} required={showPracticals} onChange={handleInputChange} placeholder="Practical code" />
+                <div className={style.flexBox}>
+                  <div className={style.inpBox}>
+                    <label htmlFor="practicalCode">Practical Code:</label>
+                    <input type="text" name="practicalCode" value={formData.practicalCode || ''} required={showPracticals} onChange={handleInputChange} placeholder="Practical code" />
+                  </div>
+                  <div className={style.inpBox}>
+                    <label htmlFor="practicalCredit">Practical Code:</label>
+                    <input type="text" name="practicalCredit" value={formData.practicalCredit || ''} required={showPracticals} onChange={handleInputChange} placeholder="Practical credit" />
+                  </div>
                 </div>
 
                 <div className={style.flexBox}>

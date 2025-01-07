@@ -38,7 +38,7 @@ export default function App() {
   const navigate = useNavigate();
   const { data: authData, isLoading, isError } = useAuth();  // Retrieve auth data
 
-  console.log(authData)
+  // console.log(authData)
   useEffect(() => {
     if (!isLoading && authData) {
       const { isAuthenticated, user } = authData;
@@ -97,6 +97,8 @@ export default function App() {
           <Route path='add' element={<AddStudent />} />
         </Route>
       </Route>
+
+      
 
       <Route path="*" element={<NotFound />} />
       <Route path="/unauth-page" element={<UnAuth />} />

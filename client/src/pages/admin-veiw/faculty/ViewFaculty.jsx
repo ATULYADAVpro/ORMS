@@ -360,7 +360,7 @@ export default function ViewFaculty() {
                     <select
                       id="department"
                       name='department'
-                      value={selectedUser.department?.stream || ""}
+                      defaultValue={selectedUser.department?.stream || ""}
                       // defaultValue={selectedUser?.department?.stream}
                       onChange={(e) => {
                         // Call handleDepartmentWithSem only if selectedUser.department.stream exists

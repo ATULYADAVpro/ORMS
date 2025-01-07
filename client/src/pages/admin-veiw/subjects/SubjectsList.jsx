@@ -180,7 +180,7 @@ export default function SubjectsList() {
                                     <td>{data.name}</td>
                                     <td>{data.practicalCode ? data.practicalCode : "N/N"}</td>
                                     <td>{data.practicalName ? data.practicalName : "N/N"}</td>
-                                    <td>{data.stream.stream}</td>
+                                    <td>{data?.stream?.stream}</td>
                                     <td>
                                         <button className={style.btnEdit} onClick={() => handleEdit(data)}>Edit</button>
                                     </td>
@@ -211,8 +211,8 @@ export default function SubjectsList() {
                             </div>
 
                             <div className={style.inpBox}>
-                                <label htmlFor="creadit">Creadit:</label>
-                                <input type="number" name="creadit" value={selectedUser.creadit} required onChange={handleInputChange} placeholder="Credit" />
+                                <label htmlFor="credit">Credit:</label>
+                                <input type="number" name="credit" value={selectedUser.credit} required onChange={handleInputChange} placeholder="Credit" />
                             </div>
                             <div className={style.flexBox}>
                                 <div className={style.inpBox}>
@@ -277,7 +277,7 @@ export default function SubjectsList() {
 
                             <div className={style.inpBox}>
                                 <label htmlFor="stream">Department: </label>
-                                <select name="stream" id="streamEdit" value={selectedUser.stream._id} onChange={handleInputChange}>
+                                <select name="stream" id="streamEdit" value={selectedUser?.stream?._id} onChange={handleInputChange}>
                                     {departmentData && departmentData.department.length > 0 ? (
                                         departmentData.department.map((data) => (
                                             <option value={data._id} key={data._id}>

@@ -11,15 +11,18 @@ const subjectController = {
             sem: Joi.string().required(),
             name: Joi.string().required(),
             code: Joi.string().required(),
-            creadit: Joi.string().required(),
+            credit: Joi.string().required(),
             internalMax: Joi.string().required(),
             externalMax: Joi.string().required(),
+            totalMax: Joi.string().required(),
+            totalMin: Joi.string().required(),
             internalMin: Joi.string().required(),
             externalMin: Joi.string().required(),
             practicalName: Joi.string().optional(),
             practicalCode: Joi.string().optional(),
             practicalMax: Joi.string().optional(),
             practicalMin: Joi.string().optional(),
+            practicalCredit: Joi.string().optional(),
         });
 
         const { error, value } = subjectSchema.validate(req.body);

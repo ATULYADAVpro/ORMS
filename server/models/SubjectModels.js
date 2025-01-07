@@ -6,13 +6,13 @@ const subjectSchema = new Schema({
     sem: { type: String, required: true, lowercase: true },
     name: { type: String, required: true, unique: true, lowercase: true },
     code: { type: String, required: true, unique: true, lowercase: true },
-    creadit: { type: String, required: true, unique: true, lowercase: true }, // rember to change name creadit to credit
+    credit: { type: String, required: true, unique: true, lowercase: true }, // rember to change name creadit to credit
     internalMax: { type: String, required: true, unique: true, lowercase: true },
     internalMin: { type: String, required: true, unique: true, lowercase: true },
     externalMax: { type: String, required: true, unique: true, lowercase: true },
     externalMin: { type: String, required: true, unique: true, lowercase: true },
     totalMin: { type: String, required: true, unique: true, lowercase: true },
-    totallMax: { type: String, required: true, unique: true, lowercase: true },
+    totalMax: { type: String, required: true, unique: true, lowercase: true },
     practicalName: {
         type: String,
         unique: true,
