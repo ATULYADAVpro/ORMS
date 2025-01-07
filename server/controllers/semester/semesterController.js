@@ -63,6 +63,7 @@ const semesterController = {
     },
 
     // --------------- Do active status --------
+    // --------------- Do active status --------
     async semesterActive(req, res, next) {
         try {
             const { _id, sem, stream } = req.body;
@@ -70,29 +71,51 @@ const semesterController = {
             const subjects = await Subject.find({ sem, stream });
 
             let leftSubjects = []; // Initialize as an array to store all unmatched subjects
+            let semesterSubjectIds = semester.subjects.map(sems => sems); // Keep ObjectId as it is
 
-            // Match subjectId
-            const semesterSubjectIds = semester.subjects.map(sems => String(sems.subjectId));
-
+            // Loop through all subjects and check if they are in the semester subjects
             for (const sub of subjects) {
-                if (!semesterSubjectIds.includes(String(sub._id))) {
+                const isSubjectPresent = semester.subjects.some(semesterSubject =>
+                    semesterSubject.subjectId.equals(sub._id) // Use .equals() for comparison
+                );
+
+                if (!isSubjectPresent) {
                     leftSubjects.push(sub); // Add unmatched subjects to the array
                 }
             }
 
             if (leftSubjects.length > 0) {
                 // Return message if there are unmatched subjects
-                return res.status(400).json({ message: `Some subjects are not submitted left ${leftSubjects.length}, contact your teacher`, leftSubjects });
+                return res.status(400).json({
+                    message: `Some subjects are not submitted left ${leftSubjects.length}, contact your teacher`,
+                    leftSubjects
+                });
             } else {
                 // Update status field to true if all subjects are submitted
                 semester.status = true;
-                await semester.save();
-                return res.status(200).json({ message: "All subjects submitted successfully and status updated", semester });
+                semester.calculateSGPA(semesterSubjectIds);
+
+                try {
+                    // Save the instance after calculation
+                    await semester.save();
+                    console.log('Semester saved successfully:', semester);
+
+                    // Return semester subject IDs in the response body (still keep ObjectId)
+                    return res.status(200).json({
+                        message: "All subjects submitted successfully and status updated",
+                        semester,
+                        semesterSubjectIds // Include the semesterSubjectIds without converting to string
+                    });
+                } catch (err) {
+                    console.error('Error saving semester:', err);
+                    return next(err);
+                }
             }
         } catch (error) {
             return next(error);
         }
-    },
+    }
+    ,
 
 
     // --------------- Do active status for multiple students --------
@@ -109,23 +132,45 @@ const semesterController = {
 
                 let leftSubjects = []; // Initialize as an array to store all unmatched subjects
 
-                // Match subject code or _id
-                const semesterSubjectIds = semester.subjects.map(sems => String(sems.subjectId));
+                let semesterSubjectIds = semester.subjects.map(sems => sems); // Keep ObjectId as it is
 
+                // Loop through all subjects and check if they are in the semester subjects
                 for (const sub of subjects) {
-                    if (!semesterSubjectIds.includes(String(sub._id))) {
+                    const isSubjectPresent = semester.subjects.some(semesterSubject =>
+                        semesterSubject.subjectId.equals(sub._id) // Use .equals() for comparison
+                    );
+
+                    if (!isSubjectPresent) {
                         leftSubjects.push(sub); // Add unmatched subjects to the array
                     }
                 }
 
                 if (leftSubjects.length > 0) {
-                    // Store result if there are unmatched subjects
-                    results.push({ studentId: _id, message: `Some subjects are not submitted left ${leftSubjects.length}, contact your teacher`, leftSubjects });
+                    // Return message if there are unmatched subjects
+                    return res.status(400).json({
+                        message: `Some subjects are not submitted left ${leftSubjects.length}, contact your teacher`,
+                        leftSubjects
+                    });
                 } else {
                     // Update status field to true if all subjects are submitted
                     semester.status = true;
-                    await semester.save();
-                    results.push({ studentId: _id, message: "All subjects submitted successfully and status updated", semester });
+                    semester.calculateSGPA(semesterSubjectIds);
+
+                    try {
+                        // Save the instance after calculation
+                        await semester.save();
+                        // console.log('Semester saved successfully:', semester);
+
+                        // Return semester subject IDs in the response body (still keep ObjectId)
+                        return res.status(200).json({
+                            message: "All subjects submitted successfully and status updated",
+                            semester,
+                            semesterSubjectIds // Include the semesterSubjectIds without converting to string
+                        });
+                    } catch (err) {
+                        // console.error('Error saving semester:', err);
+                        return next(err);
+                    }
                 }
             }
 

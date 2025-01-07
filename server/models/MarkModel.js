@@ -7,11 +7,11 @@ const markSchema = new Schema({
   subjectCode: { type: String, required: true, lowercase: true },
   internal: { type: Number, required: true },
   external: { type: Number, required: true },
-  creadit: { type: Number, required: true },
+  credit: { type: Number, required: true },  //here need to change credit into credit rember me
   practicalName: { type: String, lowercase: true },
   practicalCode: { type: String, lowercase: true },
   practicalMark: { type: Number, lowercase: true },
-  practicalCreadit: { type: Number, lowercase: true },
+  practicalCredit: { type: Number, lowercase: true },
   totalMark: { type: Number },
   grade: { type: String },
   gradePoint: { type: Number },
@@ -52,31 +52,31 @@ markSchema.pre('save', function(next) {
     this.gradePoint = 0;
   }
 
-  // Calculate CPA based on gradePoint and creadit
-  this.CPA = calculateCPA(this.gradePoint, this.creadit);
+  // Calculate CPA based on gradePoint and credit
+  this.CPA = calculateCPA(this.gradePoint, this.credit);
 
-  // Check if practicalMark and practicalCreadit exist before performing calculations
-  if (this.practicalMark != null && this.practicalCreadit != null) {
+  // Check if practicalMark and practicalCredit exist before performing calculations
+  if (this.practicalMark != null && this.practicalCredit != null) {
     // Grading system for practical marks
-    if (this.practicalMark >= 90) {
+    if (this.practicalMark >= 40) {
       this.practicalGrade = 'O';
       this.practicalGradePoint = 10;
-    } else if (this.practicalMark >= 80) {
+    } else if (this.practicalMark >= 35) {
       this.practicalGrade = 'A+';
       this.practicalGradePoint = 9;
-    } else if (this.practicalMark >= 70) {
+    } else if (this.practicalMark >= 30) {
       this.practicalGrade = 'A';
       this.practicalGradePoint = 8;
-    } else if (this.practicalMark >= 60) {
+    } else if (this.practicalMark >= 27.5) {
       this.practicalGrade = 'B+';
       this.practicalGradePoint = 7;
-    } else if (this.practicalMark >= 50) {
+    } else if (this.practicalMark >= 25) {
       this.practicalGrade = 'B';
       this.practicalGradePoint = 6;
-    } else if (this.practicalMark >= 40) {
+    } else if (this.practicalMark >= 22.5) {
       this.practicalGrade = 'C';
       this.practicalGradePoint = 5;
-    } else if (this.practicalMark >= 30) {
+    } else if (this.practicalMark >= 20) {
       this.practicalGrade = 'D';
       this.practicalGradePoint = 4;
     } else {
@@ -84,8 +84,8 @@ markSchema.pre('save', function(next) {
       this.practicalGradePoint = 0;
     }
 
-    // Calculate practical CPA based on practicalGradePoint and practicalCreadit
-    this.practicalCPA = calculateCPA(this.practicalGradePoint, this.practicalCreadit);
+    // Calculate practical CPA based on practicalGradePoint and practicalCredit
+    this.practicalCPA = calculateCPA(this.practicalGradePoint, this.practicalCredit);
   } else {
     this.practicalGrade = null;
     this.practicalGradePoint = null;
@@ -95,9 +95,9 @@ markSchema.pre('save', function(next) {
   next();
 });
 
-function calculateCPA(gradePoint, creadit) {
-  // Calculate CPA as gradePoint * creadit
-  return gradePoint * creadit;
+function calculateCPA(gradePoint, credit) {
+  // Calculate CPA as gradePoint * credit
+  return gradePoint * credit;
 }
 
 const Marks = model('marks', markSchema);
