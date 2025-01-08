@@ -14,7 +14,7 @@ const studentSchema = new Schema({
             const day = String(date.getDate()).padStart(2, '0');
             const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
             const year = date.getFullYear();
-            return `${day}-${month}-${year}`;
+            return `${year}`;
         }
     },
     rollNo: { type: String, unique: true }, // Make it optional initially

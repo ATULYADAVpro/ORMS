@@ -32,7 +32,7 @@ const getOptionsByPath = (path) => {
   }
 };
 
-export default function HodLayout() {
+export default function FacultyLayoutDashboard() {
   const [menu, setMenu] = useState(false);
   const [mode, setMode] = useState(true);
   const [selectedOption, setSelectedOption] = useState(null);

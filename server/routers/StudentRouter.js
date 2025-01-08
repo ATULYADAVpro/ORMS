@@ -9,6 +9,9 @@ studentRouter.post("/addBulkStudents",studentController.addBulkStudents)
 studentRouter.get("/getStudent",studentController.getStudent)
 studentRouter.put("/updateStudent",studentController.updateStudent)
 studentRouter.post("/deleteStudent",studentController.deleteStudent)
+studentRouter.post("/getStudentForSemester",studentController.getStudentForSemester)
+
+
 
 // ============= Routes of Department exports ==============
 export default studentRouter;

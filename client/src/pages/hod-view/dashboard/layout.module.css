@@ -1,0 +1,50 @@
+.container {
+    display: flex;
+    height: 100vh;
+    /* border: red solid 2px; */
+    width: 100%;
+    background: var(--body-color);
+    color: var(--text-color);
+}
+
+.header {
+    width: 100%;
+    margin: 0.4em;
+    display: flex;
+    flex-direction: column;
+}
+
+.mainContainer {
+    overflow: auto;
+    /* border: red solid 2px; */
+    width: 99%;
+    height: 100%;
+    margin: 0.4em;
+    /* Scrollbar styling */
+    scrollbar-width: thin; /* For Firefox */
+    scrollbar-color: #695CFE transparent; /* For Firefox */
+}
+
+/* Webkit-based browsers */
+.mainContainer::-webkit-scrollbar {
+    width: 8px; /* Scrollbar width */
+    height: 8px; /* Horizontal scrollbar height */
+}
+
+.mainContainer::-webkit-scrollbar-thumb {
+    background-color: #aaa; /* Thumb color */
+    border-radius: 4px; /* Rounded corners */
+}
+
+.mainContainer::-webkit-scrollbar-track {
+    background-color: transparent; /* Track color */
+}
+
+.pathOp{
+    margin: 0.3rem;
+    background: var(--sidebar-color);
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    color: var(--text-color);
+}

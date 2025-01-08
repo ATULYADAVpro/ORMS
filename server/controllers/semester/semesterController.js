@@ -15,14 +15,14 @@ const semesterController = {
             const semesterSchema = Joi.object({
                 sem: Joi.string().required(),
                 student: Joi.string().required(),
-                date_of_issue: Joi.string().pattern(/^\d{2}-\d{2}-\d{4}$/).required(),
+                date_of_issue: Joi.string().pattern(/^\d{2}-\d{4}$/).required(),
                 examType: Joi.string().required()
             });
             const { value, error } = semesterSchema.validate(req.body);
             if (error) { return next(error); }
 
             // Format the date_of_issue to "DD-MM-YYYY"
-            value.date_of_issue = moment(value.date_of_issue, "DD-MM-YYYY").format("DD-MM-YYYY");
+            value.date_of_issue = moment(value.date_of_issue, "MM-YYYY").format("MM-YYYY");
 
             // ------------- Verify Student Exists ------
             const studentExist = await Student.findById(value.student).select('_id firstName rollNo semesters stream');
@@ -62,7 +62,6 @@ const semesterController = {
         }
     },
 
-    // --------------- Do active status --------
     // --------------- Do active status --------
     async semesterActive(req, res, next) {
         try {
@@ -179,7 +178,6 @@ const semesterController = {
         }
     },
 
-
     // ------------------------- for teachar subject permission related add subject functionalty ------
     async addSubjectInSemester(req, res, next) {
         try {
@@ -229,6 +227,8 @@ const semesterController = {
             return next(error);
         }
     },
+
+     // ------------------------- in for teachar subject permission related add subject functionalty ------
 
     async addSubjectsInSemesterBulk(req, res, next) {
         try {
@@ -286,7 +286,60 @@ const semesterController = {
         } catch (error) {
             return next(error);
         }
-    }
+    },
+
+     // ------- Addsemester In Bulk --------
+     async addSemesterinBulk(req, res, next) {
+        const { studentArray, examType, stream, date_of_issue, sem } = req.body;
+
+        try {
+            // Validate that the students array is provided
+            if (!Array.isArray(studentArray) || studentArray.length === 0) {
+                return next(CustomErrorHandler.Invailed("No students provided"));
+            }
+
+            for (const _id of studentArray) {
+                //------ Find Student from Student collaction ------
+                const student = await Student.findById(_id)
+                if (!student) {
+                    continue;
+                    // Skip if student not found, optionally log this 
+                }
+
+                // --------- Find semester from semester collection with student details ---------
+                const semester = await Semester.findOne({
+                    stream,
+                    student: student._id,
+                    date_of_issue,
+                    sem,
+                    examType
+                })
+
+                if (!semester) {
+                    const newSemester = new Semester({
+                        stream,
+                        student: student._id,
+                        date_of_issue,
+                        sem,
+                        examType
+                    })
+
+                    student.semesters = student.semesters.concat(newSemester._id)
+                    await student.save();
+                    await newSemester.save();
+                } else {
+                    // Optionally handle if semester already exists for the student
+                    return next(CustomErrorHandler.notFound("semester already exists for the student"))
+                }
+            }
+
+            res.status(200).json({ message: "Semesters added successfully" });
+
+        } catch (error) {
+            return next(error)
+        }
+
+    },
 
 };
 

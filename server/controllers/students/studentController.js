@@ -18,6 +18,7 @@ const studentController = {
                 profileUrl: Joi.string().required(),
                 dateYear: Joi.number().optional(),
                 codeId: Joi.string().required(),
+                admissionDate: Joi.string().required(),
                 prn: Joi.number().optional(),
                 mobileNo: Joi.number().required(),
                 date_Of_year: Joi.string().required(),
@@ -194,7 +195,50 @@ const studentController = {
         } catch (error) {
             return next(error);
         }
+    },
+
+
+
+    // -------------- Get student for semester ---------
+    async getStudentForSemester(req, res, next) {
+        try {
+            const { admissionDate, examType, stream, date_of_issue, sem } = req.body;
+
+            const students = await Student.find({ admissionDate, stream });
+            if (!students || students.length === 0) {
+                return next(CustomErrorHandler.notFound("No Students Found"));
+            }
+
+            let studentsWithoutMatchingSemesters = [];
+
+            for (const std of students) {
+                const semesters = await Semester.find({
+                    examType,
+                    stream,
+                    date_of_issue,
+                    sem,
+                    student: std._id
+                });
+
+                if (!semesters || semesters.length === 0) {
+                    studentsWithoutMatchingSemesters.push(std);
+                }
+            }
+
+            if (studentsWithoutMatchingSemesters.length === 0) {
+                return next(CustomErrorHandler.notFound("All Students have done Semesters"));
+            }
+
+            return res.status(200).json(studentsWithoutMatchingSemesters);
+
+        } catch (error) {
+            return next(error);
+        }
     }
+
+
+
+
 
 
 }

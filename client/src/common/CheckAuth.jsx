@@ -27,11 +27,15 @@ export default function CheckAuth({ isAuthenticated, user, children }) {
       }
     }
 
-    // Allow teacher role to access teacher routes
-    if (role === 'teacher' && location.pathname.startsWith('/teacher')) {
+    // Allow teacher role to access hod routes
+    if (role === 'hod' && location.pathname.startsWith('/hod')) {
       return children;
     }
-
+    
+    // Allow teacher role to access teacher routes
+    if (role === 'teachar' && location.pathname.startsWith('/teachar')) {
+      return children;
+    }
     // Restrict unauthorized access
     return <Navigate to="/unauth-page" replace />;
   }

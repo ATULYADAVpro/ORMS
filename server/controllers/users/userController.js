@@ -2,19 +2,18 @@ import User from "../../models/UserModels.js";
 import CustomErrorHandler from "../../utils/services/CustomErrorHandler.js";
 import Joi from "joi";
 const userController = {
-    async demo(req, res) {
-        res.send(`it's working!`);
-    },
+ 
+    // ========= Get all User =======
 
     async getUser(req, res, next) {
         try {
             // Extract page and limit from query parameters with default values
-            const page = parseInt(req.query.page, 10) || 1; // Default to page 1
-            const limit = parseInt(req.query.limit, 10) || 10; // Default to 10 users per page
+            // const page = parseInt(req.query.page, 10) || 1; // Default to page 1
+            // const limit = parseInt(req.query.limit, 10) || 10; // Default to 10 users per page
 
             // console.log(page)
             // Calculate the skip value
-            const skip = (page - 1) * limit;
+            // const skip = (page - 1) * limit;
 
             // Fetch the paginated users
             const users = await User.find({})
@@ -22,8 +21,8 @@ const userController = {
                     path: "department", // Field to populate
                     // select: "name", // Fields to include from Department
                 })
-                .skip(skip)
-                .limit(limit);
+            // .skip(skip)
+            // .limit(limit);
 
             // Count the total number of users for metadata
             const totalUsers = await User.countDocuments();
@@ -39,14 +38,29 @@ const userController = {
                 users,
                 meta: {
                     totalUsers,
-                    totalPages: Math.ceil(totalUsers / limit),
-                    currentPage: page,
-                    limit,
+                    // totalPages: Math.ceil(totalUsers / limit),
+                    // currentPage: page,
+                    // limit,
                 },
             });
         } catch (error) {
             return next(error);
         }
+    },
+
+    // ======== Get User getUserQueryBase ========
+    async getUserQueryBase(req, res, next) {
+        try {
+            const { department } = req.query;
+
+            const user = await User.find({ department })
+            if (!user) { return next(CustomErrorHandler.notFound("User are not found")) }
+
+            res.status(200).json({ success: true, message: "successfuly fatching user", user })
+        } catch (error) {
+            return next(error)
+        }
+
     },
 
     // ====== Update USer ===

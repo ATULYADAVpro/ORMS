@@ -1,0 +1,26 @@
+.Nav{
+    margin: 0.4rem;
+    display: flex;
+}
+
+.Nav > select {
+    margin-left: 0.4rem;
+}
+
+.YearPicker{
+    margin: 0.4rem;
+}
+
+.MonthYearPicker{
+    margin: 0.4rem;
+
+}
+
+.NavContainer{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.4rem;
+}
+.Select{
+    width: 8rem;
+}

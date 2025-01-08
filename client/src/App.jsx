@@ -20,6 +20,11 @@ import DepartmentList from './pages/admin-veiw/department/DepartmentList';
 import DepartmentAdd from './pages/admin-veiw/department/DepartmentAdd';
 import ListStudent from './pages/admin-veiw/student/ListStudent';
 import AddStudent from './pages/admin-veiw/student/AddStudent';
+import HodLayout from './pages/hod-view/dashboard/HodLayout';
+import FacultyLayoutDashboard from './pages/faculty-view/dashboard/FacultyLayoutDashboard';
+import HodHome from './pages/hod-view/home/HodHome';
+import TeacharHome from './pages/faculty-view/home/TeacharHome';
+import CreateSem from './pages/hod-view/generate sem/CreateSem';
 
 
 // Custom hook to fetch auth data
@@ -33,6 +38,8 @@ const useAuth = () => {
     },
   });
 };
+
+
 
 export default function App() {
   const navigate = useNavigate();
@@ -98,7 +105,18 @@ export default function App() {
         </Route>
       </Route>
 
-      
+      {/* Hod Routes Here  */}
+      <Route path='/hod' element={<CheckAuth isAuthenticated={authData?.isAuthenticated} user={authData?.user}> <HodLayout /> </CheckAuth>}>
+        <Route index  element={<HodHome />} />
+        <Route path='home'  element={<HodHome />} />
+        <Route path='createSem'  element={<CreateSem />} />
+      </Route>
+
+      {/* Teachar Routes Here  */}
+      <Route path='/teachar' element={<CheckAuth isAuthenticated={authData?.isAuthenticated} user={authData?.user}> <FacultyLayoutDashboard /> </CheckAuth>}>
+        <Route index  element={<TeacharHome />} />
+        <Route path='home'  element={<TeacharHome />} />
+      </Route>
 
       <Route path="*" element={<NotFound />} />
       <Route path="/unauth-page" element={<UnAuth />} />

@@ -72,6 +72,16 @@ export const getUsers = async () => {
   }
 }
 
+// ============ Get User base on Department ==========
+export const getUserQueryBase = async (department) => {
+  try {
+    const response = await api.get(`/api/user/getUserQueryBase?department=${department}`)
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'Subject fatching error');
+  }
+}
+
 
 // ------------------------ Department Api's -------------
 

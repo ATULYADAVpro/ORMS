@@ -52,13 +52,22 @@ export default function AddStudent() {
     if (file) {
       reader.readAsDataURL(file);
     }
+  };
 
-
+  const formatDateToDDMMYYYY = (dateString) => {
+    const [year, month, day] = dateString.split('-');
+    return `${year}`;
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
+
+    // Format admissionDate to dd-MM-yyyy
+    const admissionDate = formData.get("admissionDate");
+    if (admissionDate) {
+      formData.set("admissionDate", formatDateToDDMMYYYY(admissionDate));
+    }
 
     if (imageFile) {
       const cloudinaryFormData = new FormData();
@@ -178,9 +187,13 @@ export default function AddStudent() {
               </div>
 
               <div className={style.inputBox}>
-                <label htmlFor=""> _</label>
-                <button className={style.btn} disabled={addStudentMutation.isPending}>{addStudentMutation.isPending ? "Submiting.." : "Submit"}</button>
+                <label htmlFor="admissionDate">Admission Date: <span style={{ color: "red" }}>*</span></label>
+                <input type="date" name="admissionDate" id="admissionDate" placeholder='admission Date' required />
               </div>
+            </div>
+            <div className={style.inputBox}>
+              <label htmlFor=""> _</label>
+              <button className={style.btn} disabled={addStudentMutation.isPending}>{addStudentMutation.isPending ? "Submitting.." : "Submit"}</button>
             </div>
 
           </div>

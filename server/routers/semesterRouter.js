@@ -8,6 +8,7 @@ semesterRouter.post("/addSemester", semesterController.addSemester)
 semesterRouter.get("/getSemester", semesterController.getSemester)
 semesterRouter.post("/semesterActive", semesterController.semesterActive)
 semesterRouter.post("/addSubjectInSemester", semesterController.addSubjectInSemester)
+semesterRouter.post("/addSemesterinBulk", semesterController.addSemesterinBulk)
 
 
 // ============= Routes of Semester exports ==============
