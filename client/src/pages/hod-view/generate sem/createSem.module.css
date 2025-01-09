@@ -8,11 +8,11 @@
 }
 
 .YearPicker{
-    margin: 0.4rem;
+    margin: auto 0.4rem;
 }
 
 .MonthYearPicker{
-    margin: 0.4rem;
+    margin: auto 0.2rem;
 
 }
 
@@ -20,7 +20,15 @@
     display: flex;
     justify-content: space-between;
     margin-top: 0.4rem;
+    align-items: center;
 }
-.Select{
-    width: 8rem;
+.btnSubmit{
+    background: rgb(100, 236, 100);
+}
+
+.btn{
+    background: var(--primary-color);
+    /* color: var(--head-text); */
+    font-weight: bold;
+    padding: 0.4rem 0.8rem;
 }

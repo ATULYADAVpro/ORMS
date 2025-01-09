@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import style from './mandy.module.css'
 
 const MonthYearPicker = ({ handleMonthYearChange }) => {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -23,6 +24,7 @@ const MonthYearPicker = ({ handleMonthYearChange }) => {
         showMonthYearPicker // Enable month and year picker mode
         dateFormat="MMMM yyyy" // Format to display as Month Year in the UI
         placeholderText="Semester Year"
+        className={style.input}
       />
     </div>
   );

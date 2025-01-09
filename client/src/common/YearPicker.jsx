@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import style from './mandy.module.css'
 
 const YearPicker = ({ handleYearChange }) => {
   const [selectedYear, setSelectedYear] = useState(null);
@@ -22,6 +23,7 @@ const YearPicker = ({ handleYearChange }) => {
         showYearPicker // Enable year picker mode
         dateFormat="yyyy" // Format to display only the year
         placeholderText="Select Year"
+        className={style.input}
       />
     </div>
   );

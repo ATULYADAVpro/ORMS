@@ -109,7 +109,7 @@ export default function App() {
       <Route path='/hod' element={<CheckAuth isAuthenticated={authData?.isAuthenticated} user={authData?.user}> <HodLayout /> </CheckAuth>}>
         <Route index  element={<HodHome />} />
         <Route path='home'  element={<HodHome />} />
-        <Route path='createSem'  element={<CreateSem />} />
+        <Route path='createSem'  element={<CreateSem user={authData?.user} />} />
       </Route>
 
       {/* Teachar Routes Here  */}

@@ -235,3 +235,29 @@ export const deleteStudent = async (data) => {
     throw new Error(error.response ? error.response.data.message : 'Student not deleting something wrong');
   }
 };
+
+
+
+// Function to get Student for semester
+export const getStudentForSemester = async (data) => {
+  // console.log(data)
+  try {
+    const response = await api.post('/api/student/getStudentForSemester', data);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'error in fatching for semester student');
+  }
+};
+
+
+
+// ------------- Semester in add in Bulk ----------
+export const addSemesterinBulk = async (data) => {
+  // console.log(data)
+  try {
+    const response = await api.post('/api/semester/addSemesterinBulk', data);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'error in semester addin bulk time');
+  }
+};
