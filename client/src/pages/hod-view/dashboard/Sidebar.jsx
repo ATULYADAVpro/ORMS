@@ -42,6 +42,15 @@ export default function Sidebar({ mode, menu, setMode }) {
           </li>
           <li>
             <NavLink
+              to="/hod/giveMark"
+              className={({ isActive }) => isActive ? `${style.icon} ${style.active}` : style.icon}
+              end
+            >
+              <span><BsPersonFillAdd /></span><span className={style.text}>Marks</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
               to="/hod/student"
               className={({ isActive }) => isActive ? `${style.icon} ${style.active}` : style.icon}
               end

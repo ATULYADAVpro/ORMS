@@ -134,7 +134,7 @@ export default function CreateSem({ user }) {
                     <thead>
                         <tr>
                             <th style={{ width: "2rem" }}>
-                                <div className="" style={{ width: "100%", textAlign:"center", }}>
+                                <div className="" style={{ width: "100%", textAlign: "center", }}>
                                     <input
                                         type="checkbox"
                                         checked={selectAll}
@@ -165,7 +165,7 @@ export default function CreateSem({ user }) {
                                 </td>
                                 <td>{data.admissionDate}</td>
                                 <td>{data.rollNo}</td>
-                                <td>{data.name}</td>
+                                <td>{data.firstName} {data.fatherName} {data.lastName} {data.motherName}</td>
                             </tr>
                         ))}
 

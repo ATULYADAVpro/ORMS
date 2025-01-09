@@ -81,6 +81,17 @@ export const getUserQueryBase = async (department) => {
     throw new Error(error.response ? error.response.data.message : 'Subject fatching error');
   }
 }
+// ============ Get User ById for subject ==========
+export const getUserById = async (_id) => {
+  try {
+    const response = await api.get(`/api/user/getUserById/${_id}`)
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'Subject fatching error');
+  }
+}
+
+
 
 
 // ------------------------ Department Api's -------------
@@ -256,6 +267,19 @@ export const addSemesterinBulk = async (data) => {
   // console.log(data)
   try {
     const response = await api.post('/api/semester/addSemesterinBulk', data);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'error in semester addin bulk time');
+  }
+};
+
+
+// ------------- Get generate semester for teachar to give marks ----------
+
+export const getStudentHaveSemester = async (data) => {
+  // console.log(data)
+  try {
+    const response = await api.post('/api/student/getStudentHaveSemester', data);
     return response.data;
   } catch (error) {
     throw new Error(error.response ? error.response.data.message : 'error in semester addin bulk time');

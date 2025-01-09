@@ -407,7 +407,7 @@ export default function ViewFaculty() {
                     name="sem1"
                     id="sem1"
                     multiple
-                    value={selectedUser?.subjects?.sem1 || []} // Bind the value to selectedUser.subjects.sem1
+                    defaultValue={selectedUser?.subjects?.sem1 || []} // Bind the value to selectedUser.subjects.sem1
                     onChange={(e) => {
                       const selectedValues = Array.from(e.target.selectedOptions, option => option.value);
                       setSelectedUser((prev) => ({

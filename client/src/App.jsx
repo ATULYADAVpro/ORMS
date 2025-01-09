@@ -25,6 +25,7 @@ import FacultyLayoutDashboard from './pages/faculty-view/dashboard/FacultyLayout
 import HodHome from './pages/hod-view/home/HodHome';
 import TeacharHome from './pages/faculty-view/home/TeacharHome';
 import CreateSem from './pages/hod-view/generate sem/CreateSem';
+import GiveMarksToStudent from './pages/hod-view/givemarks/GiveMarksToStudent';
 
 
 // Custom hook to fetch auth data
@@ -110,6 +111,7 @@ export default function App() {
         <Route index  element={<HodHome />} />
         <Route path='home'  element={<HodHome />} />
         <Route path='createSem'  element={<CreateSem user={authData?.user} />} />
+        <Route path='giveMark'  element={<GiveMarksToStudent user={authData?.user} />} />
       </Route>
 
       {/* Teachar Routes Here  */}

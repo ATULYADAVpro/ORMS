@@ -176,7 +176,7 @@ export default function SubjectAdd() {
                     <input type="text" name="practicalCode" value={formData.practicalCode || ''} required={showPracticals} onChange={handleInputChange} placeholder="Practical code" />
                   </div>
                   <div className={style.inpBox}>
-                    <label htmlFor="practicalCredit">Practical Code:</label>
+                    <label htmlFor="practicalCredit">Practical Credit:</label>
                     <input type="text" name="practicalCredit" value={formData.practicalCredit || ''} required={showPracticals} onChange={handleInputChange} placeholder="Practical credit" />
                   </div>
                 </div>

@@ -1,8 +1,9 @@
+import Subject from "../../models/SubjectModels.js";
 import User from "../../models/UserModels.js";
 import CustomErrorHandler from "../../utils/services/CustomErrorHandler.js";
 import Joi from "joi";
 const userController = {
- 
+
     // ========= Get all User =======
 
     async getUser(req, res, next) {
@@ -112,6 +113,76 @@ const userController = {
             return next(error);
         }
     },
+
+    async getUserById(req, res, next) {
+        try {
+            const { _id } = req.params;
+            const user = await User.findById(_id);
+            if (!user) {
+                return next(CustomErrorHandler.notFound("User not found || are you unauthorzied person"));
+            }
+            const { sem1, sem2, sem3, sem4 } = user.subjects;
+            let semester1Array = [];
+            let semester2Array = [];
+            let semester3Array = [];
+            let semester4Array = [];
+
+            // Fetch details for sem1
+            if (sem1 && sem1.length > 0) {
+                for (const sem of sem1) {
+                    const subjectDetails = await Subject.findById(sem);
+                    if (!subjectDetails) {
+                        return next(CustomErrorHandler.notFound(`Subject with ID ${sem} not found`));
+                    }
+                    semester1Array.push(subjectDetails); // Push details to array
+                }
+            }
+
+            // Fetch details for sem2
+            if (sem2 && sem2.length > 0) {
+                for (const sem of sem2) {
+                    const subjectDetails = await Subject.findById(sem);
+                    if (!subjectDetails) {
+                        return next(CustomErrorHandler.notFound(`Subject with ID ${sem} not found`));
+                    }
+                    semester2Array.push(subjectDetails); // Push details to array
+                }
+            }
+
+            // Fetch details for sem3
+            if (sem3 && sem3.length > 0) {
+                for (const sem of sem3) {
+                    const subjectDetails = await Subject.findById(sem);
+                    if (!subjectDetails) {
+                        return next(CustomErrorHandler.notFound(`Subject with ID ${sem} not found`));
+                    }
+                    semester3Array.push(subjectDetails); // Push details to array
+                }
+            }
+
+            // Fetch details for sem4
+            if (sem4 && sem4.length > 0) {
+                for (const sem of sem4) {
+                    const subjectDetails = await Subject.findById(sem);
+                    if (!subjectDetails) {
+                        return next(CustomErrorHandler.notFound(`Subject with ID ${sem} not found`));
+                    }
+                    semester4Array.push(subjectDetails); // Push details to array
+                }
+            }
+
+            res.json({
+                semester1Array,
+                semester2Array,
+                semester3Array,
+                semester4Array
+            });
+
+        } catch (error) {
+            return next(error);
+        }
+    }
+
 
 };
 

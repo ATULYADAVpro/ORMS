@@ -209,7 +209,7 @@ const studentController = {
                 return next(CustomErrorHandler.notFound("No Students Found"));
             }
 
-            let studentsWithoutMatchingSemesters = [];
+            let studentsMatchingSemesters = [];
 
             for (const std of students) {
                 const semesters = await Semester.find({
@@ -221,20 +221,69 @@ const studentController = {
                 });
 
                 if (!semesters || semesters.length === 0) {
-                    studentsWithoutMatchingSemesters.push(std);
+                    studentsMatchingSemesters.push(std);
                 }
             }
 
-            if (studentsWithoutMatchingSemesters.length === 0) {
+            if (studentsMatchingSemesters.length === 0) {
                 return next(CustomErrorHandler.notFound("All Students have done Semesters"));
             }
 
-            return res.status(200).json(studentsWithoutMatchingSemesters);
+            return res.status(200).json(studentsMatchingSemesters);
 
         } catch (error) {
             return next(error);
         }
+    },
+
+    async getStudentHaveSemester(req, res, next) {
+        try {
+            const { admissionDate, examType, stream, date_of_issue, sem, subjectId } = req.body;
+
+            // Validate input
+            if (!admissionDate || !stream || !examType || !sem || !subjectId) {
+                return next(CustomErrorHandler.RequireField("Missing required fields"));
+            }
+
+            // Fetch students and populate semesters with subjects
+            const students = await Student.find({ admissionDate, stream })
+                .populate({
+                    path: "semesters",
+                    match: { examType, stream, date_of_issue, sem }, // Match semesters
+                    populate: {
+                        path: "subjects",
+                        select: "subjectId", // Only fetch subjectId for efficiency
+                    },
+                });
+
+            if (!students || students.length === 0) {
+                return next(CustomErrorHandler.notFound("No Students Found"));
+            }
+
+            // Filter students based on subjects
+            const filteredStudents = students.filter((student) => {
+                // Check if all semesters for the student are valid
+                return student.semesters.every((semester) => {
+                    if (!semester || !semester.subjects || semester.subjects.length === 0) {
+                        // Semester is valid if subjects array is empty
+                        return true;
+                    }
+
+                    // Check if none of the subjects match the given subjectId
+                    return !semester.subjects.some((subject) => subject.subjectId.toString() === subjectId);
+                });
+            });
+
+            return res.status(200).json(filteredStudents);
+        } catch (error) {
+            return next(error);
+        }
     }
+
+
+
+
+
 
 
 

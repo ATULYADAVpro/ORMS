@@ -6,7 +6,7 @@ const subjectSchema = new Schema({
     sem: { type: String, required: true, lowercase: true },
     name: { type: String, required: true, unique: true, lowercase: true },
     code: { type: String, required: true, unique: true, lowercase: true },
-    credit: { type: String, required: true, unique: true, lowercase: true }, // rember to change name creadit to credit
+    credit: { type: String, required: true, lowercase: true },
     internalMax: { type: String, required: true, unique: true, lowercase: true },
     internalMin: { type: String, required: true, unique: true, lowercase: true },
     externalMax: { type: String, required: true, unique: true, lowercase: true },
@@ -40,7 +40,21 @@ const subjectSchema = new Schema({
                 if (department.practical) return !!v; // If practical is true, value must exist
                 return true; // Optional if practical is false
             },
-            message: 'Practical name is required for departments that require practicals.',
+            message: 'Practical max is required for departments that require practicals.',
+        },
+    },
+    practicalCredit: {
+        type: String,
+        sparse: true, // Ensures uniqueness only for non-null values
+        lowercase: true,
+        validate: {
+            validator: async function (v) {
+                const department = await Department.findById(this.stream);
+                if (!department) return false; // Invalid if department doesn't exist
+                if (department.practical) return !!v; // If practical is true, value must exist
+                return true; // Optional if practical is false
+            },
+            message: 'Practical credit is required for departments that require practicals.',
         },
     },
     practicalMin: {

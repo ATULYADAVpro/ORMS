@@ -257,3 +257,9 @@ tbody tr:nth-child(odd) {
   font-size: 14px;
   color: var(--text-muted);
 }
+
+/* Add this to your CSS */
+.highlighted {
+  background-color: yellow;
+  color: black;  /* Or adjust according to your preference */
+}
