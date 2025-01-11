@@ -3,8 +3,9 @@ import style from './studentSheets.module.css'
 import YearPicker from '../../../common/YearPicker';
 import MonthYearPicker from '../../../common/MonthYearPicker';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { getDepartmentById, getStudentMarkForSpecificTeacher, getUserById } from '../../../api/api';
+import { getDepartmentById, getStudentMarkForSpecificTeacher, getUserById, updateMark } from '../../../api/api';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom'
 
 export default function StudentSheets({ user }) {
     // ----------- State manage -----------
@@ -15,7 +16,12 @@ export default function StudentSheets({ user }) {
     const [tableData, setTableData] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
-    const [formData, setFormData] = useState({})
+    const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+        internal: null,
+        external: null,
+        credit: null
+    })
     const [markValidtaion, setmarlValidation] = useState(null);
 
 
@@ -50,6 +56,17 @@ export default function StudentSheets({ user }) {
             toast.error(error.message);
         },
     });
+    const { mutate: updateSubjectMutate } = useMutation({
+        mutationFn: updateMark,
+        mutationKey: ['subject'],
+        onSuccess: (data) => {
+            toast.success('Successfully update subject.');
+            navigate(0)
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        },
+    });
 
     // --------------- Function --------
     const handleMonthYearChange = (monthYear) => setMonthYear(monthYear);
@@ -69,6 +86,7 @@ export default function StudentSheets({ user }) {
             studentDataMutate({ subjectId, date_of_issue: monthYear })
         }
 
+
     }
 
     useEffect(() => {
@@ -87,7 +105,6 @@ export default function StudentSheets({ user }) {
     // Open Modal
     const handleEdit = (user) => {
         setSelectedUser(user);
-        setFormData({ ...user }); // Copy the selected user's data into formData
         setIsModalOpen(true);
     };
 
@@ -104,29 +121,43 @@ export default function StudentSheets({ user }) {
         // Parse the value as a number
         const numericValue = value ? parseFloat(value) : ""; // Use parseFloat for decimals or parseInt if only integers are needed
 
-        // Check if there is a max validation for the current field
-        const maxValidationKey = `${name}Max`; // Example: "internalMax"
-        const maxValue = markValidtaion?.[maxValidationKey];
+        // Check if the new value is different from the current value
+        if (numericValue !== formData[name]) {
+            // Check if there is a max validation for the current field
+            const maxValidationKey = `${name}Max`; // Example: "internalMax"
+            const maxValue = markValidtaion?.[maxValidationKey];
 
-        // Prevent values from exceeding the maximum
-        if (maxValue && numericValue > maxValue) {
-            toast.error(`Value for ${name} cannot exceed ${maxValue}`);
-            return;
+            // Prevent values from exceeding the maximum
+            if (maxValue && numericValue > maxValue) {
+                toast.error(`Value for ${name} cannot exceed ${maxValue}`);
+                return;
+            }
+
+            // Only update formData if the value is changed
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                [name]: numericValue, // Store as number
+            }));
         }
-
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            [name]: numericValue, // Store as number
-        }));
     }
+
 
 
 
     function handleUpdate(e) {
         e.preventDefault();
 
+        // Check for practicalMark and practicalCredit if practical is enabled
+        if (departmentData?.department?.practical) {
+            if (formData.practicalMark === "" || formData.practicalCredit === "") {
+                toast.error("Practical marks and practical credit are required.");
+                return; // Prevent update if any practical field is missing
+            }
+        }
+
+        // Validate other fields if necessary
         const validationErrors = Object.entries(formData).filter(([key, value]) => {
-            const maxValidationKey = `${key}Max`;
+            const maxValidationKey = `${key}Max`; // e.g., "internalMax"
             const maxValue = markValidtaion?.[maxValidationKey];
             return maxValue && value > maxValue;
         });
@@ -136,22 +167,54 @@ export default function StudentSheets({ user }) {
             return;
         }
 
-        console.log('Updated Data:', formData);
+        // Proceed with the update
+        const updatedData = {
+            ...formData,
+            _id: selectedUser._id, // Attach the user's ID
+        };
 
+        // Update the backend and table data
         setTableData((prevData) =>
             prevData.map((data) =>
-                data._id === selectedUser._id ? { ...data, ...formData } : data
+                data._id === selectedUser._id ? { ...data, ...updatedData } : data
             )
         );
-        closeModal();
-        toast.success('Record updated successfully!');
+
+        // Trigger backend update
+        updateSubjectMutate(updatedData);
+
+        closeModal(); // Close the modal after successful update
     }
 
 
     function handleDelete() {
 
     }
-    console.log(markValidtaion)
+    console.log(formData)
+
+
+
+    useEffect(() => {
+        if (selectedUser) {
+            let newFormData = {
+                internal: selectedUser.internal || null,
+                external: selectedUser.external || null,
+                credit: selectedUser.credit || null
+            };
+
+            if (departmentData?.department?.practical) {
+                // Only include practicalMark and practicalCredit if they exist in selectedUser and are not null
+                newFormData = {
+                    ...newFormData,
+                    practicalMark: selectedUser.practicalMark || "",  // Default empty string if null
+                    practicalCredit: selectedUser.practicalCredit || ""  // Default empty string if null
+                };
+            }
+
+            setFormData(newFormData);
+        }
+    }, [selectedUser, departmentData]);  // Runs when either selectedUser or departmentData changes
+
 
     return (
         <div>

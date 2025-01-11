@@ -11,6 +11,7 @@ import departmentRouter from './routers/departmentRouter.js';
 import subjectRouter from './routers/SubjectRouter.js';
 import studentRouter from './routers/StudentRouter.js';
 import semesterRouter from './routers/semesterRouter.js';
+import markRouter from './routers/markRouter.js';
 const app = express();
 
 const corsOptions = {
@@ -31,6 +32,7 @@ app.use('/api', departmentRouter)
 app.use('/api/subject', subjectRouter)
 app.use('/api/student', studentRouter)
 app.use('/api/semester', semesterRouter)
+app.use('/api/marks', markRouter)
 
 
 

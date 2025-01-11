@@ -21,7 +21,11 @@ const markSchema = new Schema({
   practicalCPA: { type: Number }
 });
 
-markSchema.pre('save', function(next) {
+function calculateCPA(gradePoint, credit) {
+  return gradePoint * credit;
+}
+
+markSchema.pre('save', function (next) {
   this.totalMark = this.internal + this.external;
 
   // console.log(`Total Mark: ${this.totalMark}`);
@@ -95,9 +99,83 @@ markSchema.pre('save', function(next) {
   next();
 });
 
-function calculateCPA(gradePoint, credit) {
-  return gradePoint * credit;
-}
+markSchema.pre('findOneAndUpdate', function (next) {
+  let update = this.getUpdate();
+  update.totalMark = update.internal + update.external;
+
+  // console.log(`Total Mark: ${update.totalMark}`);
+
+  if (update.totalMark >= 90) {
+    update.grade = 'O';
+    update.gradePoint = 10;
+  } else if (update.totalMark >= 80) {
+    update.grade = 'A+';
+    update.gradePoint = 9;
+  } else if (update.totalMark >= 70) {
+    update.grade = 'A';
+    update.gradePoint = 8;
+  } else if (update.totalMark >= 60) {
+    update.grade = 'B+';
+    update.gradePoint = 7;
+  } else if (update.totalMark >= 50) {
+    update.grade = 'B';
+    update.gradePoint = 6;
+  } else if (update.totalMark >= 40) {
+    update.grade = 'C';
+    update.gradePoint = 5;
+  } else if (update.totalMark >= 30) {
+    update.grade = 'D';
+    update.gradePoint = 4;
+  } else {
+    update.grade = 'F';
+    update.gradePoint = 0;
+  }
+
+  // console.log(`Grade: ${update.grade}, Grade Point: ${update.gradePoint}`);
+
+  update.CPA = calculateCPA(update.gradePoint, update.credit);
+  // console.log(`CPA: ${update.CPA}`);
+
+  if (update.practicalMark != null && update.practicalCredit != null) {
+    if (update.practicalMark >= 40) {
+      update.practicalGrade = 'O';
+      update.practicalGradePoint = 10;
+    } else if (update.practicalMark >= 35) {
+      update.practicalGrade = 'A+';
+      update.practicalGradePoint = 9;
+    } else if (update.practicalMark >= 30) {
+      update.practicalGrade = 'A';
+      update.practicalGradePoint = 8;
+    } else if (update.practicalMark >= 27.5) {
+      update.practicalGrade = 'B+';
+      update.practicalGradePoint = 7;
+    } else if (update.practicalMark >= 25) {
+      update.practicalGrade = 'B';
+      update.practicalGradePoint = 6;
+    } else if (update.practicalMark >= 22.5) {
+      update.practicalGrade = 'C';
+      update.practicalGradePoint = 5;
+    } else if (update.practicalMark >= 20) {
+      update.practicalGrade = 'D';
+      update.practicalGradePoint = 4;
+    } else {
+      update.practicalGrade = 'F';
+      update.practicalGradePoint = 0;
+    }
+
+    update.practicalCPA = calculateCPA(update.practicalGradePoint, update.practicalCredit);
+    // console.log(`Practical Grade: ${update.practicalGrade}, Practical Grade Point: ${update.practicalGradePoint}, Practical CPA: ${update.practicalCPA}`);
+  } else {
+    update.practicalGrade = null;
+    update.practicalGradePoint = null;
+    update.practicalCPA = null;
+  }
+
+  next();
+});
+
+
+
 
 const Marks = model('marks', markSchema);
 

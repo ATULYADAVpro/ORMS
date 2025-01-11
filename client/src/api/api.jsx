@@ -317,3 +317,16 @@ export const getStudentMarkForSpecificTeacher = async (data) => {
     throw new Error(error.response ? error.response.data.message : 'Subject Not fatch something is wrong');
   }
 };
+
+
+
+// ------------- subject mark update ------------
+export const updateMark = async (data) => {
+  // console.log(data)
+  try {
+    const response = await api.put('/api/marks/updateMark', data);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'Subject Not Update something is wrong');
+  }
+};
