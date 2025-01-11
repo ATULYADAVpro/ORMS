@@ -24,7 +24,7 @@ const markSchema = new Schema({
 markSchema.pre('save', function(next) {
   this.totalMark = this.internal + this.external;
 
-  console.log(`Total Mark: ${this.totalMark}`);
+  // console.log(`Total Mark: ${this.totalMark}`);
 
   if (this.totalMark >= 90) {
     this.grade = 'O';
@@ -52,10 +52,10 @@ markSchema.pre('save', function(next) {
     this.gradePoint = 0;
   }
 
-  console.log(`Grade: ${this.grade}, Grade Point: ${this.gradePoint}`);
+  // console.log(`Grade: ${this.grade}, Grade Point: ${this.gradePoint}`);
 
   this.CPA = calculateCPA(this.gradePoint, this.credit);
-  console.log(`CPA: ${this.CPA}`);
+  // console.log(`CPA: ${this.CPA}`);
 
   if (this.practicalMark != null && this.practicalCredit != null) {
     if (this.practicalMark >= 40) {
@@ -85,7 +85,7 @@ markSchema.pre('save', function(next) {
     }
 
     this.practicalCPA = calculateCPA(this.practicalGradePoint, this.practicalCredit);
-    console.log(`Practical Grade: ${this.practicalGrade}, Practical Grade Point: ${this.practicalGradePoint}, Practical CPA: ${this.practicalCPA}`);
+    // console.log(`Practical Grade: ${this.practicalGrade}, Practical Grade Point: ${this.practicalGradePoint}, Practical CPA: ${this.practicalCPA}`);
   } else {
     this.practicalGrade = null;
     this.practicalGradePoint = null;
