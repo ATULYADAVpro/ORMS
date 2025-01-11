@@ -105,6 +105,15 @@ export const getDepartment = async () => {
     throw new Error(error.response ? error.response.data.message : 'Depertment fatching error');
   }
 }
+// ============ Get Department Api =======
+export const getDepartmentById = async (_id) => {
+  try {
+    const response = await api.get(`/api/getDepartmentById/${_id}`)
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'Depertment fatching error');
+  }
+}
 
 // ============ Update Department Api =======
 export const updateDepartment = async (data) => {
@@ -283,5 +292,16 @@ export const getStudentHaveSemester = async (data) => {
     return response.data;
   } catch (error) {
     throw new Error(error.response ? error.response.data.message : 'error in semester addin bulk time');
+  }
+};
+
+// ------------- add subject in semesters -------------
+export const addSubjectsInSemesterBulk = async (data) => {
+  // console.log(data)
+  try {
+    const response = await api.post('/api/semester/addSubjectsInSemesterBulk', data);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'error in semester subject add in bulk time');
   }
 };

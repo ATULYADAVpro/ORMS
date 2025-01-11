@@ -4,6 +4,7 @@ import Student from "../../models/StudentModels.js";
 import CustomErrorHandler from "../../utils/services/CustomErrorHandler.js";
 import Semester from "../../models/SemesterModel.js";
 import Subject from "../../models/SubjectModels.js";
+import mongoose from "mongoose";
 
 // ------------------ Logics --------------
 const studentController = {
@@ -236,50 +237,90 @@ const studentController = {
         }
     },
 
+    // async getStudentHaveSemester(req, res, next) {
+    //     try {
+    //         const { admissionDate, examType, stream, date_of_issue, sem, subjectId } = req.body;
+
+    //         // Validate input
+    //         if (!admissionDate || !stream || !examType || !sem || !subjectId) {
+    //             return next(CustomErrorHandler.RequireField("Missing required fields"));
+    //         }
+
+    //         // Fetch students and populate semesters with subjects
+    //         const students = await Student.find({ admissionDate, stream })
+    //             .populate({
+    //                 path: "semesters",
+    //                 match: { examType, stream, date_of_issue, sem }, // Match semesters
+    //                 populate: {
+    //                     path: "subjects",
+    //                     select: "subjectId", // Only fetch subjectId for efficiency
+    //                 },
+    //             });
+
+    //         if (!students || students.length === 0) {
+    //             return next(CustomErrorHandler.notFound("No Students Found"));
+    //         }
+
+    //         // Filter students based on subjects
+    //         const filteredStudents = students.filter((student) => {
+    //             // Check if all semesters for the student are valid
+    //             return student.semesters.every((semester) => {
+    //                 if (!semester || !semester.subjects || semester.subjects.length === 0) {
+    //                     // Semester is valid if subjects array is empty
+    //                     return true;
+    //                 }
+
+    //                 // Check if none of the subjects match the given subjectId
+    //                 return !semester.subjects.some((subject) => subject.subjectId.toString() === subjectId);
+    //             });
+    //         });
+
+    //         return res.status(200).json(filteredStudents);
+    //     } catch (error) {
+    //         return next(error);
+    //     }
+    // }
+
     async getStudentHaveSemester(req, res, next) {
         try {
             const { admissionDate, examType, stream, date_of_issue, sem, subjectId } = req.body;
+            const filterData = [];
 
-            // Validate input
-            if (!admissionDate || !stream || !examType || !sem || !subjectId) {
-                return next(CustomErrorHandler.RequireField("Missing required fields"));
-            }
+            const semesters = await Semester.find({
+                examType,
+                stream: new mongoose.Types.ObjectId(stream), // Correct comparison of ObjectId
+                date_of_issue,
+                sem
+            }).populate("student").populate("subjects");
 
-            // Fetch students and populate semesters with subjects
-            const students = await Student.find({ admissionDate, stream })
-                .populate({
-                    path: "semesters",
-                    match: { examType, stream, date_of_issue, sem }, // Match semesters
-                    populate: {
-                        path: "subjects",
-                        select: "subjectId", // Only fetch subjectId for efficiency
-                    },
-                });
+            for (const element of semesters) {
+                if (!element.subjects || element.subjects.every(sub => new mongoose.Types.ObjectId(sub.subjectId).toString() !== new mongoose.Types.ObjectId(subjectId).toString())) {
+                    const studentData = await Student.findById(element.student)
+                        .populate({
+                            path: "semesters",
+                            populate: {
+                                path: "subjects"
+                            }
+                        })
 
-            if (!students || students.length === 0) {
-                return next(CustomErrorHandler.notFound("No Students Found"));
-            }
+                    if (studentData) {
+                        filterData.push(studentData);
 
-            // Filter students based on subjects
-            const filteredStudents = students.filter((student) => {
-                // Check if all semesters for the student are valid
-                return student.semesters.every((semester) => {
-                    if (!semester || !semester.subjects || semester.subjects.length === 0) {
-                        // Semester is valid if subjects array is empty
-                        return true;
                     }
 
-                    // Check if none of the subjects match the given subjectId
-                    return !semester.subjects.some((subject) => subject.subjectId.toString() === subjectId);
-                });
-            });
+                }
+            }
 
-            return res.status(200).json(filteredStudents);
+            // if(!filterData){
+            //     return res.status(200).json(filterData);
+
+            // }
+
+            return res.status(200).json(filterData);
         } catch (error) {
             return next(error);
         }
     }
-
 
 
 

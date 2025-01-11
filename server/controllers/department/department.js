@@ -29,6 +29,15 @@ const department = {
     },
 
     // ============== get department ============
+    async getDepartmentById(req, res, next) {
+        const { _id } = req.params;
+        const department = await Department.findById(_id);
+        if (!department) {
+            return next(CustomErrorHandler.RequireField("Do not have any department.."))
+        }
+        res.status(200).json({ success: true, department })
+    },
+    // ============== get department ============
     async getDepartment(req, res, next) {
         const department = await Department.find({});
         if (!department) {
