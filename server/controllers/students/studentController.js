@@ -5,6 +5,7 @@ import CustomErrorHandler from "../../utils/services/CustomErrorHandler.js";
 import Semester from "../../models/SemesterModel.js";
 import Subject from "../../models/SubjectModels.js";
 import mongoose from "mongoose";
+import Marks from "../../models/MarkModel.js";
 
 // ------------------ Logics --------------
 const studentController = {
@@ -320,9 +321,34 @@ const studentController = {
         } catch (error) {
             return next(error);
         }
+    },
+
+
+    async getStudentMarkForSpecificTeacher(req, res, next) {
+        const { subjectId, date_of_issue } = req.body;
+        try {
+            const marks = await Marks.find({ subjectId }).populate({
+                path: "semesterId",
+                match: { date_of_issue },
+                populate: {
+                    path: "student"
+                }
+            });
+    
+            // Filter marks to only include those where the populated semester data matches
+            const filteredMarks = marks.filter(mark => mark.semesterId && mark.semesterId.date_of_issue === date_of_issue);
+    
+            if (filteredMarks.length === 0) {
+                return res.status(404).json({ message: 'No marks found for the given criteria.' });
+            }
+    
+            res.json(filteredMarks);
+    
+        } catch (error) {
+            return next(error);
+        }
     }
-
-
+    
 
 
 

@@ -11,6 +11,7 @@ studentRouter.put("/updateStudent",studentController.updateStudent)
 studentRouter.post("/deleteStudent",studentController.deleteStudent)
 studentRouter.post("/getStudentForSemester",studentController.getStudentForSemester)
 studentRouter.post("/getStudentHaveSemester",studentController.getStudentHaveSemester)
+studentRouter.post("/getStudentMarkForSpecificTeacher",studentController.getStudentMarkForSpecificTeacher)
 
 
 

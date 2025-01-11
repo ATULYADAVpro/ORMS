@@ -4,8 +4,9 @@ import { IoHomeSharp } from "react-icons/io5";
 import { BsPersonFillAdd, BsToggleOn, BsToggleOff } from "react-icons/bs";
 import { BiSolidReport } from "react-icons/bi";
 import { FaRegNewspaper } from "react-icons/fa6";
-
 import { NavLink } from 'react-router-dom';
+import { GiPapers } from "react-icons/gi";
+
 
 export default function Sidebar({ mode, menu, setMode }) {
 
@@ -23,7 +24,7 @@ export default function Sidebar({ mode, menu, setMode }) {
         <nav>
           <li>
             <NavLink
-              to="/teachar/home"
+              to="/teacher/home"
               className={({ isActive }) => isActive ? `${style.icon} ${style.active}` : style.icon}
               end
             >
@@ -32,21 +33,21 @@ export default function Sidebar({ mode, menu, setMode }) {
           </li>
           <li>
             <NavLink
-              to="/teachar/marks"
+              to="/teacher/giveMark"
               className={({ isActive }) => isActive ? `${style.icon} ${style.active}` : style.icon}
               end
             >
-              <span><IoHomeSharp /></span><span className={style.text}>Marks Manage</span>
+              <span><BsPersonFillAdd /></span><span className={style.text}>Marks</span>
             </NavLink>
           </li>
 
           <li>
             <NavLink
-              to="/teachar/marks"
+              to="/teacher/listStudentMark"
               className={({ isActive }) => isActive ? `${style.icon} ${style.active}` : style.icon}
               end
             >
-              <span><IoHomeSharp /></span><span className={style.text}>Student Sheets</span>
+              <span><GiPapers /></span><span className={style.text}>Student Sheets</span>
             </NavLink>
           </li>
 

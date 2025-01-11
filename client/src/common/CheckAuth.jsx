@@ -33,7 +33,7 @@ export default function CheckAuth({ isAuthenticated, user, children }) {
     }
     
     // Allow teacher role to access teacher routes
-    if (role === 'teachar' && location.pathname.startsWith('/teachar')) {
+    if (role === 'teacher' && location.pathname.startsWith('/teacher')) {
       return children;
     }
     // Restrict unauthorized access

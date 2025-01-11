@@ -230,64 +230,6 @@ const semesterController = {
 
      // ------------------------- in for teachar subject permission related add subject functionalty ------
 
-    // async addSubjectsInSemesterBulk(req, res, next) {
-    //     try {
-    //         const { semesterDetailsList, markDetailsList } = req.body;
-
-    //         let results = []; // Initialize an array to store results for each semester
-
-    //         for (const semesterDetails of semesterDetailsList) {
-    //             // Find the semester
-    //             const semester = await Semester.findOne({
-    //                 sem: semesterDetails.sem,
-    //                 stream: semesterDetails.stream,
-    //                 student: semesterDetails.student,
-    //                 date_of_issue: semesterDetails.date_of_issue
-    //             }).populate({ path: "subjects" });
-
-    //             if (!semester) {
-    //                 results.push({ error: `Semester not found for student: ${semesterDetails.student}` });
-    //                 continue; // Skip to the next semesterDetails if not found
-    //             }
-
-    //             let submitMarks = [];
-
-    //             for (const markDetails of markDetailsList) {
-    //                 // Verify if the subject already exists (case-insensitive check)
-    //                 const subjectExist = semester.subjects.some((subject) =>
-    //                     subject.subjectCode.toLowerCase() === markDetails.subjectCode.toLowerCase()
-    //                 );
-
-    //                 if (subjectExist) {
-    //                     continue; // Skip to the next markDetails if the subject already exists
-    //                 }
-
-    //                 // Create Mark entry
-    //                 const submitMark = new Marks({
-    //                     semesterId: semester._id,
-    //                     ...markDetails
-    //                 });
-
-    //                 // Save the new mark entry
-    //                 await submitMark.save();
-
-    //                 // Add the new mark ID to the semester's subjects array
-    //                 semester.subjects.push(submitMark._id);
-    //                 submitMarks.push(submitMark);
-    //             }
-
-    //             // Save the updated semester
-    //             await semester.save();
-
-    //             results.push({ success: true, message: `Successfully added subjects for student: ${semesterDetails.student}`, submitMarks });
-    //         }
-
-    //         res.status(200).json({ results });
-    //     } catch (error) {
-    //         return next(error);
-    //     }
-    // },
-
     async addSubjectsInSemesterBulk(req, res, next) {
         try {
             const { studentsData } = req.body;
@@ -348,7 +290,6 @@ const semesterController = {
         }
     },
     
-
      // ------- Addsemester In Bulk --------
      async addSemesterinBulk(req, res, next) {
         const { studentArray, examType, stream, date_of_issue, sem } = req.body;
@@ -401,6 +342,7 @@ const semesterController = {
         }
 
     },
+
 
 };
 

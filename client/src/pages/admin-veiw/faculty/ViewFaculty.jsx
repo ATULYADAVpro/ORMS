@@ -210,7 +210,7 @@ export default function ViewFaculty() {
     // console.log(user); // This will log the selected user object
     deleteFacultyMutation.mutate(user); // Pass the selectedUser directly, or pass user._id if needed
   }
-  
+
 
 
   return (
@@ -407,7 +407,7 @@ export default function ViewFaculty() {
                     name="sem1"
                     id="sem1"
                     multiple
-                    defaultValue={selectedUser?.subjects?.sem1 || []} // Bind the value to selectedUser.subjects.sem1
+                    value={selectedUser?.subjects?.sem1 || []} // Automatically binds to selectedUser.subjects.sem1
                     onChange={(e) => {
                       const selectedValues = Array.from(e.target.selectedOptions, option => option.value);
                       setSelectedUser((prev) => ({
@@ -419,27 +419,30 @@ export default function ViewFaculty() {
                       }));
                     }}
                   >
-                    {
-                      subjectData && subjectData?.sem1 && subjectData.sem1.length > 0 ? (
-                        subjectData.sem1.map((sub) => (
-                          <option value={sub._id} key={sub._id}>
-                            {sub.name}
-                          </option>
-                        ))
-                      ) : (
-                        <option value="" disabled>NON</option>
-                      )
-                    }
+                    {subjectData?.sem1 && subjectData.sem1.length > 0 ? (
+                      subjectData.sem1.map((sub) => (
+                        <option
+                          value={sub._id}
+                          key={sub._id}
+                          selected={selectedUser?.subjects?.sem1?.includes(sub._id)} // Highlights if value matches
+                        >
+                          {sub.name}
+                        </option>
+                      ))
+                    ) : (
+                      <option value="" disabled>NON</option>
+                    )}
                   </select>
                 </div>
-                {/* Sem 2 */}
+
+                {/* Repeat for Sem 2, Sem 3, and Sem 4 */}
                 <div className={style.inpBox}>
                   <label htmlFor="sem2">Sem 2:</label>
                   <select
                     name="sem2"
                     id="sem2"
                     multiple
-                    value={selectedUser?.subjects?.sem2 || []} // Bind the value to selectedUser.subjects.sem1
+                    value={selectedUser?.subjects?.sem2 || []}
                     onChange={(e) => {
                       const selectedValues = Array.from(e.target.selectedOptions, option => option.value);
                       setSelectedUser((prev) => ({
@@ -451,17 +454,19 @@ export default function ViewFaculty() {
                       }));
                     }}
                   >
-                    {
-                      subjectData && subjectData?.sem2 && subjectData.sem2.length > 0 ? (
-                        subjectData.sem2.map((sub) => (
-                          <option value={sub._id} key={sub._id}>
-                            {sub.name}
-                          </option>
-                        ))
-                      ) : (
-                        <option value="" disabled>NON</option>
-                      )
-                    }
+                    {subjectData?.sem2 && subjectData.sem2.length > 0 ? (
+                      subjectData.sem2.map((sub) => (
+                        <option
+                          value={sub._id}
+                          key={sub._id}
+                          selected={selectedUser?.subjects?.sem2?.includes(sub._id)}
+                        >
+                          {sub.name}
+                        </option>
+                      ))
+                    ) : (
+                      <option value="" disabled>NON</option>
+                    )}
                   </select>
                 </div>
 
@@ -472,7 +477,7 @@ export default function ViewFaculty() {
                     name="sem3"
                     id="sem3"
                     multiple
-                    value={selectedUser?.subjects?.sem3 || []} // Bind the value to selectedUser.subjects.sem1
+                    value={selectedUser?.subjects?.sem3 || []}
                     onChange={(e) => {
                       const selectedValues = Array.from(e.target.selectedOptions, option => option.value);
                       setSelectedUser((prev) => ({
@@ -480,21 +485,22 @@ export default function ViewFaculty() {
                         subjects: {
                           ...prev.subjects,
                           sem3: selectedValues,
-                        },
-                      }));
+                        }}));
                     }}
                   >
-                    {
-                      subjectData && subjectData?.sem3 && subjectData.sem3.length > 0 ? (
-                        subjectData.sem3.map((sub) => (
-                          <option value={sub._id} key={sub._id}>
-                            {sub.name}
-                          </option>
-                        ))
-                      ) : (
-                        <option value="" disabled>NON</option>
-                      )
-                    }
+                    {subjectData?.sem3 && subjectData.sem3.length > 0 ? (
+                      subjectData.sem3.map((sub) => (
+                        <option
+                          value={sub._id}
+                          key={sub._id}
+                          selected={selectedUser?.subjects?.sem3?.includes(sub._id)}
+                        >
+                          {sub.name}
+                        </option>
+                      ))
+                    ) : (
+                      <option value="" disabled>NON</option>
+                    )}
                   </select>
                 </div>
 
@@ -505,7 +511,7 @@ export default function ViewFaculty() {
                     name="sem4"
                     id="sem4"
                     multiple
-                    value={selectedUser?.subjects?.sem4 || []} // Bind the value to selectedUser.subjects.sem1
+                    value={selectedUser?.subjects?.sem4 || []}
                     onChange={(e) => {
                       const selectedValues = Array.from(e.target.selectedOptions, option => option.value);
                       setSelectedUser((prev) => ({
@@ -513,21 +519,22 @@ export default function ViewFaculty() {
                         subjects: {
                           ...prev.subjects,
                           sem4: selectedValues,
-                        },
-                      }));
+                        }}));
                     }}
                   >
-                    {
-                      subjectData && subjectData?.sem4 && subjectData.sem4.length > 0 ? (
-                        subjectData.sem4.map((sub) => (
-                          <option value={sub._id} key={sub._id}>
-                            {sub.name}
-                          </option>
-                        ))
-                      ) : (
-                        <option value="" disabled>NON</option>
-                      )
-                    }
+                    {subjectData?.sem4 && subjectData.sem4.length > 0 ? (
+                      subjectData.sem4.map((sub) => (
+                        <option
+                          value={sub._id}
+                          key={sub._id}
+                          selected={selectedUser?.subjects?.sem4?.includes(sub._id)}
+                        >
+                          {sub.name}
+                        </option>
+                      ))
+                    ) : (
+                      <option value="" disabled>NON</option>
+                    )}
                   </select>
                 </div>
 

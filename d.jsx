@@ -21,3 +21,31 @@ async getStudentHaveSemester(req, res, next) {
         return next(error);
     }
 }
+
+
+import { updateStudentData } from '../../../api/api'; // Import your update API function
+
+const { mutate: updateStudentDataMutate } = useMutation(updateStudentData, {
+    onSuccess: (data) => {
+        toast.success('Successfully updated student data.');
+        // Optionally update your local state here if needed
+    },
+    onError: (error) => {
+        toast.error(error.message);
+    },
+});
+
+function handleUpdate() {
+    if (!selectedUser) return;
+
+    const updatedData = {
+        ...selectedUser,
+        internal: parseInt(document.querySelector('input[name="internal"]').value, 10),
+        external: parseInt(document.querySelector('input[name="external"]').value, 10),
+        credit: parseInt(document.querySelector('input[name="credit"]').value, 10),
+        practicalMark: parseInt(document.querySelector('input[name="practicalMark"]').value, 10),
+        practicalCredit: parseInt(document.querySelector('input[name="practicalCredit"]').value, 10),
+    };
+
+    updateStudentDataMutate(updatedData);
+}

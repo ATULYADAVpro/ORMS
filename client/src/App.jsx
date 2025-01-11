@@ -26,6 +26,8 @@ import HodHome from './pages/hod-view/home/HodHome';
 import TeacharHome from './pages/faculty-view/home/TeacharHome';
 import CreateSem from './pages/hod-view/generate sem/CreateSem';
 import GiveMarksToStudent from './pages/hod-view/givemarks/GiveMarksToStudent';
+import GiveMarksToStudentInTeachar from './pages/faculty-view/givemarks/GiveMarksToStudentInTeachar';
+import StudentSheets from './pages/faculty-view/studentSheets/StudentSheets';
 
 
 // Custom hook to fetch auth data
@@ -115,9 +117,11 @@ export default function App() {
       </Route>
 
       {/* Teachar Routes Here  */}
-      <Route path='/teachar' element={<CheckAuth isAuthenticated={authData?.isAuthenticated} user={authData?.user}> <FacultyLayoutDashboard /> </CheckAuth>}>
+      <Route path='/teacher' element={<CheckAuth isAuthenticated={authData?.isAuthenticated} user={authData?.user}> <FacultyLayoutDashboard /> </CheckAuth>}>
         <Route index  element={<TeacharHome />} />
         <Route path='home'  element={<TeacharHome />} />
+        <Route path='giveMark'  element={<GiveMarksToStudentInTeachar user={authData?.user} />} />
+        <Route path='listStudentMark'  element={<StudentSheets user={authData?.user} />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />

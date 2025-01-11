@@ -1,0 +1,27 @@
+.NavContainer{
+    display: flex;
+    justify-content: space-between;
+    margin: 0.4rem;
+}
+
+.Nav{
+    /* color: black; */
+    display: flex;
+    gap: 1rem;
+    /* align-items: baseline; */
+}
+
+.Nav > select {
+    color: black;
+    margin: 0.2rem;
+}
+
+.btn{
+    background: #695CFE;
+    color: aliceblue;
+}
+.btnGetstd{
+    background: lightgreen;
+    /* width: 7rem; */
+    padding: 0.4rem 1rem; 
+}

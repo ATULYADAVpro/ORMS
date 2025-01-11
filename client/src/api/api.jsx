@@ -305,3 +305,15 @@ export const addSubjectsInSemesterBulk = async (data) => {
     throw new Error(error.response ? error.response.data.message : 'error in semester subject add in bulk time');
   }
 };
+
+
+// ------------- get subject have subject in  semesters -------------
+export const getStudentMarkForSpecificTeacher = async (data) => {
+  // console.log(data)
+  try {
+    const response = await api.post('/api/student/getStudentMarkForSpecificTeacher', data);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'Subject Not fatch something is wrong');
+  }
+};
