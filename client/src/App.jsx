@@ -28,6 +28,7 @@ import CreateSem from './pages/hod-view/generate sem/CreateSem';
 import GiveMarksToStudent from './pages/hod-view/givemarks/GiveMarksToStudent';
 import GiveMarksToStudentInTeachar from './pages/faculty-view/givemarks/GiveMarksToStudentInTeachar';
 import StudentSheets from './pages/faculty-view/studentSheets/StudentSheets';
+import StudentSheetsHod from './pages/hod-view/studentSheets/StudentSheetsInHod';
 
 
 // Custom hook to fetch auth data
@@ -114,6 +115,7 @@ export default function App() {
         <Route path='home'  element={<HodHome />} />
         <Route path='createSem'  element={<CreateSem user={authData?.user} />} />
         <Route path='giveMark'  element={<GiveMarksToStudent user={authData?.user} />} />
+        <Route path='listStudentMark'  element={<StudentSheetsHod user={authData?.user} />} />
       </Route>
 
       {/* Teachar Routes Here  */}

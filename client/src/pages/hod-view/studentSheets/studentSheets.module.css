@@ -1,0 +1,94 @@
+.NavContainer {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.4rem;
+}
+
+.Nav {
+    /* color: black; */
+    display: flex;
+    gap: 1rem;
+    /* align-items: baseline; */
+}
+
+.Nav>select {
+    color: black;
+    margin: 0.2rem;
+}
+
+.btn {
+    background: #695CFE;
+    color: aliceblue;
+}
+
+.btnGetstd {
+    background: lightgreen;
+    /* width: 7rem; */
+    padding: 0.4rem 1rem;
+}
+
+/* ------- manage modal ------  */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modalContainer {
+    background: #fff;
+    padding: 20px;
+    width: 90%;
+    max-width: 45rem;
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: black;
+    border: 1px rgb(0, 0, 0) solid;
+}
+
+.inpFlex{
+    border: 1px solid rgb(88, 86, 86);
+    width: 100%;
+    padding: 0.4rem;
+
+}
+
+.inpBox{
+    display: flex;
+    flex-direction: column;
+}
+
+.inpBox > input{
+    padding: 0.4rem;
+}
+.btnContainer{
+    display: flex;
+    justify-content: space-evenly;
+    margin: 0.4rem;
+}
+
+
+.btnContainer > .btnUpdate{
+    background: lightgreen;
+}
+.btnContainer > .btnDelete{
+    background: lightcoral;
+}
+
+
+
+.btnDownload{
+    list-style: none;
+    text-decoration: none;
+    color: black;
+}
