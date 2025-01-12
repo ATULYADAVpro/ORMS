@@ -52,3 +52,43 @@
     --head-color: #ffffff;
 }
 
+/* printStyles.css */
+/* printStyles.css */
+@media print {
+    body {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+  
+    body * {
+      visibility: hidden;
+    }
+  
+    #printable, #printable * {
+      visibility: visible;
+    }
+  
+    #printable {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+    }
+  
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+  
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+  
+    button {
+      display: none;
+    }
+  }
+  
+  
+  

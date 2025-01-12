@@ -1,3 +1,4 @@
+import "../../../index.css"
 import React, { useEffect, useState } from 'react'
 import style from './studentSheets.module.css'
 import YearPicker from '../../../common/YearPicker';
@@ -6,6 +7,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { getDepartmentById, getStudentMarkForSpecificTeacher, getUserById, updateMark } from '../../../api/api';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom'
+import { CSVLink } from 'react-csv';  // Import react-csv
 
 export default function StudentSheets({ user }) {
     // ----------- State manage -----------
@@ -216,6 +218,28 @@ export default function StudentSheets({ user }) {
     }, [selectedUser, departmentData]);  // Runs when either selectedUser or departmentData changes
 
 
+    // ------------- Download logic ----------
+    // --------- Download CSV logic ----------
+    const headers = [
+        { label: "Roll No", key: "semesterId.student.rollNo" },
+        { label: "Name", key: "semesterId.student.firstName" },
+        { label: "Subject", key: "subjectName" },
+        { label: "Internal", key: "internal" },
+        { label: "External", key: "external" },
+        { label: "Total", key: "totalMark" },
+        { label: "Grade", key: "grade" },
+        { label: "Grade Point", key: "gradePoint" },
+        { label: "CPA", key: "CPA" },
+        ...(departmentData?.department?.practical ? [
+            { label: "Practical Mark", key: "practicalMark" },
+            { label: "Practical Grade", key: "practicalGrade" },
+            { label: "Practical Grade Point", key: "practicalGradePoint" },
+            { label: "Practical CPA", key: "practicalCPA" }
+        ] : [])
+    ];
+
+
+
     return (
         <div>
             <div className={style.NavContainer}>
@@ -242,76 +266,91 @@ export default function StudentSheets({ user }) {
 
                     {/* <YearPicker handleYearChange={handleYearChange} /> */}
                     <MonthYearPicker handleMonthYearChange={handleMonthYearChange} />
+                    <button className={style.btnGetstd} onClick={handleFatchStudent}>Get</button>
                 </div>
-                <button className={style.btnGetstd} onClick={handleFatchStudent}>Get</button>
+                { tableData &&
+                    <button>
+                    <CSVLink
+                        data={tableData || []}
+                        headers={headers}
+                        filename="student-sheets.csv"
+                        className={style.btnDownload}
+                        target="_blank"
+                    >
+                        Download CSV
+                    </CSVLink>
+                </button>
+                }
             </div>
             <hr />
-            <table>
-                <thead>
-                    <tr>
-                        <th>Roll No</th>
-                        <th>Name</th>
-                        <th>subject</th>
-                        <th>Int</th>
-                        <th>Ext</th>
-                        <th>Total</th>
-                        <th>G</th>
-                        <th>GP</th>
-                        <th>CxG</th>
-                        {
-                            departmentData?.department?.practical === true && <th>Prac</th>
-                        }
-                        {
-                            departmentData?.department?.practical === true && <th>G</th>
-                        }
-                        {
-                            departmentData?.department?.practical === true && <th>GP</th>
-                        }
-                        {
-                            departmentData?.department?.practical === true && <th>CxG</th>
-                        }
-                        <th>Action</th>
-                    </tr>
-                </thead>
+            <div id='printable'>
+                <table >
+                    <thead>
+                        <tr>
+                            <th>Roll No</th>
+                            <th>Name</th>
+                            <th>subject</th>
+                            <th>Int</th>
+                            <th>Ext</th>
+                            <th>Total</th>
+                            <th>G</th>
+                            <th>GP</th>
+                            <th>CxG</th>
+                            {
+                                departmentData?.department?.practical === true && <th>Prac</th>
+                            }
+                            {
+                                departmentData?.department?.practical === true && <th>G</th>
+                            }
+                            {
+                                departmentData?.department?.practical === true && <th>GP</th>
+                            }
+                            {
+                                departmentData?.department?.practical === true && <th>CxG</th>
+                            }
+                            <th className="no-print">Action</th>
+                        </tr>
+                    </thead>
 
-                <tbody>
-                    {
-                        tableData ? tableData.map((data, i) => (
-                            <tr key={i}>
-                                <td>{data.semesterId.student.rollNo}</td>
-                                <td>{data.semesterId.student.firstName} {data.semesterId.student.fatherName} {data.semesterId.student.lastName}</td>
-                                <td>{data.subjectName}</td>
-                                <td>{data.internal}</td>
-                                <td>{data.external}</td>
-                                <td>{data.totalMark}</td>
-                                <td>{data.grade}</td>
-                                <td>{data.gradePoint}</td>
-                                <td>{data.CPA}</td>
-                                {
-                                    departmentData?.department?.practical === true && <td>{data.practicalMark}</td>
-                                }
+                    <tbody>
+                        {
+                            tableData ? tableData.map((data, i) => (
+                                <tr key={i}>
+                                    <td>{data.semesterId.student.rollNo}</td>
+                                    <td>{data.semesterId.student.firstName} {data.semesterId.student.fatherName} {data.semesterId.student.lastName}</td>
+                                    <td>{data.subjectName}</td>
+                                    <td>{data.internal}</td>
+                                    <td>{data.external}</td>
+                                    <td>{data.totalMark}</td>
+                                    <td>{data.grade}</td>
+                                    <td>{data.gradePoint}</td>
+                                    <td>{data.CPA}</td>
+                                    {
+                                        departmentData?.department?.practical === true && <td>{data.practicalMark}</td>
+                                    }
 
-                                {
-                                    departmentData?.department?.practical === true && <td>{data.practicalGrade}</td>
-                                }
-                                {
-                                    departmentData?.department?.practical === true && <td>{data.practicalGradePoint}</td>
-                                }
-                                {
-                                    departmentData?.department?.practical === true && <td>{data.practicalCPA}</td>
-                                }
-                                <td><button onClick={() => handleEdit(data)}>Edit</button></td>
-                            </tr>
-                        )) :
-                            (
-                                <tr>
-                                    <td colSpan={"14"}>No data Available</td>
+                                    {
+                                        departmentData?.department?.practical === true && <td>{data.practicalGrade}</td>
+                                    }
+                                    {
+                                        departmentData?.department?.practical === true && <td>{data.practicalGradePoint}</td>
+                                    }
+                                    {
+                                        departmentData?.department?.practical === true && <td>{data.practicalCPA}</td>
+                                    }
+                                    <td className="no-print"><button onClick={() => handleEdit(data)}>Edit</button></td>
                                 </tr>
-                            )
-                    }
-                </tbody>
+                            )) :
+                                (
+                                    <tr>
+                                        <td colSpan={"14"}>No data Available</td>
+                                    </tr>
+                                )
+                        }
+                    </tbody>
 
-            </table>
+                </table>
+            </div>
             {
                 isModalOpen && selectedUser && (
                     <form>

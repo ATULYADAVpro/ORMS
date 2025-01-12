@@ -49,3 +49,34 @@ function handleUpdate() {
 
     updateStudentDataMutate(updatedData);
 }
+
+
+@media print {
+    /* Hide everything except the specific div with id 'printable' */
+    body * {
+        visibility: hidden;
+    }
+    
+    #printable {
+        visibility: visible; /* Show the content of the div */
+        background-color: #fff;
+        color: #000;
+    }
+  
+    /* Optional: Adjust styling for better print layout */
+    #printable table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    #printable th, td {
+        border: 1px solid #000;
+        padding: 8px;
+        text-align: left;
+    }
+  
+    /* Hide the print button during print */
+    button {
+        display: none;
+    }
+}

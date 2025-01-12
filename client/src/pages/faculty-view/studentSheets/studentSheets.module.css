@@ -84,3 +84,11 @@
 .btnContainer > .btnDelete{
     background: lightcoral;
 }
+
+
+
+.btnDownload{
+    list-style: none;
+    text-decoration: none;
+    color: black;
+}
