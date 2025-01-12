@@ -6,6 +6,7 @@ import { BiSolidReport } from "react-icons/bi";
 import { FaRegNewspaper } from "react-icons/fa6";
 import { GiPapers } from "react-icons/gi";
 import { NavLink } from 'react-router-dom';
+import { MdIncompleteCircle } from "react-icons/md";
 
 export default function Sidebar({ mode, menu, setMode }) {
 
@@ -65,6 +66,15 @@ export default function Sidebar({ mode, menu, setMode }) {
               end
             >
               <span><BiSolidReport /></span><span className={style.text}>Generate Result</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/hod/inCompleteSem"
+              className={({ isActive }) => isActive ? `${style.icon} ${style.active}` : style.icon}
+              end
+            >
+              <span><MdIncompleteCircle /></span><span className={style.text}>Check Sem</span>
             </NavLink>
           </li>
          

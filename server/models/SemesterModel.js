@@ -17,65 +17,68 @@ const semesterSchema = new Schema({
 });
 
 semesterSchema.methods.calculateSGPA = function (subjectArray) {
-    let CG = 0;
-    let CREDIT = 0;
-    console.log(subjectArray); // Log subjects to see their details
-  
-    for (const sub of subjectArray) {
-      // Ensure that CPA and credit are numbers
+  console.log("calculateSGPA method called"); // Log to check if method is invoked
+  let CG = 0;
+  let CREDIT = 0;
+  this.success = true; // Reset success to true at the start
+
+  for (const sub of subjectArray) {
       if (typeof sub.CPA === 'number' && typeof sub.credit === 'number') {
-        if (sub.grade === 'F' || sub.practicalGrade === 'F') {
-          this.grade = 'F';
+          if (sub.grade === 'F' || sub.practicalGrade === 'F') {
+              this.grade = 'F';
+              this.success = false;
+              // console.log("Grade set to F due to failing grade"); // Log the condition
+              // Do not return; continue processing
+          }
+
+          CG += sub.CPA;
+          CREDIT += sub.credit;
+          if (sub.hasOwnProperty('practicalCredit') && typeof sub.practicalCredit === 'number') {
+              CREDIT += sub.practicalCredit;
+          }
+      } else {
           this.success = false;
-          return;
-        }
-  
-        CG += sub.CPA;
-        CREDIT += sub.credit;
-        if (sub.hasOwnProperty('practicalCredit') && typeof sub.practicalCredit === 'number') {
-          CREDIT += sub.practicalCredit;
-        }
-      } else {
-        this.success = false;
-        return;
+          // console.log("Invalid CPA or credit value in subject"); // Log the condition
+          // Do not return; continue processing
       }
-    }
-  
-    // Set credit and score, ensuring they are numbers
-    this.credit = CREDIT || 0;
-    this.score = CG || 0;
-  
-    // Ensure CREDIT is greater than zero before division
-    if (CREDIT > 0) {
+  }
+
+  this.credit = CREDIT || 0;
+  this.score = CG || 0;
+
+  if (CREDIT > 0) {
       this.sgpa = CG / CREDIT;
-  
-      // Define your grading system here
+
       if (this.sgpa >= 10) {
-        this.grade = 'O';
+          this.grade = 'O';
       } else if (this.sgpa >= 9) {
-        this.grade = 'A+';
+          this.grade = 'A+';
       } else if (this.sgpa >= 8) {
-        this.grade = 'A';
+          this.grade = 'A';
       } else if (this.sgpa >= 7) {
-        this.grade = 'B+';
+          this.grade = 'B+';
       } else if (this.sgpa >= 6) {
-        this.grade = 'B';
+          this.grade = 'B';
       } else if (this.sgpa >= 5) {
-        this.grade = 'C';
+          this.grade = 'C';
       } else if (this.sgpa >= 4) {
-        this.grade = 'D';
+          this.grade = 'D';
       } else {
-        this.grade = 'F';
+          this.grade = 'F';
       }
-      this.success = true;
-    } else {
-      this.sgpa = 0; // Default value if CREDIT is zero
+      this.success = this.success && true; // Maintain success if true
+      // console.log("SGPA calculation successful"); // Log success
+  } else {
+      this.sgpa = 0;
       this.success = false;
-      this.grade = 'F'; // Default failing grade
-    }
-  
-    console.log("Method works");
-  };
+      this.grade = 'F';
+      // console.log("SGPA calculation failed due to zero credits"); // Log failure
+  }
+
+  // console.log("calculateSGPA method completed"); // Log completion
+};
+
+
   
 
 const Semester = model('semester', semesterSchema);

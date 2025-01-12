@@ -330,3 +330,36 @@ export const updateMark = async (data) => {
     throw new Error(error.response ? error.response.data.message : 'Subject Not Update something is wrong');
   }
 };
+
+
+// -------- Get complete semesters subjects -------
+export const getCompletedSemesterSubject = async (data) => {
+  // console.log(data)
+  try {
+    const response = await api.post('/api/semester/getCompletedSemesterSubject', data);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'error in getCompletedSemesterSubject ');
+  }
+};
+
+// -------- Get complete semesters subjects -------
+export const getInCompletedSemesterSubject = async (data) => {
+  // console.log(data)
+  try {
+    const response = await api.post('/api/semester/getInCompletedSemesterSubject', data);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'error in getInCompletedSemesterSubject ');
+  }
+};
+// -------- Here generate result ---------
+export const generateResultNow = async (data) => {
+  // console.log(data)
+  try {
+    const response = await api.post('/api/semester/generateResultNow', data);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'error in generateResultNow');
+  }
+};

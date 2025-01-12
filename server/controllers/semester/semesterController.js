@@ -114,69 +114,69 @@ const semesterController = {
             return next(error);
         }
     },
-    // --------------- Do active status for multiple students --------
-    async semesterActiveBulk(req, res, next) {
-        try {
-            const { students } = req.body; // Assuming 'students' is an array of student data
+    // // --------------- Do active status for multiple students --------
+    // async semesterActiveBulk(req, res, next) {
+    //     try {
+    //         const { students } = req.body; // Assuming 'students' is an array of student data
 
-            let results = []; // Initialize an array to store results for each student
+    //         let results = []; // Initialize an array to store results for each student
 
-            for (const student of students) {
-                const { _id, sem, stream } = student;
-                const semester = await Semester.findById(_id).populate({ path: "subjects" });
-                const subjects = await Subject.find({ sem, stream });
+    //         for (const student of students) {
+    //             const { _id, sem, stream } = student;
+    //             const semester = await Semester.findById(_id).populate({ path: "subjects" });
+    //             const subjects = await Subject.find({ sem, stream });
 
-                let leftSubjects = []; // Initialize as an array to store all unmatched subjects
+    //             let leftSubjects = []; // Initialize as an array to store all unmatched subjects
 
-                let semesterSubjectIds = semester.subjects.map(sems => sems); // Keep ObjectId as it is
+    //             let semesterSubjectIds = semester.subjects.map(sems => sems); // Keep ObjectId as it is
 
-                // Loop through all subjects and check if they are in the semester subjects
-                for (const sub of subjects) {
-                    const isSubjectPresent = semester.subjects.some(semesterSubject =>
-                        semesterSubject.subjectId.equals(sub._id) // Use .equals() for comparison
-                    );
+    //             // Loop through all subjects and check if they are in the semester subjects
+    //             for (const sub of subjects) {
+    //                 const isSubjectPresent = semester.subjects.some(semesterSubject =>
+    //                     semesterSubject.subjectId.equals(sub._id) // Use .equals() for comparison
+    //                 );
 
-                    if (!isSubjectPresent) {
-                        leftSubjects.push(sub); // Add unmatched subjects to the array
-                    }
-                }
+    //                 if (!isSubjectPresent) {
+    //                     leftSubjects.push(sub); // Add unmatched subjects to the array
+    //                 }
+    //             }
 
-                if (leftSubjects.length > 0) {
-                    // Return message if there are unmatched subjects
-                    return res.status(400).json({
-                        message: `Some subjects are not submitted left ${leftSubjects.length}, contact your teacher`,
-                        leftSubjects
-                    });
-                } else {
-                    // Update status field to true if all subjects are submitted
-                    semester.status = true;
-                    semester.calculateSGPA(semesterSubjectIds);
+    //             if (leftSubjects.length > 0) {
+    //                 // Return message if there are unmatched subjects
+    //                 return res.status(400).json({
+    //                     message: `Some subjects are not submitted left ${leftSubjects.length}, contact your teacher`,
+    //                     leftSubjects
+    //                 });
+    //             } else {
+    //                 // Update status field to true if all subjects are submitted
+    //                 semester.status = true;
+    //                 semester.calculateSGPA(semesterSubjectIds);
 
-                    try {
-                        // Save the instance after calculation
-                        await semester.save();
-                        // console.log('Semester saved successfully:', semester);
+    //                 try {
+    //                     // Save the instance after calculation
+    //                     await semester.save();
+    //                     // console.log('Semester saved successfully:', semester);
 
-                        // Return semester subject IDs in the response body (still keep ObjectId)
-                        return res.status(200).json({
-                            message: "All subjects submitted successfully and status updated",
-                            semester,
-                            semesterSubjectIds // Include the semesterSubjectIds without converting to string
-                        });
-                    } catch (err) {
-                        // console.error('Error saving semester:', err);
-                        return next(err);
-                    }
-                }
-            }
+    //                     // Return semester subject IDs in the response body (still keep ObjectId)
+    //                     return res.status(200).json({
+    //                         message: "All subjects submitted successfully and status updated",
+    //                         semester,
+    //                         semesterSubjectIds // Include the semesterSubjectIds without converting to string
+    //                     });
+    //                 } catch (err) {
+    //                     // console.error('Error saving semester:', err);
+    //                     return next(err);
+    //                 }
+    //             }
+    //         }
 
-            // Return results for all students
-            return res.status(200).json({ results });
+    //         // Return results for all students
+    //         return res.status(200).json({ results });
 
-        } catch (error) {
-            return next(error);
-        }
-    },
+    //     } catch (error) {
+    //         return next(error);
+    //     }
+    // },
 
     // ------------------------- for teachar subject permission related add subject functionalty ------
     async addSubjectInSemester(req, res, next) {
@@ -228,18 +228,18 @@ const semesterController = {
         }
     },
 
-     // ------------------------- in for teachar subject permission related add subject functionalty ------
+    // ------------------------- in for teachar subject permission related add subject functionalty ------
 
     async addSubjectsInSemesterBulk(req, res, next) {
         try {
             const { studentsData } = req.body;
             console.log(studentsData)
-    
+
             let results = []; // Initialize an array to store results for each student
-    
+
             for (const studentData of studentsData) {
                 const { semesterDetails, markDetails } = studentData;
-    
+
                 // Find the semester
                 const semester = await Semester.findOne({
                     sem: semesterDetails.sem,
@@ -247,51 +247,51 @@ const semesterController = {
                     student: semesterDetails.student,
                     date_of_issue: semesterDetails.date_of_issue
                 }).populate({ path: "subjects" });
-    
+
                 if (!semester) {
                     results.push({ error: `Semester not found for student: ${semesterDetails.student}` });
                     continue; // Skip to the next studentData if not found
                 }
-    
+
                 let submitMarks = [];
-    
+
                 // Verify if the subject already exists (case-insensitive check)
                 const subjectExist = semester.subjects.some((subject) =>
                     subject.subjectCode.toLowerCase() === markDetails.subjectCode.toLowerCase()
                 );
-    
+
                 if (subjectExist) {
                     results.push({ message: `Subject already exists for student: ${semesterDetails.student}` });
                     continue; // Skip to the next studentData if the subject already exists
                 }
-    
+
                 // Create Mark entry
                 const submitMark = new Marks({
                     semesterId: semester._id,
                     ...markDetails
                 });
-    
+
                 // Save the new mark entry
                 await submitMark.save();
-    
+
                 // Add the new mark ID to the semester's subjects array
                 semester.subjects.push(submitMark._id);
                 submitMarks.push(submitMark);
-    
+
                 // Save the updated semester
                 await semester.save();
-    
+
                 results.push({ success: true, message: `Successfully added subjects for student: ${semesterDetails.student}`, submitMarks });
             }
-    
+
             res.status(200).json({ results });
         } catch (error) {
             return next(error);
         }
     },
-    
-     // ------- Addsemester In Bulk --------
-     async addSemesterinBulk(req, res, next) {
+
+    // ------- Addsemester In Bulk --------
+    async addSemesterinBulk(req, res, next) {
         const { studentArray, examType, stream, date_of_issue, sem } = req.body;
 
         try {
@@ -342,6 +342,219 @@ const semesterController = {
         }
 
     },
+
+    // async getCompletedSemesterSubject(req, res, next) {
+    //     const { stream, sem, date_of_issue, admissionDate, examType } = req.body;
+    //     try {
+    //         const semesters = await Semester.find({ stream, sem, date_of_issue, examType }).populate("subjects").populate("student")
+    //         const subjects = await Subject.find({ stream, sem });
+
+    //         // ------ Checking if semesters and subjects exist or not ------
+    //         if (!semesters || semesters.length === 0) {
+    //             return next(CustomErrorHandler.notFound("Not found Semester!"));
+    //         }
+    //         if (!subjects || subjects.length === 0) {
+    //             return next(CustomErrorHandler.notFound("Not found Subject!"));
+    //         }
+
+    //         // Filter semesters where all subjects match
+    //         const matchedSemesters = semesters.filter(semester => {
+    //             return subjects.every(subject => {
+    //                 return semester.subjects.some(semesterSubject =>
+    //                     semesterSubject.subjectId.equals(subject._id) // Use .equals() for comparison
+    //                 );
+    //             });
+    //         });
+
+    //         if (matchedSemesters.length === 0) {
+    //             return next(CustomErrorHandler.notFound("No semesters found with all matching subjects!"));
+    //         }
+
+    //         res.status(200).json(matchedSemesters);
+
+    //     } catch (error) {
+    //         return next(error);
+    //     }
+    // }
+
+    async getCompletedSemesterSubject(req, res, next) {
+        const { stream, sem, date_of_issue, admissionDate, examType } = req.body;
+        try {
+            const semesters = await Semester.find({ stream, sem, date_of_issue, examType }).populate("subjects").populate("student")
+            const subjects = await Subject.find({ stream, sem });
+
+            // ------ Checking if semesters and subjects exist or not ------
+            if (!semesters || semesters.length === 0) {
+                return next(CustomErrorHandler.notFound("Not found Semester!"));
+            }
+            if (!subjects || subjects.length === 0) {
+                return next(CustomErrorHandler.notFound("Not found Subject!"));
+            }
+
+            // Filter semesters where all subjects match
+            const matchedSemesters = semesters.filter(semester => {
+                return subjects.every(subject => {
+                    return semester.subjects.some(semesterSubject =>
+                        semesterSubject.subjectId.equals(subject._id) // Use .equals() for comparison
+                    );
+                });
+            });
+
+            if (matchedSemesters.length === 0) {
+                return next(CustomErrorHandler.notFound("No semesters found with all matching subjects!"));
+            }
+
+            // New condition: Filter out semesters where the status is true
+            const filteredSemesters = matchedSemesters.filter(semester => !semester.status);
+
+            if (filteredSemesters.length === 0) {
+                return next(CustomErrorHandler.notFound("No semesters found with all matching subjects and status is not true!"));
+            }
+
+            res.status(200).json(filteredSemesters);
+
+        } catch (error) {
+            return next(error);
+        }
+    },
+
+    // async generateResultNow(req, res, next) {
+    //     const students = req.body;
+    //     // console.log(students)
+    //     try {
+    //         for (const std of students) {
+    //             const semester = await Semester.findById(std._id).populate("subjects");
+    //             if (!semester) {
+    //                 continue; // skip this student if semester is not found
+    //             }
+
+    //             // Update status field to true
+    //             semester.status = true;
+
+    //             // Assuming calculateSGPA is a method in the Semester model
+    //             semester.calculateSGPA();
+
+    //             await semester.save();
+    //         }
+    //         res.status(200).json({ message: "Results generated successfully" });
+    //     } catch (error) {
+    //         return next(error);
+    //     }
+    // }
+
+    async generateResultNow(req, res, next) {
+        const studentIds = req.body;
+        console.log("Student IDs array:", studentIds);
+        try {
+            for (const id of studentIds) {
+                const semester = await Semester.findById(id).populate("subjects");
+                if (!semester) {
+                    console.log(`Semester not found for student ID: ${id}`);
+                    continue;
+                }
+
+                // Update status field to true
+                semester.status = true;
+
+                // Ensure subjects array is populated
+                if (!Array.isArray(semester.subjects) || semester.subjects.length === 0) {
+                    console.log(`No subjects found for student ID: ${id}`);
+                    continue;
+                }
+
+                // Log subjects before calling calculateSGPA
+                // console.log(`Subjects for student ID: ${id}`, semester.subjects);
+
+                // Assuming calculateSGPA is a method in the Semester model
+                try {
+                    semester.calculateSGPA(semester.subjects);
+                    await semester.save();
+                    // console.log(`Results saved successfully for student ID: ${id}`);
+                } catch (calculationError) {
+                    // console.error(`Error calculating SGPA for student ID: ${id}`, calculationError);
+                    continue;
+                }
+            }
+            res.status(200).json({ message: "Results generated successfully" });
+        } catch (error) {
+            console.error("Error generating results", error);
+            return next(error);
+        }
+    },
+
+    // async getInCompletedSemesterSubject(req, res, next) {
+    //     const { stream, sem, date_of_issue, examType } = req.body;
+
+    //     try {
+    //         const semesters = await Semester.find({ stream, sem, date_of_issue, examType }).populate({ path: "subjects" }).populate("student");
+    //         const subjects = await Subject.find({ sem, stream });
+
+    //         let result = []; // Array to hold the result for each semester
+
+    //         semesters.forEach(semester => {
+    //             let leftSubjects = []; // Initialize as an array to store all unmatched subjects for the current semester
+
+    //             // Loop through all subjects and check if they are in the semester subjects
+    //             for (const sub of subjects) {
+    //                 const isSubjectPresent = semester.subjects.some(semesterSubject =>
+    //                     semesterSubject.subjectId.equals(sub._id) // Use .equals() for comparison
+    //                 );
+
+    //                 if (!isSubjectPresent) {
+    //                     leftSubjects.push(sub); // Add unmatched subjects to the array
+    //                 }
+    //             }
+
+    //             if (leftSubjects.length > 0) {
+    //                 result.push({
+    //                     semester,
+    //                     leftSubjects
+    //                 });
+    //             }
+
+
+    //         });
+
+    //         return res.status(200).json(result);
+    //     } catch (error) {
+    //         return next(error);
+    //     }
+    // }
+    async getInCompletedSemesterSubject(req, res, next) {
+        const { stream, sem, date_of_issue, examType } = req.body;
+    
+        try {
+            // Fetch semesters and subjects based on filters
+            const semesters = await Semester.find({ stream, sem, date_of_issue, examType })
+                .populate({ path: "subjects" })
+                .populate("student");
+    
+            const subjects = await Subject.find({ sem, stream });
+    
+            if (!semesters.length || !subjects.length) {
+                return res.status(404).json({ message: "No data found for the given criteria." });
+            }
+    
+            // Prepare results
+            const result = semesters.map(semester => {
+                const semesterSubjectIds = new Set(semester.subjects.map(s => s.subjectId.toString()));
+    
+                // Filter unmatched subjects
+                const unmatchedSubjects = subjects.filter(sub => !semesterSubjectIds.has(sub._id.toString()));
+    
+                return unmatchedSubjects.length > 0
+                    ? { semester, leftSubjects: unmatchedSubjects }
+                    : null;
+            }).filter(Boolean); // Remove null results
+    
+            return res.status(200).json(result);
+        } catch (error) {
+            return next(error);
+        }
+    }
+    
+
+
 
 
 };
