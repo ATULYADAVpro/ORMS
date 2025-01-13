@@ -22,10 +22,10 @@ table {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-thead {
+/* thead {
   background-color: var(--primary-color);
   color: var(--head-color);
-}
+} */
 
 th,
 td {

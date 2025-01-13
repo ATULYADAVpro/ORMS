@@ -13,6 +13,7 @@ semesterRouter.post("/addSubjectsInSemesterBulk", semesterController.addSubjects
 semesterRouter.post("/getCompletedSemesterSubject", semesterController.getCompletedSemesterSubject)
 semesterRouter.post("/generateResultNow", semesterController.generateResultNow)
 semesterRouter.post("/getInCompletedSemesterSubject", semesterController.getInCompletedSemesterSubject)
+semesterRouter.post("/getActiveSemester", semesterController.getActiveSemester)
 
 
 // ============= Routes of Semester exports ==============

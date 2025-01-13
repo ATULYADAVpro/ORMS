@@ -363,3 +363,13 @@ export const generateResultNow = async (data) => {
     throw new Error(error.response ? error.response.data.message : 'error in generateResultNow');
   }
 };
+// -------- Here getActive result ---------
+export const getActiveSemester = async (data) => {
+  // console.log(data)
+  try {
+    const response = await api.post('/api/semester/getActiveSemester', data);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'error in generateResultNow');
+  }
+};

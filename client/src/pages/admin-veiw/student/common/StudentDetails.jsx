@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import style from './studentDetails.module.css';
 import SemisterDataForSD from './SemisterDataForSD';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteStudent, getDepartment, updateStudent } from '../../../../api/api';
+import { deleteStudent, getActiveSemester, getDepartment, updateStudent } from '../../../../api/api';
 import { toast } from 'react-toastify';
 import uploadImageToCloudinary from './uploadImageToCloudinary'; // Import the image upload handler
 
@@ -16,7 +16,22 @@ const StudentDetails = ({ selectedStudent, onBack }) => {
     const [student, setStudent] = useState(selectedStudent);
     const [profileImage, setProfileImage] = useState(null);
     const [profilePreview, setProfilePreview] = useState(selectedStudent.profileUrl);
+    const [semData, setSemData] = useState(null)
 
+
+
+
+    const { mutate: studentSemDataMuate } = useMutation({
+        mutationFn: getActiveSemester,
+        onSuccess: (data) => {
+            toast.success('Successfull');
+            setSemData(data)
+            // queryClient.invalidateQueries(['students']);
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        },
+    });
     const updateMutation = useMutation({
         mutationFn: updateStudent,
         onSuccess: () => {
@@ -106,6 +121,24 @@ const StudentDetails = ({ selectedStudent, onBack }) => {
     const handleImageClick = () => {
         document.getElementById('profileImageInput').click();
     };
+
+
+    // console.log(student.semesters)
+
+
+    function handleFatchSemDataActive() {
+        if (student.semesters || student.semesters.length > 0) {
+            studentSemDataMuate(student.semesters)
+        } else {
+            toast.info("this semester haven't active or empty")
+        }
+    }
+
+
+    console.log(semData)
+
+
+
 
     return (
         <div className={style.studentDetails}>
@@ -249,7 +282,20 @@ const StudentDetails = ({ selectedStudent, onBack }) => {
                 </div>
             </div>
 
-            <SemisterDataForSD />
+            <div className={style.moreBtnContainer}>
+
+                <button className={style.more} onClick={handleFatchSemDataActive}>More</button>
+            </div>
+
+            {
+                semData && semData.map((data,i) => {
+                    {/* console.log(data) */}
+                    return (
+                        <SemisterDataForSD key={i} data={data} student={student} semData={semData} />
+                    )
+                })
+            }
+
         </div>
     );
 };

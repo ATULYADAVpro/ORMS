@@ -522,37 +522,53 @@ const semesterController = {
     // }
     async getInCompletedSemesterSubject(req, res, next) {
         const { stream, sem, date_of_issue, examType } = req.body;
-    
+
         try {
             // Fetch semesters and subjects based on filters
             const semesters = await Semester.find({ stream, sem, date_of_issue, examType })
                 .populate({ path: "subjects" })
                 .populate("student");
-    
+
             const subjects = await Subject.find({ sem, stream });
-    
+
             if (!semesters.length || !subjects.length) {
                 return res.status(404).json({ message: "No data found for the given criteria." });
             }
-    
+
             // Prepare results
             const result = semesters.map(semester => {
                 const semesterSubjectIds = new Set(semester.subjects.map(s => s.subjectId.toString()));
-    
+
                 // Filter unmatched subjects
                 const unmatchedSubjects = subjects.filter(sub => !semesterSubjectIds.has(sub._id.toString()));
-    
+
                 return unmatchedSubjects.length > 0
                     ? { semester, leftSubjects: unmatchedSubjects }
                     : null;
             }).filter(Boolean); // Remove null results
-    
+
             return res.status(200).json(result);
         } catch (error) {
             return next(error);
         }
+    },
+
+    async getActiveSemester(req, res, next) {
+        const sems = req.body;
+        try {
+            let activeSems = [];
+            for (const obj of sems) {
+                const semesters = await Semester.findById(obj).populate("subjects").populate("stream")
+                if (semesters && semesters.status === true) {
+                    activeSems.push(semesters);
+                }
+            }
+            res.json(activeSems);
+        } catch (error) {
+            return next(error);
+        }
     }
-    
+
 
 
 
