@@ -74,7 +74,7 @@ export default function Sidebar({ mode, menu, setMode }) {
               className={({ isActive }) => isActive ? `${style.icon} ${style.active}` : style.icon}
               end
             >
-              <span><MdIncompleteCircle /></span><span className={style.text}>Check Sem</span>
+              <span><MdIncompleteCircle /></span><span className={style.text}>Incomplete Sem</span>
             </NavLink>
           </li>
          

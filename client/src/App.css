@@ -1,0 +1,43 @@
+@media print {
+    /* Ensure each .page-break starts on a new page */
+    .page-break {
+        page-break-before: always;
+        page-break-inside: avoid;
+        margin: 1rem 0;
+        width: 100%;
+    }
+
+    /* General print layout adjustments */
+    html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: auto;
+        -webkit-print-color-adjust: exact; /* Ensures accurate colors in print */
+        overflow: initial !important;
+    }
+
+    .printLayoutForExport {
+        padding: 1rem;
+        box-sizing: border-box;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: red solid 3px;
+    }
+
+    /* Page setup */
+    @page {
+        size: A4 landscape; /* Specify paper size and orientation */
+        margin: 0;       /* Adjust margin for print */
+    }
+}
+
+@media all {
+    .page-break {
+        display: none; /* Hide page-break markers in non-print views */
+    }
+}

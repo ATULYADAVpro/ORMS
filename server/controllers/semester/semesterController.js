@@ -567,6 +567,36 @@ const semesterController = {
         } catch (error) {
             return next(error);
         }
+    },
+
+
+    async getActiveSemesterForExportResult(req, res, next) {
+        const { sem, stream, examType, date_of_issue } = req.body;
+        try {
+            let activeSems = [];
+            const semesters = await Semester.find({ sem, stream, examType, date_of_issue }).populate("subjects").populate("stream").populate("student")
+            if (!semesters) {
+                return next(CustomErrorHandler.notFound("This semester Data is not found"))
+            }
+
+            for (const sems of semesters) {
+                if (sems.status === true) {
+                    activeSems.push(sems)
+                }
+
+            }
+            if (activeSems.length > 0) {
+                res.status(200).json(activeSems)
+            } else {
+                return next(CustomErrorHandler.notFound("This semester Data is not found"))
+            }
+
+
+
+
+        } catch (error) {
+            return next(error);
+        }
     }
 
 

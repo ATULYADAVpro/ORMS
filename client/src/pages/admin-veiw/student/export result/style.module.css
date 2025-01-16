@@ -1,0 +1,28 @@
+.Nav{
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.btn{
+    background: lightcoral;
+    padding: 0.4rem 1rem;
+}
+
+.NavContainer{
+    display: flex;
+    justify-content: space-between;
+    margin: 0.4rem;
+    align-items: center;
+}
+
+.btnExport{
+    background: lightgreen;
+    padding: 0.4rem 1rem;
+}
+.mainContainer{
+    margin-top: 0.2rem;
+    overflow-y: auto;
+    border: 1px gray solid;
+    /* margin: 0.2rem; */
+}

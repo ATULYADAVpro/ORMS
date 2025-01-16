@@ -15,6 +15,7 @@ const getOptionsByPath = (path) => {
     return [
       { label: 'list', value: '' },
       { label: 'Add Student', value: 'add-student' },
+      { label: 'Export Result', value: 'exportResult' },
     ];
   } else if (path === '/admin/subject') {
     return [

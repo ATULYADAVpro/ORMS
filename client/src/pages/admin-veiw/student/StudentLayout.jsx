@@ -23,6 +23,7 @@ export default function StudentLayout() {
       >
         <option value="/admin/student">Student Lists</option>
         <option value="/admin/student/add">Add Student</option>
+        <option value="/admin/student/exportResult">Export Result</option>
       </select>
       <Outlet />
 

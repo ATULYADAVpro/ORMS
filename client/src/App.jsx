@@ -31,6 +31,7 @@ import StudentSheets from './pages/faculty-view/studentSheets/StudentSheets';
 import StudentSheetsHod from './pages/hod-view/studentSheets/StudentSheetsInHod';
 import GenerateResult from './pages/hod-view/generateResult/GenerateResult';
 import IncompleteSem from './pages/hod-view/inCompleteSem/IncompleteSem';
+import ExportsResult from './pages/admin-veiw/student/export result/ExportsResult';
 
 
 // Custom hook to fetch auth data
@@ -108,6 +109,7 @@ export default function App() {
         <Route path='student' element={<StudentLayout />}>
           <Route index element={<ListStudent />} />
           <Route path='add' element={<AddStudent />} />
+          <Route path='exportResult' element={<ExportsResult />} />
         </Route>
       </Route>
 

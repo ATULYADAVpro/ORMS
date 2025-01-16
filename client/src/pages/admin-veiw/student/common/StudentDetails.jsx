@@ -135,8 +135,6 @@ const StudentDetails = ({ selectedStudent, onBack }) => {
     }
 
 
-    console.log(semData)
-
 
 
 

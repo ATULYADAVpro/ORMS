@@ -298,3 +298,91 @@ export default function SemisterDataForSD({ data, semData }) {
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media print {
+  .btnPrint {
+      display: none;
+  }
+
+  table {
+      width: 90%;
+      border-collapse: collapse;
+  }
+
+  tbody>tr>td {
+      border: 1px solid #000;
+      /* padding: 2px; */
+      text-align: left;
+      font-size: small;
+      font-weight: bold;
+  }
+
+  /* th {
+      border: 1px solid #000;
+      padding: 8px;
+      text-align: left;
+      font-size: xx-small;
+  } */
+
+  thead>tr>th {
+      border: 1px solid #000;
+      /* padding: 2px; */
+      text-align: left;
+      font-size: small;
+  }
+
+  html,
+  body {
+      height: 100vh;
+      /* Use 100% here to support printing more than a single page*/
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: hidden;
+      align-items: center;
+      justify-content: center;
+  }
+
+  @page {
+      size: landscape;
+      page-break-before: always;
+
+  }
+
+  .page_break {
+      page-break-before: always;
+      page-break-inside: avoid;
+  }
+  
+
+  .printLayout {
+      padding: 2rem;
+      border: red solid 2px;
+      width: 99%;
+      margin: 5px;
+      align-items: center;
+      text-align: center;
+      overflow-x: hidden;
+      height: 98%;
+      /* width: 90%; */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+  }
+}
