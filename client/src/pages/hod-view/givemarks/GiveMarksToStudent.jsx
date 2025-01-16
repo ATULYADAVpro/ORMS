@@ -213,10 +213,18 @@ export default function GiveMarksToStudent({ user }) {
                     subjectCode: markValidtaion.code,
                     internal: element.internal,
                     external: element.external,
+                    internalMax: element.internalMax,
+                    externalMax: element.externalMax,
+                    internalMin: element.internalMin,
+                    externalMin: element.externalMin,
+                    totalMax: markValidtaion.totalMax,
+                    totalMin: markValidtaion.totalMin,
                     credit: markValidtaion.credit,
                 }
                 if (departmentData?.department?.practical) {
                     markDetails.practicalName = markValidtaion.practicalName,
+                        markDetails.practicalMax = markValidtaion.practicalMax,
+                        markDetails.practicalMin = markValidtaion.practicalMin,
                         markDetails.practicalCode = markValidtaion.practicalCode,
                         markDetails.practicalCredit = markValidtaion.practicalCredit,
                         markDetails.practicalMark = element.practicalMark || "";

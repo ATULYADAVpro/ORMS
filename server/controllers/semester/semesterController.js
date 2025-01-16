@@ -233,7 +233,7 @@ const semesterController = {
     async addSubjectsInSemesterBulk(req, res, next) {
         try {
             const { studentsData } = req.body;
-            console.log(studentsData)
+            // console.log(studentsData)
 
             let results = []; // Initialize an array to store results for each student
 
@@ -597,7 +597,36 @@ const semesterController = {
         } catch (error) {
             return next(error);
         }
+    },
+
+    async displayResultData(req, res, next) {
+        const { sem, date_of_issue, rollNo } = req.body;
+        try {
+            if (!sem || !date_of_issue || !rollNo) {
+                return next(CustomErrorHandler.RequireField("All fields are required."));
+            }
+
+            const student = await Student.findOne({ rollNo });
+            if (!student) {
+                return next(CustomErrorHandler.notFound("Student not found."));
+            }
+
+            const semester = await Semester.findOne({ sem, date_of_issue, student: student._id }).populate("student").populate("stream").populate("subjects");
+            if (!semester) {
+                return next(CustomErrorHandler.notFound("Semester is not created... contact your teacher."));
+            }
+
+            if (semester.status === true) {
+                return res.status(200).json(semester);
+            } else {
+                return next(CustomErrorHandler.notFound("Semester is not active, contact your HOD."));
+            }
+
+        } catch (error) {
+            return next(error);
+        }
     }
+
 
 
 

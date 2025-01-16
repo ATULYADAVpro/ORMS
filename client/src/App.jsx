@@ -32,6 +32,7 @@ import StudentSheetsHod from './pages/hod-view/studentSheets/StudentSheetsInHod'
 import GenerateResult from './pages/hod-view/generateResult/GenerateResult';
 import IncompleteSem from './pages/hod-view/inCompleteSem/IncompleteSem';
 import ExportsResult from './pages/admin-veiw/student/export result/ExportsResult';
+import DisplayResult from './pages/check result/DisplayResult';
 
 
 // Custom hook to fetch auth data
@@ -133,6 +134,7 @@ export default function App() {
       </Route>
 
       <Route path="*" element={<NotFound />} />
+      <Route path="/checkResult" element={<DisplayResult />} />
       <Route path="/unauth-page" element={<UnAuth />} />
     </Routes>
 

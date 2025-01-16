@@ -1,0 +1,85 @@
+.container{
+    background: var(--body-color);
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.formContainer{
+    width: 25rem;
+    /* border: red solid 2px; */
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--sidebar-color);
+    padding: 0.4rem;
+    box-shadow: var(--shadow-1);
+
+}
+.formContainer > select {
+    width: 98%;
+    height: 2rem;
+}
+
+.formContainer > input {
+    width: 98%;
+    margin-top: 1rem;
+    border-radius: 5px;
+    border: 1px gray solid;
+    padding: 5px;
+    height: 2rem;
+}
+
+.MonthYearPicker{
+    display: flex;
+    padding: 0.2rem;
+    width: 98%;
+    /* height: 2rem; */
+    /* border: red solid 2px; */
+    margin-top: 0.4rem;;
+    align-items: center;
+    /* justify-content: center; */
+}
+
+.MonthYearPicker > p{
+    font-weight: 400;
+    color: rgba(128, 128, 128, 0.333);
+}
+
+.MonthYearPicker > input {
+    width: 100%;
+    margin-left: 0.2rem;
+    border-radius: 5px;
+    border: gray 1px solid;
+}
+
+.btnContainer{
+    margin-top: 2rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+.btnContainer > button{
+    width: 80%;
+    color: black;
+    background: var(--primary-color);
+    font-weight: bold;
+    letter-spacing: 0.3rem;
+}
+
+.logo{
+    width: 5rem;
+    height: 5rem;
+}
+
+.logo > img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

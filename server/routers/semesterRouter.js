@@ -16,6 +16,7 @@ semesterRouter.post("/getInCompletedSemesterSubject", semesterController.getInCo
 semesterRouter.post("/getActiveSemester", semesterController.getActiveSemester)
 semesterRouter.post("/getActiveSemesterForExportResult", semesterController.getActiveSemesterForExportResult)
 
+semesterRouter.post("/displayResultData", semesterController.displayResultData)
 
 // ============= Routes of Semester exports ==============
 export default semesterRouter

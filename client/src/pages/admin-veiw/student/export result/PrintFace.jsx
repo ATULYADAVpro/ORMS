@@ -17,7 +17,7 @@ export default function PrintFace({ setBack, selectedUsers }) {
             <div ref={contentRef}>
                 {selectedUsers && selectedUsers.length > 0 ? (
                     selectedUsers.map((data, index) => (
-                        <div key={index} style={{width:"100%", marginTop:"3rem"}} className="page_break">
+                        <div key={index} style={{width:"100%", marginTop:"0"}} className="page_break">
                             <CommonPrintLayout data={data} />
                         </div>
                     ))

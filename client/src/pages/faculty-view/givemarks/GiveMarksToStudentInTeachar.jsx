@@ -211,12 +211,20 @@ export default function GiveMarksToStudentInTeachar({ user }) {
                     subjectId: subjectId,
                     subjectName: markValidtaion.name,
                     subjectCode: markValidtaion.code,
+                    internalMax: markValidtaion.internalMax,
+                    internalMin: markValidtaion.internalMin,
+                    externalMax: markValidtaion.externalMax,
+                    externalMin: markValidtaion.externalMin,
+                    totalMax: markValidtaion.totalMax,
+                    totalMin: markValidtaion.totalMin,
                     internal: element.internal,
                     external: element.external,
                     credit: markValidtaion.credit,
                 }
                 if (departmentData?.department?.practical) {
                     markDetails.practicalName = markValidtaion.practicalName,
+                    markDetails.practicalMax = markValidtaion.practicalMax,
+                    markDetails.practicalMin = markValidtaion.practicalMin,
                         markDetails.practicalCode = markValidtaion.practicalCode,
                         markDetails.practicalCredit = markValidtaion.practicalCredit,
                         markDetails.practicalMark = element.practicalMark || "";
