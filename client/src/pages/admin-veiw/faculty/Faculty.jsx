@@ -54,12 +54,12 @@ export default function Faculty() {
         // Prepare data for Cloudinary upload
         const formData = new FormData();
         formData.append('file', uploadedFile);
-        formData.append('upload_preset', 'gtk4v3ju'); // Cloudinary preset name
+        formData.append('upload_preset', import.meta.env.VITE_APP_CLOUDINARY_PRESET_NAME); // Cloudinary preset name
 
         try {
           // Upload image to Cloudinary
           const response = await axios.post(
-            'https://api.cloudinary.com/v1_1/duvpop9lr/image/upload',
+            import.meta.env.VITE_APP_CLOUDINARY_API,
             formData
           );
           setImageUrl(response.data.secure_url); // Set Cloudinary image URL

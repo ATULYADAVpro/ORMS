@@ -1,8 +1,8 @@
 // cloudinary.js
 import axios from 'axios';
 
-const CLOUDINARY_URL = 'cloudinary://423261281436497:dMvx8KGHf0P8JJljFwW7mbG5RpI@duvpop9lr';
-const CLOUDINARY_UPLOAD_PRESET = 'ml_default'; // Add your upload preset here
+const CLOUDINARY_URL = import.meta.env.VITE_APP_CLOUDINARY_API;
+const CLOUDINARY_UPLOAD_PRESET = import.meta.env.VITE_APP_CLOUDINARY_PRESET_NAME; // Add your upload preset here
 
 
 // Upload image to Cloudinary

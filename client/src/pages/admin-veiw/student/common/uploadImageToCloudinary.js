@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/duvpop9lr/image/upload';
-const CLOUDINARY_UPLOAD_PRESET = 'gtk4v3ju';
+const CLOUDINARY_URL = import.meta.env.VITE_APP_CLOUDINARY_API;
+const CLOUDINARY_UPLOAD_PRESET = import.meta.env.VITE_APP_CLOUDINARY_PRESET_NAME;
 
 const uploadImageToCloudinary = async (imageFile) => {
     try {

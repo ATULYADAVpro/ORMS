@@ -49,6 +49,7 @@ const useAuth = () => {
 
 
 
+
 export default function App() {
   const navigate = useNavigate();
   const { data: authData, isLoading, isError } = useAuth();  // Retrieve auth data
