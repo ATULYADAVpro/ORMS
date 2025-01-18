@@ -1,27 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
+import YearPicker from '../../../common/YearPicker'
+import MonthYearPicker from '../../../common/MonthYearPicker'
 import style from './createSem.module.css';
-import YearPicker from '../../../common/YearPicker';
-import MonthYearPicker from '../../../common/MonthYearPicker';
-import { toast } from 'react-toastify';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { addSemesterinBulk, getStudentForSemester } from '../../../api/api';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { findAtktSemesters, subjectDeleteInAtkt } from '../../../api/api';
 
-export default function CreateSem({ user }) {
-    // State variables for selections
+export default function FindAtktStudent({ user }) {
+
     const [selectedSem, setSelectedSem] = useState('');
     const [selectedExamType, setSelectedExamType] = useState('');
     const [monthYear, setMonthYear] = useState(null);
+    const [monthYearAtkt, setMonthYearAtkt] = useState(null);
     const [tableData, setTableData] = useState([]);
     const [selectAll, setSelectAll] = useState(false); // Track select all checkbox state
-    const [year, setYear] = useState(null);
     const queryClient = useQueryClient()
     const navigate = useNavigate();
 
     // --------- Get Student for semester -------
     const { mutate: studentDataMutate } = useMutation({
-        mutationFn: getStudentForSemester,
-        mutationKey: ["getStudentForSemester"],
+        mutationFn: findAtktSemesters,
+        mutationKey: ["findAtktSemester"],
         onSuccess: (data) => {
             toast.success('Successfully Fetched Student');
             setTableData(data);
@@ -33,7 +33,7 @@ export default function CreateSem({ user }) {
 
     // --------- Add Semester in Bulk -------
     const { mutate: addSemesterinBulkMutate } = useMutation({
-        mutationFn: addSemesterinBulk,
+        mutationFn: subjectDeleteInAtkt,
         mutationKey: ["addSemesterinBulk"],
         onSuccess: (data) => {
             toast.success('Successfully Generated Semester');
@@ -51,30 +51,38 @@ export default function CreateSem({ user }) {
 
     // handle Fetch data
     function handleFetchData() {
-        if (!selectedSem || !selectedExamType || !monthYear || !year) {
+        if (!selectedSem || !selectedExamType || !monthYear) {
             toast.error("Please select all inputs and selections.");
         } else {
-            studentDataMutate({ sem: selectedSem, examType: selectedExamType, date_of_issue: monthYear, admissionDate: year, stream: user?.department });
+            studentDataMutate({ sem: selectedSem, examType: selectedExamType, date_of_issue: monthYear, stream: user?.department });
         }
     }
 
     // Handle Generate button click
+    // Handle Generate button click
     const handleGenerate = () => {
-        const studentArray = tableData.filter(user => user.selected);
-        if (!selectedSem || !selectedExamType || !monthYear || !year || !user?.department) {
-            toast.error("Please select all inputs and selections.");
-        } else {
-            addSemesterinBulkMutate({ studentArray, examType: selectedExamType, stream: user?.department, date_of_issue: monthYear, sem: selectedSem })
-        }
+        const semesterArray = tableData
+            .filter((data) => data.selected)
+            .map((data) => (data.semester._id));
+
+        // Uncomment this section if you are using it for some purpose
+        // if (!selectedSem || !selectedExamType || !monthYear || !year || !user?.department) {
+        //     toast.error("Please select all inputs and selections.");
+        // } else {
+        addSemesterinBulkMutate({ semesterArray, date_of_issue: monthYearAtkt })
+        // }
+
+        console.log(semesterArray);
     };
+
 
     // Handle Select changes
     const handleSemChange = (e) => setSelectedSem(e.target.value);
     const handleExamTypeChange = (e) => setSelectedExamType(e.target.value);
 
     // Handle Year change
-    const handleYearChange = (selectedYear) => setYear(selectedYear); // Update year state when selected
     const handleMonthYearChange = (monthYear) => setMonthYear(monthYear);
+    const handleMonthYearChangeAtkt = (monthYearAtkt) => setMonthYearAtkt(monthYearAtkt);
 
 
 
@@ -91,6 +99,8 @@ export default function CreateSem({ user }) {
         updatedData[index].selected = !updatedData[index].selected;
         setTableData(updatedData);
     };
+
+    // console.log(tableData)
 
     return (
         <div>
@@ -113,20 +123,25 @@ export default function CreateSem({ user }) {
                         {/* Add more options as needed */}
                     </select>
 
-                    <div className={style.YearPicker}>
-                        <YearPicker handleYearChange={handleYearChange} />
-                    </div>
+
 
                     <div className={style.MonthYearPicker}>
                         <MonthYearPicker handleMonthYearChange={handleMonthYearChange} />
                     </div>
 
-                    <button className={style.btn} onClick={handleFetchData}>Fetch</button>
+                    <button className={style.btn} onClick={handleFetchData}>Get</button>
                 </div>
 
                 <div>
                     <button className={style.btnSubmit} onClick={handleGenerate}>Generate</button>
                 </div>
+            </div>
+
+            <div >
+                {/* <br /> */}
+                <p>Select Atkt Date</p>
+                <MonthYearPicker handleMonthYearChange={handleMonthYearChangeAtkt} />
+                {/* <br /> */}
             </div>
 
             <div className={style.mainData}>
@@ -151,6 +166,7 @@ export default function CreateSem({ user }) {
                             <th style={{ width: "11rem" }}>Admission Date</th>
                             <th style={{ width: "8rem" }}>Roll No</th>
                             <th>Name</th>
+                            <th>Fail Subject</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -163,15 +179,23 @@ export default function CreateSem({ user }) {
                                         onChange={() => handleRowCheckboxChange(index)}
                                     />
                                 </td>
-                                <td>{data.admissionDate}</td>
-                                <td>{data.rollNo}</td>
-                                <td>{data.firstName} {data.fatherName} {data.lastName} {data.motherName}</td>
+                                <td>{data?.semester?.student?.admissionDate}</td>
+                                <td>{data?.semester?.student?.rollNo}</td>
+                                <td>{data?.semester?.student?.firstName} {data?.semester?.student?.fatherName} {data?.semester?.student?.lastName} {data?.semester?.student?.motherName}</td>
+                                <td>
+                                    {data?.failSubjects.map((sub, i) => (
+                                        <p key={i}>{i + 1}. {sub.subjectName} </p>
+                                    ))
+
+                                    }
+                                </td>
                             </tr>
                         ))}
 
                     </tbody>
                 </table>
             </div>
+
         </div>
-    );
+    )
 }

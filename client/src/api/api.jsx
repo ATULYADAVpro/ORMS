@@ -384,6 +384,31 @@ export const getActiveSemesterForExportResult = async (data) => {
   }
 };
 
+
+
+// -------- Here atkt result for export ---------
+export const findAtktSemesters = async (data) => {
+  // console.log(data)
+  try {
+    const response = await api.post('/api/semester/findAtktSemesters', data);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'error in generateResultNow');
+  }
+};
+
+export const subjectDeleteInAtkt = async (data) => {
+  // console.log(data)
+  try {
+    const response = await api.post('/api/semester/subjectDeleteInAtkt', data);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response ? error.response.data.message : 'error in generateResultNow');
+  }
+};
+
+
+
 // -------- Here displat  result for student ---------
 export const displayResultData = async (data) => {
   // console.log(data)

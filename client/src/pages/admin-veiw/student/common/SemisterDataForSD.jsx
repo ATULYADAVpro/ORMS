@@ -106,7 +106,7 @@ export default function SemisterDataForSD({ data, semData, student }) {
                             <td>{student.prn}</td>
                             <td>{student.lastName} {student.firstName} {student.fatherName} {student.motherName}</td>
                             <td>{data.date_of_issue}</td>
-                            <td> sem {data.date_of_issue}</td>
+                            <td> sem {data.sem} / exam: {data.examType}</td>
                         </tr>
                     </tbody>
                 </table>

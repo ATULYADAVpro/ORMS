@@ -33,6 +33,7 @@ import GenerateResult from './pages/hod-view/generateResult/GenerateResult';
 import IncompleteSem from './pages/hod-view/inCompleteSem/IncompleteSem';
 import ExportsResult from './pages/admin-veiw/student/export result/ExportsResult';
 import DisplayResult from './pages/check result/DisplayResult';
+import FindAtktStudent from './pages/hod-view/atkt/FindAtktStudent';
 
 
 // Custom hook to fetch auth data
@@ -124,6 +125,7 @@ export default function App() {
         <Route path='listStudentMark'  element={<StudentSheetsHod user={authData?.user} />} />
         <Route path='generateResult'  element={<GenerateResult user={authData?.user} />} />
         <Route path='inCompleteSem'  element={<IncompleteSem user={authData?.user} />} />
+        <Route path='atkt'  element={<FindAtktStudent user={authData?.user} />} />
       </Route>
 
       {/* Teachar Routes Here  */}

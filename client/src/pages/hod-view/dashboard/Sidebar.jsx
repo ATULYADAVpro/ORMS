@@ -7,6 +7,7 @@ import { FaRegNewspaper } from "react-icons/fa6";
 import { GiPapers } from "react-icons/gi";
 import { NavLink } from 'react-router-dom';
 import { MdIncompleteCircle } from "react-icons/md";
+import { MdSmsFailed } from "react-icons/md";
 
 export default function Sidebar({ mode, menu, setMode }) {
 
@@ -75,6 +76,15 @@ export default function Sidebar({ mode, menu, setMode }) {
               end
             >
               <span><MdIncompleteCircle /></span><span className={style.text}>Incomplete Sem</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/hod/atkt"
+              className={({ isActive }) => isActive ? `${style.icon} ${style.active}` : style.icon}
+              end
+            >
+              <span><MdSmsFailed /></span><span className={style.text}>manage Atkt</span>
             </NavLink>
           </li>
          

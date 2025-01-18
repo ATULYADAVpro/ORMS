@@ -626,7 +626,80 @@ const semesterController = {
         } catch (error) {
             return next(error);
         }
+    },
+
+
+
+    // ---------------------- Manage Atkt -------
+
+    async findAtktSemesters(req, res, next) {
+        const { sem, stream, date_of_issue } = req.body;
+        const success = false;
+        const status = true;
+        try {
+            const semesters = await Semester.find({ sem, stream, date_of_issue, success, status })
+                .populate("subjects")
+                .populate("stream")
+                .populate("student");
+
+            if (!semesters) {
+                return next(CustomErrorHandler.notFound("Data not Available"));
+            }
+
+            // Structure response as {semester, failSubject}
+            const result = semesters.map((semester) => {
+                const failSubjects = semester.subjects.filter((subject) =>
+                    subject.grade === 'F' || subject.practicalGrade === 'F'
+                );
+                return {
+                    semester,
+                    failSubjects
+                };
+            });
+
+            res.json(result);
+
+        } catch (error) {
+            return next(error);
+        }
+    },
+
+    async subjectDeleteInAtkt(req, res, next) {
+        const { semesterArray, date_of_issue } = req.body;
+        try {
+            for (const semesterId of semesterArray) {
+                const semester = await Semester.findById(semesterId).populate("subjects");
+    
+                if (!semester) {
+                    return next(CustomErrorHandler.notFound("Semester not found"));
+                }
+    
+                const passSubjects = semester.subjects
+                    .filter((sub) => sub.grade !== 'F' && sub.practicalGrade !== 'F')
+                    .map((sub) => sub._id);
+    
+                const newAtktsemester = new Semester({
+                    student: semester.student,
+                    stream: semester.stream,
+                    subjects: passSubjects,
+                    sem: semester.sem,
+                    examType: "atkt",
+                    date_of_issue
+                });
+    
+                await newAtktsemester.save();
+    
+                const studentDetails = await Student.findById(semester.student);
+                studentDetails.semesters.push(newAtktsemester._id);
+                await studentDetails.save();
+            }
+    
+            res.json({ message: "New ATKT semesters created successfully" });
+        } catch (error) {
+            return next(error);
+        }
     }
+    
 
 
 
