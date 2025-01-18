@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import style from './header.module.css';
 import { AiOutlineMenuFold, AiOutlineMenuUnfold } from "react-icons/ai";
+import { toast } from 'react-toastify';
 
 export default function Header({ setMenu, menu }) {
   const [drop, setDrop] = useState(false); // Fixed useState initialization
@@ -12,6 +13,7 @@ export default function Header({ setMenu, menu }) {
     setDrop(false); // Close dropdown
     toast.success('You have logged out successfully. if not reload the pafe'); // Optional toast notification
     window.reload(); // Reload the page
+    navigate(0)
   };
   
 

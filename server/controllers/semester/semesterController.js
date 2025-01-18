@@ -239,6 +239,7 @@ const semesterController = {
 
             for (const studentData of studentsData) {
                 const { semesterDetails, markDetails } = studentData;
+                // console.log(markDetails)
 
                 // Find the semester
                 const semester = await Semester.findOne({

@@ -7,12 +7,12 @@ const subjectSchema = new Schema({
     name: { type: String, required: true, unique: true, lowercase: true },
     code: { type: String, required: true, unique: true, lowercase: true },
     credit: { type: String, required: true, lowercase: true },
-    internalMax: { type: String, required: true, unique: true, lowercase: true },
-    internalMin: { type: String, required: true, unique: true, lowercase: true },
-    externalMax: { type: String, required: true, unique: true, lowercase: true },
-    externalMin: { type: String, required: true, unique: true, lowercase: true },
-    totalMin: { type: String, required: true, unique: true, lowercase: true },
-    totalMax: { type: String, required: true, unique: true, lowercase: true },
+    internalMax: { type: String, required: true,  lowercase: true },
+    internalMin: { type: String, required: true,  lowercase: true },
+    externalMax: { type: String, required: true,  lowercase: true },
+    externalMin: { type: String, required: true,  lowercase: true },
+    totalMin: { type: String, required: true,  lowercase: true },
+    totalMax: { type: String, required: true,  lowercase: true },
     practicalName: {
         type: String,
         unique: true,
@@ -30,8 +30,8 @@ const subjectSchema = new Schema({
     },
     practicalMax: {
         type: String,
-        unique: true,
-        sparse: true, // Ensures uniqueness only for non-null values
+        // unique: true,
+        // sparse: true, // Ensures uniqueness only for non-null values
         lowercase: true,
         validate: {
             validator: async function (v) {
@@ -45,7 +45,7 @@ const subjectSchema = new Schema({
     },
     practicalCredit: {
         type: String,
-        sparse: true, // Ensures uniqueness only for non-null values
+        // sparse: true, // Ensures uniqueness only for non-null values
         lowercase: true,
         validate: {
             validator: async function (v) {
@@ -59,8 +59,8 @@ const subjectSchema = new Schema({
     },
     practicalMin: {
         type: String,
-        unique: true,
-        sparse: true, // Ensures uniqueness only for non-null values
+        // unique: true,
+        // sparse: true, // Ensures uniqueness only for non-null values
         lowercase: true,
         validate: {
             validator: async function (v) {

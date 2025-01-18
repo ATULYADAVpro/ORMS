@@ -87,14 +87,22 @@ export default function GiveMarksToStudent({ user }) {
 
     const handleSelectAllChange = (e) => {
         const updatedData = tableData.map((item) => {
-            if (
-                !item.internal ||
-                !item.external ||
-                !item.practicalMark
-            ) {
+            if (departmentData?.department?.practical === true) {
+                if (
+                    !item.internal ||
+                    !item.external ||
+                    !item.practicalMark
+                ) {
+                    toast.error("Please fill all input fields for all rows before selecting all. with practical");
+                    return { ...item, selected: false };
+                }
+            }
+
+            if (!item.internal || !item.external) {
                 toast.error("Please fill all input fields for all rows before selecting all.");
                 return { ...item, selected: false };
             }
+
             return { ...item, selected: e.target.checked };
         });
         setSelectAll(e.target.checked);
@@ -105,8 +113,15 @@ export default function GiveMarksToStudent({ user }) {
         const updatedData = [...tableData];
         const row = updatedData[index];
 
-        if (!row.internal || !row.external || !row.practicalMark) {
-            toast.error("Please fill all input fields for this row before selecting the checkbox.");
+        if (departmentData?.department?.practical === true) {
+            if (!row.internal || !row.external || !row.practicalMark) {
+                toast.error("Please fill all input fields for this row before selecting the checkbox.");
+                return;
+            }
+        }
+
+        if (!row.internal || !row.external) {
+            toast.error("Please fill all input fields for this row before selecting the student.");
             return;
         }
 
@@ -116,9 +131,33 @@ export default function GiveMarksToStudent({ user }) {
 
     const handleInputChange = (index, field, value) => {
         const updatedData = [...tableData];
-        updatedData[index][field] = value;
+        const row = updatedData[index];
+
+        // Allow users to type freely but validate on change
+        row[field] = value;
+
+        // Validate only if the value exceeds the maximum allowed
+        if (field === "internal" && markValidtaion?.internalMax && Number(value) > markValidtaion.internalMax) {
+            toast.error(`Internal marks cannot exceed ${markValidtaion.internalMax}.`);
+            return;
+        }
+
+        if (field === "external" && markValidtaion?.externalMax && Number(value) > markValidtaion.externalMax) {
+            toast.error(`External marks cannot exceed ${markValidtaion.externalMax}.`);
+            return;
+        }
+        if (departmentData?.department?.practical === true) {
+            if (field === "practicalMark" && markValidtaion?.practicalMax && Number(value) > markValidtaion.practicalMax) {
+                toast.error(`External marks cannot exceed ${markValidtaion.practicalMax}.`);
+                return;
+            }
+        }
+
+        // Update the table data
         setTableData(updatedData);
     };
+
+
 
     function handleFatchStudents() {
         if (!selectedSem || !selectedExamType || !monthYear || !year || !subjectId) {
@@ -197,53 +236,63 @@ export default function GiveMarksToStudent({ user }) {
     function handleSubmitData() {
         const selectedStudentData = tableData.filter(student => student.selected)
         let studentsData = [];
-        if (subjectId && markValidtaion) {
-            for (const element of selectedStudentData) {
+        if (selectedStudentData.length > 0) {
+            if (subjectId && markValidtaion) {
+                for (const element of selectedStudentData) {
 
-                const semesterDetails = {
-                    sem: selectedSem,
-                    date_of_issue: monthYear,
-                    student: element._id,
-                    stream: user.department
-                };
 
-                const markDetails = {
-                    subjectId: subjectId,
-                    subjectName: markValidtaion.name,
-                    subjectCode: markValidtaion.code,
-                    internal: element.internal,
-                    external: element.external,
-                    internalMax: element.internalMax,
-                    externalMax: element.externalMax,
-                    internalMin: element.internalMin,
-                    externalMin: element.externalMin,
-                    totalMax: markValidtaion.totalMax,
-                    totalMin: markValidtaion.totalMin,
-                    credit: markValidtaion.credit,
+                    const semesterDetails = {
+                        sem: selectedSem,
+                        date_of_issue: monthYear,
+                        student: element._id,
+                        stream: user.department
+                    };
+
+                    const markDetails = {
+                        subjectId: subjectId,
+                        subjectName: markValidtaion.name,
+                        subjectCode: markValidtaion.code,
+                        internal: element.internal,
+                        external: element.external,
+                        internalMax: markValidtaion.internalMax,
+                        externalMax: markValidtaion.externalMax,
+                        internalMin: markValidtaion.internalMin,
+                        externalMin: markValidtaion.externalMin,
+                        totalMax: markValidtaion.totalMax,
+                        totalMin: markValidtaion.totalMin,
+                        credit: markValidtaion.credit,
+                    }
+                    if (departmentData?.department?.practical) {
+                        markDetails.practicalName = markValidtaion.practicalName,
+                            markDetails.practicalMax = markValidtaion.practicalMax,
+                            markDetails.practicalMin = markValidtaion.practicalMin,
+                            markDetails.practicalCode = markValidtaion.practicalCode,
+                            markDetails.practicalCredit = markValidtaion.practicalCredit,
+                            markDetails.practicalMark = element.practicalMark || "";
+                    }
+
+                    const finalData = { semesterDetails, markDetails };
+                    studentsData.push(finalData)
+
                 }
-                if (departmentData?.department?.practical) {
-                    markDetails.practicalName = markValidtaion.practicalName,
-                        markDetails.practicalMax = markValidtaion.practicalMax,
-                        markDetails.practicalMin = markValidtaion.practicalMin,
-                        markDetails.practicalCode = markValidtaion.practicalCode,
-                        markDetails.practicalCredit = markValidtaion.practicalCredit,
-                        markDetails.practicalMark = element.practicalMark || "";
+
+                if (studentsData) {
+                    const payload = {
+                        studentsData
+                    }
+                    if (Object.keys(payload).length > 0)
+                        addSubjectsInSemesterBulkMutate(payload)
+                    // console.log("paylod wala: ", payload)
                 }
-
-                const finalData = { semesterDetails, markDetails };
-                studentsData.push(finalData)
-
             }
+        } else {
+            toast.error("Please select student and fill all details")
         }
 
 
-        if (studentsData) {
-            const payload = {
-                studentsData
-            }
-            addSubjectsInSemesterBulkMutate(payload)
-            console.log(payload)
-        }
+
+
+
 
     }
 
@@ -331,7 +380,7 @@ export default function GiveMarksToStudent({ user }) {
                                             type="number"
                                             placeholder="Internal Mark"
                                             value={data.internal || ""}
-                                            max={markValidtaion.internalMax || ""}
+                                            max={markValidtaion.internalMax}
                                             // min={markValidtaion.internalMin || ""}
                                             onChange={(e) => handleInputChange(i, "internal", e.target.value)}
                                         />

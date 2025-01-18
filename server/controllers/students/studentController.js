@@ -105,6 +105,7 @@ const studentController = {
                 mobileNo: Joi.number().optional(), // Kept mobileNo as an identifier
                 date_Of_year: Joi.string().optional(),
                 stream: Joi.string().optional(),
+                admissionDate: Joi.string().optional(),
                 semesters: Joi.optional()
             });
 

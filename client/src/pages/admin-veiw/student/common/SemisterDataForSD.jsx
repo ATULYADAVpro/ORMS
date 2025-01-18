@@ -5,6 +5,7 @@ import "../../../../index.css"
 
 export default function SemisterDataForSD({ data, semData, student }) {
     const contentRef = useRef()
+    console.log(data)
     const reactToPrintFn = useReactToPrint({ contentRef });
     const renderSubjectRow = (sub, i) => (
         <tr key={i}>

@@ -156,7 +156,7 @@ export default function StudentSheetsHod({ user }) {
                 return; // Prevent update if any practical field is missing
             }
         }
-
+ 
         // Validate other fields if necessary
         const validationErrors = Object.entries(formData).filter(([key, value]) => {
             const maxValidationKey = `${key}Max`; // e.g., "internalMax"

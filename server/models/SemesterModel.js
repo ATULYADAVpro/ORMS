@@ -8,7 +8,7 @@ const semesterSchema = new Schema({
     sem: { type: String, required: true },
     date_of_issue: { type: String, required: true },
     examType: { type: String, required: true },
-    sgpa: { type: Number, default: 0 },
+    sgpa: { type: Number, default: 0, set: v => parseFloat(v).toFixed(2) },
     credit: { type: Number, default: 0 },
     score: { type: Number, default: 0 },
     grade: { type: String, default: 'F' },
@@ -36,9 +36,9 @@ semesterSchema.methods.calculateSGPA = function (subjectArray) {
                 if (typeof sub.practicalCredit === 'number') {
                     CREDIT += sub.practicalCredit;
                     CG += sub.practicalCPA;
-                    
+
                     // console.log(`Added practical credit: ${sub.practicalCredit}`); // Log practical credit addition
-                } 
+                }
                 // else {
                 //     // console.log(`practicalCredit is not a number: ${sub.practicalCredit}`); // Log practical credit type issue
                 // }

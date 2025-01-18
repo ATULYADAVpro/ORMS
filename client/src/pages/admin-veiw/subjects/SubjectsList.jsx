@@ -237,6 +237,17 @@ export default function SubjectsList() {
                                     <input type="number" name="externalMin" value={selectedUser.externalMin} required onChange={handleInputChange} placeholder="External Min" />
                                 </div>
                             </div>
+                            <div className={style.flexBox}>
+                                <div className={style.inpBox}>
+                                    <label htmlFor="totalMax">Total Max: </label>
+                                    <input type="number" name="totalMax" value={selectedUser.totalMax} required onChange={handleInputChange} placeholder="Total Max" />
+                                </div>
+
+                                <div className={style.inpBox}>
+                                    <label htmlFor="totalMin">Total Min:</label>
+                                    <input type="number" name="totalMin" value={selectedUser.totalMin} required onChange={handleInputChange} placeholder="Total Min" />
+                                </div>
+                            </div>
 
                             {selectedUser.practicalName && selectedUser.practicalCode && (
                                 <>
@@ -248,6 +259,10 @@ export default function SubjectsList() {
                                     <div className={style.inpBox}>
                                         <label htmlFor="practicalCode">Practical Code: </label>
                                         <input type="text" name="practicalCode" value={selectedUser.practicalCode} onChange={handleInputChange} />
+                                    </div>
+                                    <div className={style.inpBox}>
+                                        <label htmlFor="practicalCredit">Practical credit: </label>
+                                        <input type="text" name="practicalCredit" value={selectedUser.practicalCredit} onChange={handleInputChange} />
                                     </div>
 
                                     <div className={style.flexBox}>
