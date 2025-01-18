@@ -128,7 +128,7 @@ export default function Login() {
                   <input
                     key={index}
                     id={`otp-input-${index}`}
-                    type="text"
+                    type="number"
                     maxLength="1"
                     value={otp[index]}
                     onChange={(e) => handleOtpChange(e, index)}
