@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { useReactToPrint } from "react-to-print";
 import CommonPrintLayout from './CommonPrintLayout';
 import { toast } from 'react-toastify';
-import '../../../../app.css';
+import '../../../../App.css';
 
 export default function PrintFace({ setBack, selectedUsers }) {
     const contentRef = useRef();
