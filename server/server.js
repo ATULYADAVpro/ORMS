@@ -36,6 +36,9 @@ app.use('/api/semester', semesterRouter)
 app.use('/api/marks', markRouter)
 
 
+app.get("/",(req,res,next)=>{
+    res.send("Working")
+})
 
 
 
