@@ -23,8 +23,8 @@ const corsOptions = {
 
 
 // ------- Middlewares useing -------
-// app.use(cors(corsOptions));
-app.use(cors());
+app.use(cors(corsOptions));
+// app.use(cors());
 app.use(express.json()); //->  parse json body middleware 
 app.use(cookieParser());
 app.use('/api/user', userRouter)
